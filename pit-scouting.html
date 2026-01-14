@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pit Scouting — FRC 1792</title>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header>
+    <div class="topbar">
+        <div class="brand">
+            <div class="t1">1792 Pit Scouting — 2026</div>
+            <div class="t2">Team Info → Robot Design → Strategy → Submit</div>
+        </div>
+        <div class="pill">
+            <span id="netDot" class="dot"></span>
+            <span id="netText">Offline</span>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="card">
+        <div class="hd">
+            <div style="flex: 1;">
+                <div class="progress">
+                    <div class="step" data-step="0"></div>
+                    <div class="step" data-step="1"></div>
+                    <div class="step" data-step="2"></div>
+                </div>
+                <h2 id="screenTitle">Team Information</h2>
+                <p id="screenSubtitle">Enter scout and team details</p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button class="btn small ghost" id="btnHome" onclick="window.location.href='index.html'">← Home</button>
+                <button class="btn small ghost" id="btnReset">Reset</button>
+            </div>
+        </div>
+
+        <div class="bd">
+            <!-- Screen 0: Team Info -->
+            <section class="screen" data-screen="0">
+                <div class="grid">
+                    <div class="col-6">
+                        <label>Scout name *</label>
+                        <input id="scoutName" placeholder="e.g., Elijah" autocomplete="name" />
+                    </div>
+
+                    <div class="col-6">
+                        <label>Team # *</label>
+                        <div class="autocomplete-wrapper">
+                            <input id="teamSearch" type="text" placeholder="Type team # or name..." autocomplete="off" />
+                            <div id="autocompleteResults" class="autocomplete-results"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Team name</label>
+                        <input id="teamName" placeholder="Auto-filled from selection above" readonly style="opacity: 0.7;" />
+                    </div>
+
+                    <div class="col-12" id="queueAlert" style="display:none">
+                        <div class="alert warning">
+                            ⚠️ You have <span id="queueCount">0</span> queued submissions.
+                            <button class="btn small" id="btnResend" style="margin-left: 10px">Resend All</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Screen 1: Robot Design -->
+            <section class="screen" data-screen="1" style="display:none">
+                <div class="grid">
+                    <div class="col-6">
+                        <label>Drivetrain type *</label>
+                        <select id="drivetrain">
+                            <option value="" disabled selected>Select...</option>
+                            <option value="Tank">Tank Drive</option>
+                            <option value="Mecanum">Mecanum</option>
+                            <option value="Swerve">Swerve Drive</option>
+                            <option value="H-Drive">H-Drive</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="col-6">
+                        <label>Motor type *</label>
+                        <select id="motorType">
+                            <option value="" disabled selected>Select...</option>
+                            <option value="NEO">NEO</option>
+                            <option value="NEO 550">NEO 550</option>
+                            <option value="Falcon 500">Falcon 500</option>
+                            <option value="CIM">CIM</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Robot dimensions (inches)</label>
+                        <div class="row">
+                            <div style="flex: 1;">
+                                <input id="width" type="number" placeholder="Width" min="0" step="0.5" inputmode="decimal" />
+                            </div>
+                            <span style="color: var(--muted);">×</span>
+                            <div style="flex: 1;">
+                                <input id="length" type="number" placeholder="Length" min="0" step="0.5" inputmode="decimal" />
+                            </div>
+                            <span style="color: var(--muted);">×</span>
+                            <div style="flex: 1;">
+                                <input id="height" type="number" placeholder="Height" min="0" step="0.5" inputmode="decimal" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <label>Weight (lbs)</label>
+                        <input id="weight" type="number" placeholder="e.g., 120" min="0" max="125" step="0.1" inputmode="decimal" />
+                    </div>
+
+                    <div class="col-6">
+                        <label>Programming language *</label>
+                        <select id="programmingLang">
+                            <option value="" disabled selected>Select...</option>
+                            <option value="Java">Java</option>
+                            <option value="C++">C++</option>
+                            <option value="Python">Python</option>
+                            <option value="LabVIEW">LabVIEW</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Can climb tower? *</label>
+                        <div class="seg" id="canClimbSeg">
+                            <div class="chip" data-value="No">No</div>
+                            <div class="chip" data-value="L1">Level 1</div>
+                            <div class="chip" data-value="L2">Level 2</div>
+                            <div class="chip" data-value="L3">Level 3</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Special features / mechanisms</label>
+                        <textarea id="specialFeatures" placeholder="Describe any unique robot features, mechanisms, or capabilities..."></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Screen 2: Strategy -->
+            <section class="screen" data-screen="2" style="display:none">
+                <div class="grid">
+                    <div class="col-12">
+                        <label>Preferred auto strategy *</label>
+                        <select id="autoStrategy">
+                            <option value="" disabled selected>Select...</option>
+                            <option value="Fuel Only">Fuel Scoring Only</option>
+                            <option value="Tower Only">Tower Climb Only</option>
+                            <option value="Balanced">Fuel + Tower</option>
+                            <option value="Mobility">Mobility Only</option>
+                            <option value="None">No Auto</option>
+                        </select>
+                    </div>
+
+                    <div class="col-6">
+                        <label>Fuel capacity (approx.) *</label>
+                        <select id="fuelCapacity">
+                            <option value="" disabled selected>Select...</option>
+                            <option value="0">None (0)</option>
+                            <option value="1-3">Low (1-3)</option>
+                            <option value="4-7">Medium (4-7)</option>
+                            <option value="8-12">High (8-12)</option>
+                            <option value="13+">Very High (13+)</option>
+                        </select>
+                    </div>
+
+                    <div class="col-6">
+                        <label>Cycle time (seconds) *</label>
+                        <select id="cycleTime">
+                            <option value="" disabled selected>Select...</option>
+                            <option value="Fast">Fast (< 15s)</option>
+                            <option value="Average">Average (15-30s)</option>
+                            <option value="Slow">Slow (> 30s)</option>
+                            <option value="Unknown">Unknown</option>
+                        </select>
+                    </div>
+
+                    <div class="col-6">
+                        <label>Defense capability *</label>
+                        <select id="defenseCap">
+                            <option value="" disabled selected>Select...</option>
+                            <option value="None">None - Avoids contact</option>
+                            <option value="Light">Light - Can withstand</option>
+                            <option value="Moderate">Moderate - Can play some defense</option>
+                            <option value="Strong">Strong - Primary defender</option>
+                        </select>
+                    </div>
+
+                    <div class="col-6">
+                        <label>Team experience level *</label>
+                        <select id="experience">
+                            <option value="" disabled selected>Select...</option>
+                            <option value="Rookie">Rookie (1st year)</option>
+                            <option value="2-3 years">Intermediate (2-3 years)</option>
+                            <option value="4-6 years">Experienced (4-6 years)</option>
+                            <option value="7+ years">Veteran (7+ years)</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Preferred alliance position *</label>
+                        <div class="seg" id="positionSeg">
+                            <div class="chip" data-value="Any">Any Position</div>
+                            <div class="chip" data-value="1">Position 1</div>
+                            <div class="chip" data-value="2">Position 2</div>
+                            <div class="chip" data-value="3">Position 3</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Working on / needs improvement</label>
+                        <textarea id="workingOn" placeholder="What is the team currently working on or looking to improve?"></textarea>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Additional notes</label>
+                        <textarea id="additionalNotes" placeholder="Any other important information, observations, or team comments..."></textarea>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Overall impression *</label>
+                        <div class="seg" id="impressionSeg">
+                            <div class="chip" data-value="1">⭐ Needs Work</div>
+                            <div class="chip" data-value="2">⭐⭐ Average</div>
+                            <div class="chip" data-value="3">⭐⭐⭐ Good</div>
+                            <div class="chip" data-value="4">⭐⭐⭐⭐ Very Good</div>
+                            <div class="chip" data-value="5">⭐⭐⭐⭐⭐ Excellent</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="nav">
+            <div class="left">
+                <button class="btn ghost" id="btnBack">Back</button>
+            </div>
+            <div class="right">
+                <button class="btn ghost" id="btnNext">Next</button>
+                <button class="btn primary" id="btnSubmit" style="display:none">Submit</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/pit-scouting.js"></script>
+</body>
+</html>

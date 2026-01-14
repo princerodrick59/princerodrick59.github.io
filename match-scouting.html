@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FRC 1792 Scouting — 2026 REBUILT</title>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header>
+    <div class="topbar">
+        <div class="brand">
+            <div class="t1">1792 Scouting — 2026 REBUILT</div>
+            <div class="t2">General • Auto → Teleop → Endgame → Submit</div>
+        </div>
+        <div class="pill">
+            <span id="netDot" class="dot"></span>
+            <span id="netText">Offline</span>
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="card">
+        <div class="hd">
+            <div style="flex: 1;">
+                <div class="progress">
+                    <div class="step" data-step="0"></div>
+                    <div class="step" data-step="1"></div>
+                    <div class="step" data-step="2"></div>
+                    <div class="step" data-step="3"></div>
+                </div>
+                <h2 id="screenTitle">Start</h2>
+                <p id="screenSubtitle">Enter match info, load teams from an event, then scout.</p>
+            </div>
+             <button class="btn small ghost" id="btnHome" onclick="window.location.href='index.html'">← Home</button>
+            <button class="btn small ghost" id="btnReset">Reset</button>
+        </div>
+
+        <div class="bd">
+            <!-- Screen 0: Start -->
+            <section class="screen" data-screen="0">
+                <div class="grid">
+                    <div class="col-6">
+                        <label>Student name *</label>
+                        <input id="studentName" placeholder="e.g., Elijah" autocomplete="name" />
+                    </div>
+
+                    <div class="col-3">
+                        <label>Match # *</label>
+                        <input id="matchNumber" type="number" min="1" step="1" placeholder="e.g., 12" inputmode="numeric" />
+                    </div>
+
+                    <div class="col-3">
+                        <label>Alliance *</label>
+                        <select id="alliance">
+                            <option value="" disabled selected>Select...</option>
+                            <option value="Red">Red</option>
+                            <option value="Blue">Blue</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Team # *</label>
+                        <div class="autocomplete-wrapper">
+                            <input id="teamSearch" type="text" placeholder="Type team # or name..." autocomplete="off" />
+                            <div id="autocompleteResults" class="autocomplete-results"></div>
+                        </div>
+                        <div class="note" style="margin-top:8px">
+                            Select a team from the dropdown (must be from the 2026 Appleton District Event - 2026wiapp.
+                        </div>
+                    </div>
+
+                    <div class="col-12" id="queueAlert" style="display:none">
+                        <div class="alert warning">
+                            ⚠️ You have <span id="queueCount">0</span> queued submissions.
+                            <button class="btn small" id="btnResend" style="margin-left: 10px">Resend All</button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Screen 1: Auto -->
+            <section class="screen" data-screen="1" style="display:none">
+                <div class="grid">
+                    <div class="col-12">
+                        <div class="counter">
+                            <div class="meta">
+                                <div class="name">Auto Fuel scored (active hub)</div>
+                                <div class="desc">Each Fuel scored in an active HUB: +1 pt</div>
+                            </div>
+                            <div class="ctl">
+                                <button class="iconBtn" data-dec="autoFuel">−</button>
+                                <div class="count" id="autoFuel">0</div>
+                                <button class="iconBtn" data-inc="autoFuel">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Auto tower *</label>
+                        <div class="seg" id="autoTowerSeg">
+                            <div class="chip" data-value="NONE">None</div>
+                            <div class="chip" data-value="L1">Level 1 (15 pts)</div>
+                        </div>
+                        <div class="note" style="margin-top:8px">
+                            In AUTO, a robot may only earn Tower points for <b>Level 1</b>.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Screen 2: Teleop -->
+            <section class="screen" data-screen="2" style="display:none">
+                <div class="grid">
+                    <div class="col-12">
+                        <div class="counter">
+                            <div class="meta">
+                                <div class="name">Teleop Fuel scored (active hub)</div>
+                                <div class="desc">Counts Fuel scored while the alliance hub is active</div>
+                            </div>
+                            <div class="ctl">
+                                <button class="iconBtn" data-dec="teleopFuelActive">−</button>
+                                <div class="count" id="teleopFuelActive">0</div>
+                                <button class="iconBtn" data-inc="teleopFuelActive">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="counter">
+                            <div class="meta">
+                                <div class="name">Teleop Fuel scored (inactive hub)</div>
+                                <div class="desc">No match points when hub inactive (still useful to track)</div>
+                            </div>
+                            <div class="ctl">
+                                <button class="iconBtn" data-dec="teleopFuelInactive">−</button>
+                                <div class="count" id="teleopFuelInactive">0</div>
+                                <button class="iconBtn" data-inc="teleopFuelInactive">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Robot shuttling? *</label>
+                        <select id="shuttling">
+                            <option value="" disabled selected>Select...</option>
+                            <option value="Great">Great</option>
+                            <option value="Good">Good</option>
+                            <option value="Average">Average</option>
+                            <option value="Bad">Bad</option>
+                            <option value="None">None</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Screen 3: Endgame + Ranking -->
+            <section class="screen" data-screen="3" style="display:none">
+                <div class="grid">
+                    <div class="col-12">
+                        <label>Endgame tower level (TELEOP) *</label>
+                        <div class="seg" id="teleopTowerSeg">
+                            <div class="chip" data-value="NONE">None</div>
+                            <div class="chip" data-value="L1">Level 1 (10 pts)</div>
+                            <div class="chip" data-value="L2">Level 2 (20 pts)</div>
+                            <div class="chip" data-value="L3">Level 3 (30 pts)</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Robot status *</label>
+                        <select id="robotStatus">
+                            <option value="" disabled selected>Select...</option>
+                            <option value="OK">OK</option>
+                            <option value="Broke/Stopped">Broke/Stopped</option>
+                            <option value="Brownout/Struggled">Brownout/Struggled</option>
+                            <option value="Disabled">Disabled</option>
+                        </select>
+                    </div>
+
+                    <div class="col-6">
+                        <label>Defense rating *</label>
+                        <select id="defenseRating">
+                            <option value="" disabled selected>Select...</option>
+                            <option value="None">None</option>
+                            <option value="Weak">Weak</option>
+                            <option value="Average">Average</option>
+                            <option value="Strong">Strong</option>
+                            <option value="Elite">Elite</option>
+                        </select>
+                    </div>
+
+                    <div class="col-6">
+                        <label>Speed rating *</label>
+                        <div class="seg" id="speedSeg">
+                            <div class="chip" data-value="Slow">Slow</div>
+                            <div class="chip" data-value="Average">Average</div>
+                            <div class="chip" data-value="Fast">Fast</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Rank this robot *</label>
+                        <div class="seg" id="rankSeg">
+                            <div class="chip" data-value="1">1st (Best)</div>
+                            <div class="chip" data-value="2">2nd (Middle)</div>
+                            <div class="chip" data-value="3">3rd (Worst)</div>
+                        </div>
+                        <div class="note" style="margin-top:8px">
+                            Rank this robot compared to the other 2 robots in this match on your alliance.
+                            Talk to you fellow scouters to make this decision.
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="counter" style="background: rgba(33,197,93,.08); border-color: rgba(33,197,93,.25);">
+                            <div class="meta">
+                                <div class="name">Estimated match contribution (auto-calculated)</div>
+                                <div class="desc">Uses the official 2026 scoring table</div>
+                            </div>
+                            <div class="ctl">
+                                <div class="count" id="estPoints" style="color: var(--ok); font-size: 1.4rem;">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="nav">
+            <div class="left">
+                <button class="btn ghost" id="btnBack">Back</button>
+            </div>
+            <div class="right">
+                <button class="btn ghost" id="btnNext">Next</button>
+                <button class="btn primary" id="btnSubmit" style="display:none">Submit</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="/js/standsScouting.js"></script>
+</body>
+</html>
