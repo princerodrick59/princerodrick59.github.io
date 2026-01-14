@@ -2,7 +2,7 @@
     "use strict";
 
     const CONFIG = {
-        WEBHOOK_URL: "https://script.google.com/macros/s/AKfycbzG1s4QLO2iym5FnLcWM5sFTUDWnovIm0zMRDBQ4rWCpRxBLpk3STqDr9uRKDWsyR1H/exec",
+        WEBHOOK_URL: "https://script.google.com/macros/s/AKfycbzoxdM_JNvPu2C36HZvfGDl5k46agPipeYAU_u8v3z1qs4BT8VDYHqGzWUMu0Nj8bDE/exec",
         TBA_API_KEY: "QbQkb0gqMlzea1xJM9Mo81lCIEFeHcHduBAj4X2M2SJZI7d7rhxXpHepMhseNOdZ",
         EVENT_KEY: "2026wiapp",
         ENABLE_TEAM_LOADING: true
