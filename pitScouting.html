@@ -1,0 +1,886 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FRC 1792 Pit Scouting — 2026</title>
+    <meta name="description" content="FRC Team 1792 pit scouting for the 2026 season">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%231d5cff;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%230039A2;stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='20' fill='url(%23grad)'/%3E%3Ctext x='50' y='70' font-family='system-ui, sans-serif' font-size='55' font-weight='900' fill='white' text-anchor='middle'%3E1792%3C/text%3E%3C/svg%3E">
+    <style>
+        :root{
+            --bg:#0b1020;
+            --card:#111a33;
+            --text:#eaf0ff;
+            --muted:#a9b6e6;
+            --accent:#00d9ff;
+            --accent2:#1d5cff;
+            --danger:#ff3b3b;
+            --ok:#21c55d;
+            --warning:#ffb020;
+            --border: rgba(255,255,255,.10);
+            --shadow: 0 12px 30px rgba(0,0,0,.35);
+            --radius: 18px;
+            --tap: 52px;
+            --font: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+        }
+        *{box-sizing:border-box}
+        body{
+            margin:0;
+            font-family: var(--font);
+            background: radial-gradient(1200px 600px at 30% -20%, rgba(0,217,255,.25), transparent 60%),
+            radial-gradient(900px 500px at 110% 10%, rgba(29,92,255,.25), transparent 55%),
+            var(--bg);
+            color: var(--text);
+            min-height:100vh;
+            -webkit-tap-highlight-color: transparent;
+        }
+        header{
+            position: sticky; top:0;
+            backdrop-filter: blur(10px);
+            background: rgba(11,16,32,.75);
+            border-bottom: 1px solid var(--border);
+            z-index: 10;
+        }
+        .topbar{
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 14px 16px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap: 12px;
+        }
+        .brand{
+            display:flex; flex-direction:column; gap:2px;
+            line-height:1.1;
+        }
+        .brand .t1{font-weight:800; letter-spacing:.2px}
+        .brand .t2{color:var(--muted); font-size:.92rem}
+        .back-link{
+            color: var(--accent);
+            text-decoration: none;
+            font-size: .9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .back-link:hover{
+            background: rgba(0,217,255,.1);
+        }
+        .pill{
+            display:flex; align-items:center; gap:10px;
+            color: var(--muted);
+            font-size:.9rem;
+            white-space:nowrap;
+        }
+        .dot{width:10px;height:10px;border-radius:999px;background:rgba(255,255,255,.25)}
+        .dot.ok{background: rgba(33,197,93,.95)}
+        .dot.bad{background: rgba(255,59,59,.95)}
+
+        main{
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        .card{
+            background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow:hidden;
+            margin-bottom: 16px;
+        }
+        .card .hd{
+            padding: 16px 16px 8px 16px;
+            display:flex;
+            justify-content:space-between;
+            gap: 12px;
+            align-items:flex-start;
+            border-bottom: 1px solid rgba(255,255,255,.06);
+            background: rgba(255,255,255,.02);
+        }
+        .card .hd h2{
+            margin: 0;
+            font-size: 1.2rem;
+            letter-spacing:.2px;
+        }
+        .card .hd p{
+            margin: 6px 0 0 0;
+            color: var(--muted);
+            font-size:.95rem;
+        }
+        .card .bd{ padding: 16px; }
+
+        .grid{
+            display:grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 12px;
+        }
+        .col-12{grid-column: span 12;}
+        .col-6{grid-column: span 6;}
+        .col-4{grid-column: span 4;}
+        .col-3{grid-column: span 3;}
+        @media (max-width: 720px){
+            .col-6,.col-4,.col-3{grid-column: span 12;}
+        }
+
+        label{
+            display:block;
+            font-size:.9rem;
+            color: var(--muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        input, select, textarea{
+            width:100%;
+            padding: 14px 14px;
+            background: rgba(0,0,0,.18);
+            color: var(--text);
+            border: 1px solid rgba(255,255,255,.14);
+            border-radius: 14px;
+            outline: none;
+            font-size: 1rem;
+            font-family: var(--font);
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+        select{
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23eaf0ff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 40px;
+            cursor: pointer;
+        }
+        select option{
+            background: #0b1020;
+            color: var(--text);
+            padding: 10px;
+        }
+        textarea{ min-height: 110px; resize: vertical; }
+        input:focus, select:focus, textarea:focus{
+            border-color: rgba(0,217,255,.65);
+            box-shadow: 0 0 0 3px rgba(0,217,255,.18);
+        }
+
+        .autocomplete-wrapper{
+            position: relative;
+        }
+        .autocomplete-results{
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(11,16,32,.98);
+            border: 1px solid rgba(255,255,255,.18);
+            border-radius: 14px;
+            margin-top: 4px;
+            max-height: 240px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+            box-shadow: var(--shadow);
+        }
+        .autocomplete-results.show{
+            display: block;
+        }
+        .autocomplete-item{
+            padding: 12px 14px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255,255,255,.06);
+            transition: background 0.15s;
+        }
+        .autocomplete-item:last-child{
+            border-bottom: none;
+        }
+        .autocomplete-item:hover, .autocomplete-item.active{
+            background: rgba(0,217,255,.2);
+        }
+        .autocomplete-item .team-num{
+            font-weight: 800;
+            color: var(--text);
+        }
+        .autocomplete-item .team-name{
+            font-size: .9rem;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .btn{
+            height: var(--tap);
+            padding: 0 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,.16);
+            background: rgba(0,217,255,.18);
+            color: var(--text);
+            font-weight: 700;
+            font-size: 1rem;
+            cursor:pointer;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            gap: 10px;
+            user-select:none;
+            transition: transform 0.1s;
+        }
+        .btn:active{ transform: scale(.98); }
+        .btn:disabled{
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .btn.primary{
+            background: linear-gradient(180deg, rgba(0,217,255,.95), rgba(29,92,255,.95));
+            border-color: rgba(255,255,255,.18);
+        }
+        .btn.ghost{
+            background: rgba(255,255,255,.06);
+        }
+        .btn.small{
+            height: 44px;
+            padding: 0 12px;
+            font-size: .95rem;
+            border-radius: 12px;
+        }
+
+        .seg{
+            display:flex; gap:10px; flex-wrap:wrap;
+        }
+        .chip{
+            padding: 12px 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,.14);
+            background: rgba(255,255,255,.06);
+            color: var(--text);
+            cursor:pointer;
+            user-select:none;
+            font-weight:800;
+            transition: all 0.2s;
+        }
+        .chip:hover{
+            background: rgba(255,255,255,.1);
+        }
+        .chip.active{
+            background: linear-gradient(180deg, rgba(0,217,255,.95), rgba(29,92,255,.95));
+            border-color: rgba(255,255,255,.18);
+        }
+
+        .note{
+            color: var(--muted);
+            font-size:.9rem;
+            line-height:1.35;
+        }
+
+        .alert{
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: .95rem;
+        }
+        .alert.warning{
+            background: rgba(255,176,32,.1);
+            border-color: rgba(255,176,32,.3);
+            color: var(--warning);
+        }
+        .alert.success{
+            background: rgba(33,197,93,.1);
+            border-color: rgba(33,197,93,.3);
+            color: var(--ok);
+        }
+
+        .toast{
+            position: fixed;
+            left: 50%;
+            bottom: 18px;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,.85);
+            border: 1px solid rgba(255,255,255,.14);
+            color: var(--text);
+            padding: 12px 14px;
+            border-radius: 999px;
+            box-shadow: var(--shadow);
+            max-width: 92vw;
+            display:none;
+            z-index: 999;
+            font-weight: 600;
+        }
+
+        .nav{
+            display:flex;
+            justify-content:flex-end;
+            gap: 12px;
+            padding: 14px 16px 16px 16px;
+            border-top: 1px solid rgba(255,255,255,.06);
+            background: rgba(255,255,255,.02);
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="topbar">
+        <div class="brand">
+            <div class="t1">1792 Pit Scouting — 2026</div>
+            <div class="t2">Document robot capabilities & team info</div>
+        </div>
+        <a href="index.html" class="back-link">← Hub</a>
+    </div>
+</header>
+
+<main>
+    <div class="card">
+        <div class="hd">
+            <div style="flex: 1;">
+                <h2>Team Information</h2>
+                <p>Basic team and scouter details</p>
+            </div>
+            <button class="btn small ghost" id="btnReset">Reset</button>
+        </div>
+
+        <div class="bd">
+            <div class="grid">
+                <div class="col-6">
+                    <label>Your name (scouter) *</label>
+                    <input id="scouterName" placeholder="e.g., Elijah" autocomplete="name" />
+                </div>
+
+                <div class="col-6">
+                    <label>Team # *</label>
+                    <div class="autocomplete-wrapper">
+                        <input id="teamSearch" type="text" placeholder="Type team # or name..." autocomplete="off" />
+                        <div id="autocompleteResults" class="autocomplete-results"></div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <label>Team name</label>
+                    <input id="teamName" placeholder="e.g., Round Table Robotics" />
+                </div>
+
+                <div class="col-12" id="queueAlert" style="display:none">
+                    <div class="alert warning">
+                        ⚠️ You have <span id="queueCount">0</span> queued submissions.
+                        <button class="btn small" id="btnResend" style="margin-left: 10px">Resend All</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="hd">
+            <div>
+                <h2>Robot Capabilities</h2>
+                <p>What can this robot do?</p>
+            </div>
+        </div>
+
+        <div class="bd">
+            <div class="grid">
+                <div class="col-12">
+                    <label>Drivetrain type *</label>
+                    <select id="drivetrain">
+                        <option value="" disabled selected>Select...</option>
+                        <option value="Tank">Tank</option>
+                        <option value="Mecanum">Mecanum</option>
+                        <option value="Swerve">Swerve</option>
+                        <option value="H-Drive">H-Drive</option>
+                        <option value="Omni">Omni</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="col-6">
+                    <label>Can score fuel? *</label>
+                    <div class="seg" id="canScoreFuel">
+                        <div class="chip" data-value="Yes">Yes</div>
+                        <div class="chip" data-value="No">No</div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <label>Can climb tower? *</label>
+                    <div class="seg" id="canClimbTower">
+                        <div class="chip" data-value="Yes">Yes</div>
+                        <div class="chip" data-value="No">No</div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <label>Max tower level *</label>
+                    <div class="seg" id="maxTowerLevel">
+                        <div class="chip" data-value="None">None</div>
+                        <div class="chip" data-value="Level 1">Level 1</div>
+                        <div class="chip" data-value="Level 2">Level 2</div>
+                        <div class="chip" data-value="Level 3">Level 3</div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <label>Can shuttle fuel? *</label>
+                    <div class="seg" id="canShuttle">
+                        <div class="chip" data-value="Yes">Yes</div>
+                        <div class="chip" data-value="No">No</div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <label>Has autonomous? *</label>
+                    <div class="seg" id="hasAuto">
+                        <div class="chip" data-value="Yes">Yes</div>
+                        <div class="chip" data-value="No">No</div>
+                        <div class="chip" data-value="Basic">Basic</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="hd">
+            <div>
+                <h2>Strategy & Preferences</h2>
+                <p>Team strategy and play style</p>
+            </div>
+        </div>
+
+        <div class="bd">
+            <div class="grid">
+                <div class="col-12">
+                    <label>Preferred strategy *</label>
+                    <select id="strategy">
+                        <option value="" disabled selected>Select...</option>
+                        <option value="Offensive">Offensive (scoring focus)</option>
+                        <option value="Defensive">Defensive (blocking/defending)</option>
+                        <option value="Support">Support (shuttling/assisting)</option>
+                        <option value="Balanced">Balanced (mix of all)</option>
+                    </select>
+                </div>
+
+                <div class="col-12">
+                    <label>Can play defense? *</label>
+                    <div class="seg" id="canDefense">
+                        <div class="chip" data-value="Yes">Yes</div>
+                        <div class="chip" data-value="No">No</div>
+                        <div class="chip" data-value="Limited">Limited</div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <label>Estimated cycle time</label>
+                    <select id="cycleTime">
+                        <option value="" disabled selected>Select...</option>
+                        <option value="Very Fast (< 15s)">Very Fast (< 15s)</option>
+                        <option value="Fast (15-20s)">Fast (15-20s)</option>
+                        <option value="Average (20-30s)">Average (20-30s)</option>
+                        <option value="Slow (30s+)">Slow (30s+)</option>
+                        <option value="Unknown">Unknown</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="hd">
+            <div>
+                <h2>Robot Details</h2>
+                <p>Physical characteristics and notes</p>
+            </div>
+        </div>
+
+        <div class="bd">
+            <div class="grid">
+                <div class="col-6">
+                    <label>Weight (lbs)</label>
+                    <input id="weight" type="number" min="0" max="125" step="0.1" placeholder="e.g., 118.5" inputmode="decimal" />
+                </div>
+
+                <div class="col-6">
+                    <label>Programming language</label>
+                    <select id="programmingLang">
+                        <option value="" disabled selected>Select...</option>
+                        <option value="Java">Java</option>
+                        <option value="C++">C++</option>
+                        <option value="Python">Python</option>
+                        <option value="LabVIEW">LabVIEW</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="col-12">
+                    <label>Additional notes</label>
+                    <textarea id="notes" placeholder="Any other observations about the robot, team, or strategy..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="nav">
+            <button class="btn ghost" onclick="window.location.href='index.html'">Cancel</button>
+            <button class="btn primary" id="btnSubmit">Submit Pit Scout</button>
+        </div>
+    </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+    (function() {
+        "use strict";
+
+        const CONFIG = {
+            WEBHOOK_URL: "https://script.google.com/macros/s/AKfycbzG1s4QLO2iym5FnLcWM5sFTUDWnovIm0zMRDBQ4rWCpRxBLpk3STqDr9uRKDWsyR1H/exec",
+            TBA_API_KEY: "QbQkb0gqMlzea1xJM9Mo81lCIEFeHcHduBAj4X2M2SJZI7d7rhxXpHepMhseNOdZ",
+            EVENT_KEY: "2026wiapp",
+            ENABLE_TEAM_LOADING: true
+        };
+
+        const TBA_TEAMS_AT_EVENT = (eventKey) =>
+            `https://www.thebluealliance.com/api/v3/event/${encodeURIComponent(eventKey)}/teams/simple`;
+
+        const state = {
+            selectedTeam: null,
+            loadedTeams: [],
+            canScoreFuel: null,
+            canClimbTower: null,
+            maxTowerLevel: null,
+            canShuttle: null,
+            hasAuto: null,
+            canDefense: null,
+        };
+
+        const $ = (id) => document.getElementById(id);
+        const toastEl = $("toast");
+
+        function toast(msg){
+            toastEl.textContent = msg;
+            toastEl.style.display = "block";
+            clearTimeout(toastEl._t);
+            toastEl._t = setTimeout(()=>toastEl.style.display="none", 2500);
+        }
+
+        function renderSegments(){
+            document.querySelectorAll("#canScoreFuel .chip").forEach(ch=>{
+                ch.classList.toggle("active", ch.dataset.value === state.canScoreFuel);
+            });
+            document.querySelectorAll("#canClimbTower .chip").forEach(ch=>{
+                ch.classList.toggle("active", ch.dataset.value === state.canClimbTower);
+            });
+            document.querySelectorAll("#maxTowerLevel .chip").forEach(ch=>{
+                ch.classList.toggle("active", ch.dataset.value === state.maxTowerLevel);
+            });
+            document.querySelectorAll("#canShuttle .chip").forEach(ch=>{
+                ch.classList.toggle("active", ch.dataset.value === state.canShuttle);
+            });
+            document.querySelectorAll("#hasAuto .chip").forEach(ch=>{
+                ch.classList.toggle("active", ch.dataset.value === state.hasAuto);
+            });
+            document.querySelectorAll("#canDefense .chip").forEach(ch=>{
+                ch.classList.toggle("active", ch.dataset.value === state.canDefense);
+            });
+        }
+
+        document.querySelectorAll("#canScoreFuel .chip").forEach(ch=>{
+            ch.addEventListener("click", ()=>{ state.canScoreFuel = ch.dataset.value; renderSegments(); });
+        });
+        document.querySelectorAll("#canClimbTower .chip").forEach(ch=>{
+            ch.addEventListener("click", ()=>{ state.canClimbTower = ch.dataset.value; renderSegments(); });
+        });
+        document.querySelectorAll("#maxTowerLevel .chip").forEach(ch=>{
+            ch.addEventListener("click", ()=>{ state.maxTowerLevel = ch.dataset.value; renderSegments(); });
+        });
+        document.querySelectorAll("#canShuttle .chip").forEach(ch=>{
+            ch.addEventListener("click", ()=>{ state.canShuttle = ch.dataset.value; renderSegments(); });
+        });
+        document.querySelectorAll("#hasAuto .chip").forEach(ch=>{
+            ch.addEventListener("click", ()=>{ state.hasAuto = ch.dataset.value; renderSegments(); });
+        });
+        document.querySelectorAll("#canDefense .chip").forEach(ch=>{
+            ch.addEventListener("click", ()=>{ state.canDefense = ch.dataset.value; renderSegments(); });
+        });
+
+        $("btnReset").addEventListener("click", ()=>{
+            if (!confirm("Reset this pit scouting entry?")) return;
+            resetEntry();
+            toast("✓ Reset complete");
+        });
+
+        function resetEntry(){
+            const name = $("scouterName").value;
+
+            $("teamSearch").value = "";
+            $("teamName").value = "";
+            state.selectedTeam = null;
+            $("drivetrain").value = "";
+            $("strategy").value = "";
+            $("cycleTime").value = "";
+            $("weight").value = "";
+            $("programmingLang").value = "";
+            $("notes").value = "";
+
+            state.canScoreFuel = null;
+            state.canClimbTower = null;
+            state.maxTowerLevel = null;
+            state.canShuttle = null;
+            state.hasAuto = null;
+            state.canDefense = null;
+
+            $("scouterName").value = name;
+            renderSegments();
+        }
+
+        async function loadTeams(){
+            if (!CONFIG.ENABLE_TEAM_LOADING) {
+                console.log("Team loading disabled");
+                return;
+            }
+
+            try{
+                console.log("Loading teams from:", CONFIG.EVENT_KEY);
+                const res = await fetch(TBA_TEAMS_AT_EVENT(CONFIG.EVENT_KEY), {
+                    method: "GET",
+                    headers: { 'X-TBA-Auth-Key': CONFIG.TBA_API_KEY }
+                });
+
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+                const arr = await res.json();
+                state.loadedTeams = arr.map(t => ({
+                    number: t.team_number,
+                    name: t.nickname || t.name || `Team ${t.team_number}`
+                })).sort((a,b)=>a.number-b.number);
+
+                console.log(`✓ Loaded ${state.loadedTeams.length} teams`);
+                toast(`✓ Loaded ${state.loadedTeams.length} teams`);
+            }catch(err){
+                console.error("Failed to load teams:", err);
+                toast("⚠️ Couldn't load teams");
+            }
+        }
+
+        const teamSearchInput = $("teamSearch");
+        const autocompleteResults = $("autocompleteResults");
+        let selectedIndex = -1;
+
+        teamSearchInput.addEventListener("input", (e) => {
+            const query = e.target.value.trim().toLowerCase();
+            if (!query) {
+                autocompleteResults.classList.remove("show");
+                state.selectedTeam = null;
+                return;
+            }
+
+            const filtered = state.loadedTeams.filter(team => {
+                return team.number.toString().includes(query) || team.name.toLowerCase().includes(query);
+            }).slice(0, 10);
+
+            if (filtered.length > 0) {
+                renderAutocomplete(filtered);
+                autocompleteResults.classList.add("show");
+                selectedIndex = -1;
+            } else {
+                autocompleteResults.classList.remove("show");
+            }
+            state.selectedTeam = null;
+        });
+
+        teamSearchInput.addEventListener("keydown", (e) => {
+            const items = autocompleteResults.querySelectorAll(".autocomplete-item");
+            if (e.key === "ArrowDown") {
+                e.preventDefault();
+                selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+                updateActiveItem(items);
+            } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+                selectedIndex = Math.max(selectedIndex - 1, -1);
+                updateActiveItem(items);
+            } else if (e.key === "Enter" && selectedIndex >= 0) {
+                e.preventDefault();
+                items[selectedIndex].click();
+            } else if (e.key === "Escape") {
+                autocompleteResults.classList.remove("show");
+                selectedIndex = -1;
+            }
+        });
+
+        teamSearchInput.addEventListener("blur", () => {
+            setTimeout(() => {
+                autocompleteResults.classList.remove("show");
+                selectedIndex = -1;
+            }, 200);
+        });
+
+        function renderAutocomplete(teams) {
+            autocompleteResults.innerHTML = teams.map(team => `
+                <div class="autocomplete-item" data-team="${team.number}">
+                    <div class="team-num">${team.number}</div>
+                    <div class="team-name">${team.name}</div>
+                </div>
+            `).join("");
+
+            autocompleteResults.querySelectorAll(".autocomplete-item").forEach(item => {
+                item.addEventListener("click", () => {
+                    const teamNum = item.dataset.team;
+                    const team = teams.find(t => t.number.toString() === teamNum);
+                    teamSearchInput.value = `${team.number} - ${team.name}`;
+                    state.selectedTeam = team.number;
+                    $("teamName").value = team.name;
+                    autocompleteResults.classList.remove("show");
+                });
+            });
+        }
+
+        function updateActiveItem(items) {
+            items.forEach((item, i) => {
+                item.classList.toggle("active", i === selectedIndex);
+            });
+            if (selectedIndex >= 0 && items[selectedIndex]) {
+                items[selectedIndex].scrollIntoView({ block: "nearest" });
+            }
+        }
+
+        function validate(){
+            const name = $("scouterName").value.trim();
+            const drivetrain = $("drivetrain").value;
+            const strategy = $("strategy").value;
+
+            if (!name){ toast("⚠️ Enter your name"); return false; }
+            if (!state.selectedTeam){ toast("⚠️ Select a team"); return false; }
+            if (!drivetrain){ toast("⚠️ Select drivetrain type"); return false; }
+            if (state.canScoreFuel === null){ toast("⚠️ Can score fuel?"); return false; }
+            if (state.canClimbTower === null){ toast("⚠️ Can climb tower?"); return false; }
+            if (state.maxTowerLevel === null){ toast("⚠️ Select max tower level"); return false; }
+            if (state.canShuttle === null){ toast("⚠️ Can shuttle fuel?"); return false; }
+            if (state.hasAuto === null){ toast("⚠️ Has autonomous?"); return false; }
+            if (!strategy){ toast("⚠️ Select preferred strategy"); return false; }
+            if (state.canDefense === null){ toast("⚠️ Can play defense?"); return false; }
+
+            return true;
+        }
+
+        function buildPayload(){
+            return {
+                timestampISO: new Date().toISOString(),
+                scouterName: $("scouterName").value.trim(),
+                eventCode: CONFIG.EVENT_KEY,
+                teamNumber: Number(state.selectedTeam || 0),
+                teamName: $("teamName").value.trim(),
+                drivetrain: $("drivetrain").value,
+                canScoreFuel: state.canScoreFuel || "",
+                canClimbTower: state.canClimbTower || "",
+                maxTowerLevel: state.maxTowerLevel || "",
+                canShuttle: state.canShuttle || "",
+                hasAuto: state.hasAuto || "",
+                strategy: $("strategy").value,
+                canDefense: state.canDefense || "",
+                cycleTime: $("cycleTime").value,
+                weight: $("weight").value,
+                programmingLang: $("programmingLang").value,
+                notes: $("notes").value.trim()
+            };
+        }
+
+        function queueKey(){ return "pitScoutQueue_1792_2026"; }
+
+        function getQueue(){
+            try{ return JSON.parse(localStorage.getItem(queueKey()) || "[]"); }
+            catch{ return []; }
+        }
+        function setQueue(q){
+            localStorage.setItem(queueKey(), JSON.stringify(q));
+            updateQueueNote();
+        }
+        function updateQueueNote(){
+            const q = getQueue();
+            if (q.length > 0) {
+                $("queueAlert").style.display = "block";
+                $("queueCount").textContent = q.length;
+            } else {
+                $("queueAlert").style.display = "none";
+            }
+        }
+        updateQueueNote();
+
+        $("btnSubmit").addEventListener("click", submit);
+
+        async function submit(){
+            if (!validate()) return;
+
+            console.log("Starting submit...");
+            $("btnSubmit").disabled = true;
+            $("btnSubmit").textContent = "Submitting…";
+
+            const payload = buildPayload();
+            console.log("Payload:", payload);
+
+            try{
+                await postToWebhook(payload);
+                console.log("Submit successful");
+                toast("✓ Submitted successfully!");
+                resetEntry();
+            }catch(err){
+                console.error("Submit error:", err);
+                const q = getQueue();
+                q.push(payload);
+                setQueue(q);
+                toast("⚠️ Submit failed — saved to queue");
+            }finally{
+                $("btnSubmit").disabled = false;
+                $("btnSubmit").textContent = "Submit Pit Scout";
+            }
+        }
+
+        async function postToWebhook(payloadObj){
+            const body = "payload=" + encodeURIComponent(JSON.stringify(payloadObj));
+            await fetch(CONFIG.WEBHOOK_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+                body: body
+            });
+            return true;
+        }
+
+        $("btnResend").addEventListener("click", resendQueued);
+
+        async function resendQueued(){
+            const q = getQueue();
+            if (!q.length){ toast("Queue is empty"); return; }
+
+            $("btnResend").disabled = true;
+            $("btnResend").textContent = "Resending…";
+
+            const remaining = [];
+            let sent = 0;
+
+            for (const item of q){
+                try{
+                    await postToWebhook(item);
+                    sent++;
+                }catch{
+                    remaining.push(item);
+                }
+            }
+
+            setQueue(remaining);
+            $("btnResend").disabled = false;
+            $("btnResend").textContent = "Resend All";
+
+            if (sent) toast(`✓ Resent ${sent} submission(s)`);
+            else toast("❌ No queued items sent");
+        }
+
+        renderSegments();
+        loadTeams();
+    })();
+</script>
+</body>
+</html>
