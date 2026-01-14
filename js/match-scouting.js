@@ -96,6 +96,7 @@
 
     function resetEntry(){
         const name = $("studentName").value;
+        const team = $("scoutTeam").value;
 
         $("matchNumber").value = "";
         $("teamSearch").value = "";
@@ -115,6 +116,7 @@
         state.rank = null;
 
         $("studentName").value = name;
+        $("scoutTeam").value = team;
 
         renderCounters();
         renderSegments();
@@ -207,10 +209,12 @@
 
     function validateStart(){
         const name = $("studentName").value.trim();
+        const scoutTeam = $("scoutTeam").value;
         const match = Number($("matchNumber").value);
         const alliance = $("alliance").value;
 
         if (!name){ toast("⚠️ Enter student name"); return false; }
+        if (!scoutTeam){ toast("⚠️ Select your team (1792 or 1259)"); return false; }
         if (!match || match < 1){ toast("⚠️ Enter match number"); return false; }
         if (!alliance){ toast("⚠️ Select alliance color"); return false; }
         if (!state.selectedTeam){ toast("⚠️ Select a team from the list"); return false; }
@@ -296,7 +300,7 @@
         const filtered = state.loadedTeams.filter(team => {
             return team.number.toString().includes(query) ||
                 team.name.toLowerCase().includes(query);
-        }).slice(0, 10);
+        }).slice(0, 15);
 
         if (filtered.length > 0) {
             renderAutocomplete(filtered);
@@ -382,6 +386,7 @@
         return {
             timestampISO: new Date().toISOString(),
             studentName: getVal("studentName").trim(),
+            scoutTeam: getVal("scoutTeam"),
             eventCode: CONFIG.EVENT_KEY,
             matchNumber: Number(getVal("matchNumber", "0")),
             teamNumber: Number(state.selectedTeam || 0),

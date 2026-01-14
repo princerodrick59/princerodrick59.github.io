@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>FRC 1792 Scouting — 2026 REBUILT</title>
+    <title>Match Scouting — FRC 1792</title>
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -34,7 +34,7 @@
                 <h2 id="screenTitle">Start</h2>
                 <p id="screenSubtitle">Enter match info, load teams from an event, then scout.</p>
             </div>
-             <button class="btn small ghost" id="btnHome" onclick="window.location.href='index.html'">← Home</button>
+            <button class="btn small ghost" id="btnHome" onclick="window.location.href='index.html'">← Home</button>
             <button class="btn small ghost" id="btnReset">Reset</button>
         </div>
 
@@ -48,11 +48,20 @@
                     </div>
 
                     <div class="col-3">
+                        <label>Your team *</label>
+                        <select id="scoutTeam">
+                            <option value="" disabled selected>Select...</option>
+                            <option value="1792">1792</option>
+                            <option value="1259">1259</option>
+                        </select>
+                    </div>
+
+                    <div class="col-3">
                         <label>Match # *</label>
                         <input id="matchNumber" type="number" min="1" step="1" placeholder="e.g., 12" inputmode="numeric" />
                     </div>
 
-                    <div class="col-3">
+                    <div class="col-12">
                         <label>Alliance *</label>
                         <select id="alliance">
                             <option value="" disabled selected>Select...</option>
@@ -244,6 +253,6 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="/js/standsScouting.js"></script>
+<script src="js/match-scouting.js"></script>
 </body>
 </html>
