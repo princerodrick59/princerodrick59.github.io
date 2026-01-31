@@ -15,7 +15,8 @@
         { title: "Start",  subtitle: "Enter match info, load teams from an event, then scout." },
         { title: "Auto",   subtitle: "Track auto fuel + auto tower." },
         { title: "Teleop", subtitle: "Track fuel scored during active/inactive hub time and shuttling." },
-        { title: "Endgame",subtitle: "Pick tower level, ratings, rank, then submit." },
+        { title: "Endgame",subtitle: "Pick tower level and hub shot during endgame." },
+        { title: "Misc/Submit", subtitle: "Ratings, rankings, comments, then submit." },
     ];
 
     const state = {
@@ -24,13 +25,16 @@
         speed: null,
         selectedTeam: null,
         loadedTeams: [],
-        counters: {
-            autoFuel: 0,
-            teleopFuelActive: 0,
-            teleopFuelInactive: 0,
-        },
+        startPos: null,
+        bumpTrench: null,
         autoTower: null,
         teleopTower: null,
+        shotInHub: null,
+        affectedByDefense: null,
+        crossedBump: null,
+        crossedTrench: null,
+        excessivePenalties: null,
+        driverSkill: null,
     };
 
     const $ = (id) => document.getElementById(id);
@@ -84,6 +88,7 @@
         if (state.screen === 0 && !validateStart()) return;
         if (state.screen === 1 && !validateAuto()) return;
         if (state.screen === 2 && !validateTeleop()) return;
+        if (state.screen === 3 && !validateEndgame()) return;
 
         showScreen(Math.min(SCREENS.length - 1, state.screen + 1));
     });
@@ -105,61 +110,106 @@
         $("shuttling").value = "";
         $("defenseRating").value = "";
         $("robotStatus").value = "";
+        $("fuelNeutralZone").checked = false;
+        $("fuelOutpost").checked = false;
+        $("fuelDepot").checked = false;
+        $("fuelFloor").checked = false;
+        $("teleopFuelNeutralZone").checked = false;
+        $("teleopFuelOutpost").checked = false;
+        $("teleopFuelDepot").checked = false;
+        $("teleopFuelFloor").checked = false;
 
-        state.counters.autoFuel = 0;
-        state.counters.teleopFuelActive = 0;
-        state.counters.teleopFuelInactive = 0;
+        $("autoFuel").value = "";
+        $("teleopFuelActive").value = "";
+        $("teleopFuelInactive").value = "";
 
+        state.startPos = null;
+        state.bumpTrench = null;
         state.autoTower = null;
         state.teleopTower = null;
+        state.shotInHub = null;
+        state.affectedByDefense = null;
+        state.crossedBump = null;
+        state.crossedTrench = null;
+        state.excessivePenalties = null;
         state.speed = null;
+
+        $("autoEffectiveness").value = "";
+        $("teleopActiveEffectiveness").value = "";
+        $("teleopInactiveEffectiveness").value = "";
+        $("endgameEffectiveness").value = "";
         state.rank = null;
 
         $("studentName").value = name;
         $("scoutTeam").value = team;
 
-        renderCounters();
         renderSegments();
         showScreen(0);
     }
 
-    function clamp(n){ return Math.max(0, Number(n||0)); }
-
-    function renderCounters(){
-        $("autoFuel").textContent = state.counters.autoFuel;
-        $("teleopFuelActive").textContent = state.counters.teleopFuelActive;
-        $("teleopFuelInactive").textContent = state.counters.teleopFuelInactive;
-        updateEstimate();
+    function getRangeMidpoint(rangeStr) {
+        if (!rangeStr) return 0;
+        const parts = rangeStr.split("-");
+        if (parts.length !== 2) return 0;
+        const low = Number(parts[0]);
+        const high = Number(parts[1]);
+        return Math.round((low + high) / 2);
     }
 
-    document.addEventListener("click", (e)=>{
-        const incKey = e.target.getAttribute("data-inc");
-        const decKey = e.target.getAttribute("data-dec");
-        if (incKey){
-            state.counters[incKey] = clamp(state.counters[incKey] + 1);
-            renderCounters();
-        }
-        if (decKey){
-            state.counters[decKey] = clamp(state.counters[decKey] - 1);
-            renderCounters();
-        }
-    });
+    $("autoFuel").addEventListener("change", updateEstimate);
+    $("teleopFuelActive").addEventListener("change", updateEstimate);
 
     function renderSegments(){
+        document.querySelectorAll("#fieldSelector .field-position").forEach(pos=>{
+            pos.classList.toggle("active", pos.dataset.value === state.startPos);
+        });
+        document.querySelectorAll("#bumpTrenchSeg .chip").forEach(ch=>{
+            ch.classList.toggle("active", ch.dataset.value === state.bumpTrench);
+        });
         document.querySelectorAll("#autoTowerSeg .chip").forEach(ch=>{
             ch.classList.toggle("active", ch.dataset.value === state.autoTower);
         });
         document.querySelectorAll("#teleopTowerSeg .chip").forEach(ch=>{
             ch.classList.toggle("active", ch.dataset.value === state.teleopTower);
         });
+        document.querySelectorAll("#shotInHubSeg .chip").forEach(ch=>{
+            ch.classList.toggle("active", ch.dataset.value === state.shotInHub);
+        });
+        document.querySelectorAll("#affectedByDefenseSeg .chip").forEach(ch=>{
+            ch.classList.toggle("active", ch.dataset.value === state.affectedByDefense);
+        });
+        document.querySelectorAll("#crossedBumpSeg .chip").forEach(ch=>{
+            ch.classList.toggle("active", ch.dataset.value === state.crossedBump);
+        });
+        document.querySelectorAll("#crossedTrenchSeg .chip").forEach(ch=>{
+            ch.classList.toggle("active", ch.dataset.value === state.crossedTrench);
+        });
+        document.querySelectorAll("#excessivePenaltiesSeg .chip").forEach(ch=>{
+            ch.classList.toggle("active", ch.dataset.value === state.excessivePenalties);
+        });
         document.querySelectorAll("#speedSeg .chip").forEach(ch=>{
             ch.classList.toggle("active", ch.dataset.value === state.speed);
+        });
+        document.querySelectorAll("#driverSkillSeg .chip").forEach(ch=>{
+            ch.classList.toggle("active", ch.dataset.value === state.driverSkill);
         });
         document.querySelectorAll("#rankSeg .chip").forEach(ch=>{
             ch.classList.toggle("active", ch.dataset.value === state.rank);
         });
     }
 
+    document.querySelectorAll("#fieldSelector .field-position").forEach(pos=>{
+        pos.addEventListener("click", ()=>{
+            state.startPos = pos.dataset.value;
+            renderSegments();
+        });
+    });
+    document.querySelectorAll("#bumpTrenchSeg .chip").forEach(ch=>{
+        ch.addEventListener("click", ()=>{
+            state.bumpTrench = ch.dataset.value;
+            renderSegments();
+        });
+    });
     document.querySelectorAll("#autoTowerSeg .chip").forEach(ch=>{
         ch.addEventListener("click", ()=>{
             state.autoTower = ch.dataset.value;
@@ -174,9 +224,45 @@
             updateEstimate();
         });
     });
+    document.querySelectorAll("#shotInHubSeg .chip").forEach(ch=>{
+        ch.addEventListener("click", ()=>{
+            state.shotInHub = ch.dataset.value;
+            renderSegments();
+        });
+    });
+    document.querySelectorAll("#affectedByDefenseSeg .chip").forEach(ch=>{
+        ch.addEventListener("click", ()=>{
+            state.affectedByDefense = ch.dataset.value;
+            renderSegments();
+        });
+    });
+    document.querySelectorAll("#crossedBumpSeg .chip").forEach(ch=>{
+        ch.addEventListener("click", ()=>{
+            state.crossedBump = ch.dataset.value;
+            renderSegments();
+        });
+    });
+    document.querySelectorAll("#crossedTrenchSeg .chip").forEach(ch=>{
+        ch.addEventListener("click", ()=>{
+            state.crossedTrench = ch.dataset.value;
+            renderSegments();
+        });
+    });
+    document.querySelectorAll("#excessivePenaltiesSeg .chip").forEach(ch=>{
+        ch.addEventListener("click", ()=>{
+            state.excessivePenalties = ch.dataset.value;
+            renderSegments();
+        });
+    });
     document.querySelectorAll("#speedSeg .chip").forEach(ch=>{
         ch.addEventListener("click", ()=>{
             state.speed = ch.dataset.value;
+            renderSegments();
+        });
+    });
+    document.querySelectorAll("#driverSkillSeg .chip").forEach(ch=>{
+        ch.addEventListener("click", ()=>{
+            state.driverSkill = ch.dataset.value;
             renderSegments();
         });
     });
@@ -198,9 +284,12 @@
         return 0;
     }
     function updateEstimate(){
+        const autoFuelMid = getRangeMidpoint($("autoFuel").value);
+        const teleopFuelActiveMid = getRangeMidpoint($("teleopFuelActive").value);
+
         const pts =
-            (state.counters.autoFuel * 1) +
-            (state.counters.teleopFuelActive * 1) +
+            autoFuelMid +
+            teleopFuelActiveMid +
             towerPointsAuto(state.autoTower) +
             towerPointsTeleop(state.teleopTower);
 
@@ -223,6 +312,8 @@
     }
 
     function validateAuto(){
+        if (state.startPos === null){ toast("⚠️ Select where robot starts"); return false; }
+        if (!$("autoFuel").value){ toast("⚠️ Select auto fuel range"); return false; }
         if (state.autoTower === null){ toast("⚠️ Select auto tower level"); return false; }
         return true;
     }
@@ -230,18 +321,26 @@
     function validateTeleop(){
         const shuttling = $("shuttling").value;
 
+        if (!$("teleopFuelActive").value){ toast("⚠️ Select teleop fuel (active hub) range"); return false; }
         if (!shuttling){ toast("⚠️ Select shuttling rating"); return false; }
         return true;
     }
 
     function validateEndgame(){
+        if (state.teleopTower === null){ toast("⚠️ Select endgame tower level"); return false; }
+        if (state.shotInHub === null){ toast("⚠️ Select shot in hub"); return false; }
+        return true;
+    }
+
+    function validateMisc(){
         const defense = $("defenseRating").value;
         const status = $("robotStatus").value;
 
-        if (state.teleopTower === null){ toast("⚠️ Select endgame tower level"); return false; }
+        if (state.affectedByDefense === null){ toast("⚠️ Select if team was affected by defense"); return false; }
         if (!status){ toast("⚠️ Select robot status"); return false; }
         if (!defense){ toast("⚠️ Select defense rating"); return false; }
         if (state.speed === null){ toast("⚠️ Select speed rating"); return false; }
+        if (state.driverSkill === null){ toast("⚠️ Select driver skill"); return false; }
         if (state.rank === null){ toast("⚠️ Rank this robot"); return false; }
         return true;
     }
@@ -392,19 +491,39 @@
             teamNumber: Number(state.selectedTeam || 0),
             alliance: getVal("alliance"),
 
-            autoFuelActive: Number(state.counters.autoFuel || 0),
+            startPos: state.startPos || "",
+            autoFuelRange: getVal("autoFuel"),
             autoTower: state.autoTower || "NONE",
             autoTowerPoints: towerPointsAuto(state.autoTower),
 
-            teleopFuelActive: Number(state.counters.teleopFuelActive || 0),
-            teleopFuelInactive: Number(state.counters.teleopFuelInactive || 0),
+            teleopFuelActiveRange: getVal("teleopFuelActive"),
+            teleopFuelInactiveRange: getVal("teleopFuelInactive"),
+            fuelNeutralZone: $("fuelNeutralZone").checked,
+            fuelOutpost: $("fuelOutpost").checked,
+            fuelDepot: $("fuelDepot").checked,
+            fuelFloor: $("fuelFloor").checked,
+            bumpTrench: state.bumpTrench || "",
+            teleopFuelNeutralZone: $("teleopFuelNeutralZone").checked,
+            teleopFuelOutpost: $("teleopFuelOutpost").checked,
+            teleopFuelDepot: $("teleopFuelDepot").checked,
+            teleopFuelFloor: $("teleopFuelFloor").checked,
             shuttling: getVal("shuttling"),
 
             teleopTower: state.teleopTower || "NONE",
             teleopTowerPoints: towerPointsTeleop(state.teleopTower),
+            shotInHub: state.shotInHub || "",
+            affectedByDefense: state.affectedByDefense || "",
+            crossedBump: state.crossedBump || "",
+            crossedTrench: state.crossedTrench || "",
+            excessivePenalties: state.excessivePenalties || "",
+            autoEffectiveness: getVal("autoEffectiveness"),
+            teleopActiveEffectiveness: getVal("teleopActiveEffectiveness"),
+            teleopInactiveEffectiveness: getVal("teleopInactiveEffectiveness"),
+            endgameEffectiveness: getVal("endgameEffectiveness"),
             robotStatus: getVal("robotStatus"),
             defenseRating: getVal("defenseRating"),
             speed: state.speed || "",
+            driverSkill: state.driverSkill || "",
             rank: state.rank || "",
 
             estPoints: Number(getText("estPoints"))
@@ -440,6 +559,7 @@
         if (!validateAuto()) return;
         if (!validateTeleop()) return;
         if (!validateEndgame()) return;
+        if (!validateMisc()) return;
 
         console.log("Starting submit...");
         $("btnSubmit").disabled = true;
@@ -509,7 +629,6 @@
         else toast("❌ No queued items sent");
     }
 
-    renderCounters();
     renderSegments();
     showScreen(0);
 

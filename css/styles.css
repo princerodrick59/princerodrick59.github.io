@@ -446,3 +446,130 @@ input:focus, select:focus, textarea:focus{
 .progress .step.complete{
     background: var(--ok);
 }
+
+.checkbox-group{
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.checkbox-label{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0;
+}
+
+.checkbox-label input[type="checkbox"]{
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 2px solid rgba(255,255,255,.25);
+    background: rgba(0,0,0,.18);
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    position: relative;
+}
+
+.checkbox-label input[type="checkbox"]:checked{
+    background: linear-gradient(180deg, rgba(29,92,255,.95), rgba(0,57,162,.95));
+    border-color: rgba(255,255,255,.3);
+}
+
+.checkbox-label input[type="checkbox"]:checked::after{
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/* Field position selector */
+.field-selector {
+    position: relative;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.18);
+}
+
+.field-selector img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.field-positions {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.field-position {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    border-radius: 50%;
+    border: 3px solid rgba(0, 180, 255, 0.8);
+    background: rgba(0, 180, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.field-position:hover {
+    background: rgba(29,92,255,.4);
+    border-color: rgba(29,92,255,1);
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.field-position.active {
+    background: rgba(33,197,93,.5);
+    border-color: rgba(33,197,93,1);
+    box-shadow: 0 0 15px rgba(33,197,93,.6);
+}
+
+.position-label {
+    color: white;
+    font-weight: 800;
+    font-size: 1.1rem;
+    text-shadow: 0 1px 3px rgba(0,0,0,.5);
+    pointer-events: none;
+}
+
+.field-position.active .position-label {
+    color: white;
+}
+
+.field-selector-hint {
+    text-align: center;
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 500px) {
+    .field-position {
+        width: 36px;
+        height: 36px;
+    }
+    .position-label {
+        font-size: 0.9rem;
+    }
+}

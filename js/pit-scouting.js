@@ -23,6 +23,8 @@
         selectedTeamName: "",
         loadedTeams: [],
         canClimb: null,
+        groundIntake: null,
+        hopper: null,
         position: null,
         impression: null,
     };
@@ -111,6 +113,8 @@
         $("additionalNotes").value = "";
 
         state.canClimb = null;
+        state.groundIntake = null;
+        state.hopper = null;
         state.position = null;
         state.impression = null;
 
@@ -124,6 +128,12 @@
         document.querySelectorAll("#canClimbSeg .chip").forEach(ch=>{
             ch.classList.toggle("active", ch.dataset.value === state.canClimb);
         });
+        document.querySelectorAll("#groundIntakeSeg .chip").forEach(ch=>{
+            ch.classList.toggle("active", ch.dataset.value === state.groundIntake);
+        });
+        document.querySelectorAll("#hopperSeg .chip").forEach(ch=>{
+            ch.classList.toggle("active", ch.dataset.value === state.hopper);
+        });
         document.querySelectorAll("#positionSeg .chip").forEach(ch=>{
             ch.classList.toggle("active", ch.dataset.value === state.position);
         });
@@ -135,6 +145,18 @@
     document.querySelectorAll("#canClimbSeg .chip").forEach(ch=>{
         ch.addEventListener("click", ()=>{
             state.canClimb = ch.dataset.value;
+            renderSegments();
+        });
+    });
+    document.querySelectorAll("#groundIntakeSeg .chip").forEach(ch=>{
+        ch.addEventListener("click", ()=>{
+            state.groundIntake = ch.dataset.value;
+            renderSegments();
+        });
+    });
+    document.querySelectorAll("#hopperSeg .chip").forEach(ch=>{
+        ch.addEventListener("click", ()=>{
+            state.hopper = ch.dataset.value;
             renderSegments();
         });
     });
@@ -169,6 +191,8 @@
         if (!motorType){ toast("⚠️ Select motor type"); return false; }
         if (!programmingLang){ toast("⚠️ Select programming language"); return false; }
         if (state.canClimb === null){ toast("⚠️ Indicate if robot can climb"); return false; }
+        if (state.groundIntake === null){ toast("⚠️ Indicate if robot has ground intake"); return false; }
+        if (state.hopper === null){ toast("⚠️ Indicate if robot has hopper"); return false; }
 
         return true;
     }
@@ -343,6 +367,8 @@
             weight: getVal("weight"),
             programmingLang: getVal("programmingLang"),
             canClimb: state.canClimb || "No",
+            groundIntake: state.groundIntake || "No",
+            hopper: state.hopper || "No",
             specialFeatures: getVal("specialFeatures"),
 
             autoStrategy: getVal("autoStrategy"),

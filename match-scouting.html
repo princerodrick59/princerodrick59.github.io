@@ -12,7 +12,7 @@
     <div class="topbar">
         <div class="brand">
             <div class="t1">1792 Scouting — 2026 REBUILT</div>
-            <div class="t2">General • Auto → Teleop → Endgame → Submit</div>
+            <div class="t2">General • Auto → Teleop → Endgame → Misc/Submit</div>
         </div>
         <div class="pill">
             <span id="netDot" class="dot"></span>
@@ -30,6 +30,7 @@
                     <div class="step" data-step="1"></div>
                     <div class="step" data-step="2"></div>
                     <div class="step" data-step="3"></div>
+                    <div class="step" data-step="4"></div>
                 </div>
                 <h2 id="screenTitle">Start</h2>
                 <p id="screenSubtitle">Enter match info, load teams from an event, then scout.</p>
@@ -95,16 +96,80 @@
             <section class="screen" data-screen="1" style="display:none">
                 <div class="grid">
                     <div class="col-12">
-                        <div class="counter">
-                            <div class="meta">
-                                <div class="name">Auto Fuel scored (active hub)</div>
-                                <div class="desc">Each Fuel scored in an active HUB: +1 pt</div>
+                        <label>Where robot starts *</label>
+                        <div class="field-selector" id="fieldSelector">
+                            <img src="images/field.png" alt="Field diagram" draggable="false" />
+                            <div class="field-positions">
+                                <!-- Left side (Red alliance) positions -->
+                                <div class="field-position" data-value="1" style="left: 24%; top: 22%;">
+                                    <span class="position-label">1</span>
+                                </div>
+                                <div class="field-position" data-value="2" style="left: 24%; top: 50%;">
+                                    <span class="position-label">2</span>
+                                </div>
+                                <div class="field-position" data-value="3" style="left: 24%; top: 78%;">
+                                    <span class="position-label">3</span>
+                                </div>
+                                <!-- Right side (Blue alliance) positions -->
+                                <div class="field-position" data-value="4" style="left: 76%; top: 22%;">
+                                    <span class="position-label">4</span>
+                                </div>
+                                <div class="field-position" data-value="5" style="left: 76%; top: 50%;">
+                                    <span class="position-label">5</span>
+                                </div>
+                                <div class="field-position" data-value="6" style="left: 76%; top: 78%;">
+                                    <span class="position-label">6</span>
+                                </div>
                             </div>
-                            <div class="ctl">
-                                <button class="iconBtn" data-dec="autoFuel">−</button>
-                                <div class="count" id="autoFuel">0</div>
-                                <button class="iconBtn" data-inc="autoFuel">+</button>
-                            </div>
+                        </div>
+                        <div class="field-selector-hint">Tap a circle to select where the robot starts</div>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Auto Fuel scored (active hub) *</label>
+                        <select id="autoFuel">
+                            <option value="" disabled selected>Select range...</option>
+                            <option value="0-20">0-20</option>
+                            <option value="20-40">20-40</option>
+                            <option value="40-60">40-60</option>
+                            <option value="60-80">60-80</option>
+                            <option value="80-90">80-90</option>
+                            <option value="90-100">90-100</option>
+                            <option value="100-120">100-120</option>
+                            <option value="120-140">120-140</option>
+                            <option value="140-160">140-160</option>
+                            <option value="160-180">160-180</option>
+                            <option value="180-200">180-200</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Where robot gets fuel</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="fuelNeutralZone" />
+                                <span>Neutral Zone</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="fuelOutpost" />
+                                <span>Outpost</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="fuelDepot" />
+                                <span>Depot</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="fuelFloor" />
+                                <span>Floor</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Did robot go over bump or trench</label>
+                        <div class="seg" id="bumpTrenchSeg">
+                            <div class="chip" data-value="Yes">Yes</div>
+                            <div class="chip" data-value="No">No</div>
                         </div>
                     </div>
 
@@ -125,30 +190,60 @@
             <section class="screen" data-screen="2" style="display:none">
                 <div class="grid">
                     <div class="col-12">
-                        <div class="counter">
-                            <div class="meta">
-                                <div class="name">Teleop Fuel scored (active hub)</div>
-                                <div class="desc">Counts Fuel scored while the alliance hub is active</div>
-                            </div>
-                            <div class="ctl">
-                                <button class="iconBtn" data-dec="teleopFuelActive">−</button>
-                                <div class="count" id="teleopFuelActive">0</div>
-                                <button class="iconBtn" data-inc="teleopFuelActive">+</button>
-                            </div>
-                        </div>
+                        <label>Teleop Fuel scored (active hub) *</label>
+                        <select id="teleopFuelActive">
+                            <option value="" disabled selected>Select range...</option>
+                            <option value="0-20">0-20</option>
+                            <option value="20-40">20-40</option>
+                            <option value="40-60">40-60</option>
+                            <option value="60-80">60-80</option>
+                            <option value="80-90">80-90</option>
+                            <option value="90-100">90-100</option>
+                            <option value="100-120">100-120</option>
+                            <option value="120-140">120-140</option>
+                            <option value="140-160">140-160</option>
+                            <option value="160-180">160-180</option>
+                            <option value="180-200">180-200</option>
+                        </select>
                     </div>
 
                     <div class="col-12">
-                        <div class="counter">
-                            <div class="meta">
-                                <div class="name">Teleop Fuel scored (inactive hub)</div>
-                                <div class="desc">No match points when hub inactive (still useful to track)</div>
-                            </div>
-                            <div class="ctl">
-                                <button class="iconBtn" data-dec="teleopFuelInactive">−</button>
-                                <div class="count" id="teleopFuelInactive">0</div>
-                                <button class="iconBtn" data-inc="teleopFuelInactive">+</button>
-                            </div>
+                        <label>Teleop Fuel scored (inactive hub)</label>
+                        <select id="teleopFuelInactive">
+                            <option value="" disabled selected>Select range...</option>
+                            <option value="0-20">0-20</option>
+                            <option value="20-40">20-40</option>
+                            <option value="40-60">40-60</option>
+                            <option value="60-80">60-80</option>
+                            <option value="80-90">80-90</option>
+                            <option value="90-100">90-100</option>
+                            <option value="100-120">100-120</option>
+                            <option value="120-140">120-140</option>
+                            <option value="140-160">140-160</option>
+                            <option value="160-180">160-180</option>
+                            <option value="180-200">180-200</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Where robot gets fuel</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="teleopFuelNeutralZone" />
+                                <span>Neutral Zone</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="teleopFuelOutpost" />
+                                <span>Outpost</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="teleopFuelDepot" />
+                                <span>Depot</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="teleopFuelFloor" />
+                                <span>Floor</span>
+                            </label>
                         </div>
                     </div>
 
@@ -166,16 +261,37 @@
                 </div>
             </section>
 
-            <!-- Screen 3: Endgame + Ranking -->
+            <!-- Screen 3: Endgame -->
             <section class="screen" data-screen="3" style="display:none">
                 <div class="grid">
                     <div class="col-12">
-                        <label>Endgame tower level (TELEOP) *</label>
+                        <label>Endgame tower level *</label>
                         <div class="seg" id="teleopTowerSeg">
                             <div class="chip" data-value="NONE">None</div>
                             <div class="chip" data-value="L1">Level 1 (10 pts)</div>
                             <div class="chip" data-value="L2">Level 2 (20 pts)</div>
                             <div class="chip" data-value="L3">Level 3 (30 pts)</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Shot in hub during Endgame *</label>
+                        <div class="seg" id="shotInHubSeg">
+                            <div class="chip" data-value="Yes">Yes</div>
+                            <div class="chip" data-value="No">No</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Screen 4: Misc/Submit -->
+            <section class="screen" data-screen="4" style="display:none">
+                <div class="grid">
+                    <div class="col-12">
+                        <label>Was team affected by defense? *</label>
+                        <div class="seg" id="affectedByDefenseSeg">
+                            <div class="chip" data-value="Yes">Yes</div>
+                            <div class="chip" data-value="No">No</div>
                         </div>
                     </div>
 
@@ -187,7 +303,18 @@
                             <option value="Broke/Stopped">Broke/Stopped</option>
                             <option value="Brownout/Struggled">Brownout/Struggled</option>
                             <option value="Disabled">Disabled</option>
+                            <option value="Tippy">Tippy</option>
+                            <option value="Radio">Radio</option>
+                            <option value="Unknown">Unknown</option>
                         </select>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Had excessive penalties *</label>
+                        <div class="seg" id="excessivePenaltiesSeg">
+                            <div class="chip" data-value="Yes">Yes</div>
+                            <div class="chip" data-value="No">No</div>
+                        </div>
                     </div>
 
                     <div class="col-6">
@@ -212,6 +339,43 @@
                     </div>
 
                     <div class="col-12">
+                        <label>Driver skill *</label>
+                        <div class="seg" id="driverSkillSeg">
+                            <div class="chip" data-value="Poor">Poor</div>
+                            <div class="chip" data-value="Average">Average</div>
+                            <div class="chip" data-value="Good">Good</div>
+                            <div class="chip" data-value="Excellent">Excellent</div>
+                        </div>
+                        <div class="note" style="margin-top:8px">
+                            Rate the driver's ability to control the robot precisely and avoid collisions.
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Crossed bump *</label>
+                        <div class="seg" id="crossedBumpSeg">
+                            <div class="chip" data-value="Yes">Yes</div>
+                            <div class="chip" data-value="No">No</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <label>Crossed under trench *</label>
+                        <div class="seg" id="crossedTrenchSeg">
+                            <div class="chip" data-value="Yes">Yes</div>
+                            <div class="chip" data-value="No">No</div>
+                        </div>
+
+                    </div>
+
+                   
+
+                    <div class="col-12">
+                        <label>Additional comments</label>
+                        <textarea id="comments" rows="3" placeholder="Any notable observations, issues, or standout moments..."></textarea>
+                    </div>
+
+                    <div class="col-12">
                         <label>Rank this robot *</label>
                         <div class="seg" id="rankSeg">
                             <div class="chip" data-value="1">1st (Best)</div>
@@ -222,7 +386,6 @@
                             Rank this robot compared to the other 2 robots in this match on your alliance.
                             Talk to you fellow scouters to make this decision.
                         </div>
-                    </div>
 
                     <div class="col-12">
                         <div class="counter" style="background: rgba(33,197,93,.08); border-color: rgba(33,197,93,.25);">
@@ -250,7 +413,9 @@
         </div>
     </div>
 </main>
+        
 
+                    </div>
 <div class="toast" id="toast"></div>
 
 <script src="js/match-scouting.js"></script>
