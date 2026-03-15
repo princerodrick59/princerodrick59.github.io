@@ -1,10 +1,32 @@
-﻿function show(id,btn){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  btn.classList.add('active');
-  if(id==='home') setTimeout(initR,50);
+const pageCache = {};
+
+function show(id, btn) {
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  const main = document.getElementById('main');
+
+  if (pageCache[id]) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    pageCache[id].classList.add('active');
+    main.scrollTop = 0;
+    if (id === 'home') setTimeout(initR, 50);
+    return;
+  }
+
+  fetch('pages/' + id + '.html')
+    .then(r => r.text())
+    .then(html => {
+      main.insertAdjacentHTML('beforeend', html);
+      const page = document.getElementById('page-' + id);
+      pageCache[id] = page;
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      page.classList.add('active');
+      main.scrollTop = 0;
+      if (id === 'home') setTimeout(initR, 50);
+    });
 }
+
 let ren=null,scene,cam,rg,car,ee;
 let rotating=false,panning=false,pm={x:0,y:0},autoSpin=true;
 let touches={};
@@ -78,7 +100,7 @@ function initR(){
     dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/draco/');
     const gltfLoader=new THREE.GLTFLoader();
     gltfLoader.setDRACOLoader(dracoLoader);
-    gltfLoader.load('models/robot.glb',function(gltf){
+    gltfLoader.load('assets/models/robot.glb',function(gltf){
       console.log('GLB loaded OK, scene children:',gltf.scene.children.length);
       scene.remove(rg);
       rg=gltf.scene;
@@ -161,7 +183,9 @@ function resetView(){
   cam.lookAt(target);
   rg.rotation.set(0,0,0);
 }
-window.addEventListener('load',initR);
+window.addEventListener('load', function() {
+  show('home', document.querySelector('.nb.active'));
+});
 function onResize(){if(!ren)return;const w=document.getElementById('cwrap');cam.aspect=w.clientWidth/w.clientHeight;cam.updateProjectionMatrix();ren.setSize(w.clientWidth,w.clientHeight);}
 window.addEventListener('resize',onResize);
 document.addEventListener('fullscreenchange',onResize);

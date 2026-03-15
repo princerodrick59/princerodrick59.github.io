@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Team 1792 — Barracuda Pit Display</title>
-<link rel="icon" type="image/png" href="./images/logo/favicon.png">
+<link rel="icon" type="image/png" href="assets/images/logo/favicon.ico">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -14,19 +14,14 @@
 <!-- HEADER -->
 <div id="hdr">
   <div class="logo-wrap">
-    <img src="images/logo/logo.png" alt="RTR Logo">
-    <div class="team-id">
-      <div class="num">1<em>7</em>92</div>
-      <div class="name">Round Table Robotics</div>
+    <img src="assets/images/logo/logo.svg" alt="RTR Logo">
+    <div class="hdr-title">
+      <div class="hdr-main">1792 Barracuda &nbsp;·&nbsp; Reefscape 2025</div>
+      <div class="hdr-sub">Round Table Robotics &nbsp;·&nbsp; Oak Creek, WI</div>
     </div>
   </div>
-  <div class="hdr-center">
-    <div class="robo">Barracuda</div>
-    <div class="school">Oak Creek High School &nbsp;·&nbsp; Milwaukee, WI</div>
-  </div>
   <div class="hdr-right">
-    <div class="vdiv"></div>
-    <div class="hdr-badge">REEFSCAPE 2025</div>
+    <img src="assets/images/logo/gamelogo.png" alt="Reefscape 2025" class="game-logo">
   </div>
 </div>
 
@@ -50,237 +45,8 @@
 </div>
 
 <!-- MAIN -->
-<div id="main">
+<div id="main"></div>
 
-<!-- HOME -->
-<div id="page-home" class="page active">
-  <div id="cwrap">
-    <div class="ctop"></div>
-    <canvas id="rwc"></canvas>
-    <button class="chome" onclick="resetView()" title="Reset view">⌂</button>
-    <button class="chome" id="spinbtn" onclick="toggleSpin()" title="Pause spin">⏸</button>
-    <button class="chome" onclick="toggleFullscreen()" title="Fullscreen">⛶</button>
-    <div class="chint">DRAG TO ROTATE &nbsp;·&nbsp; PINCH TO ZOOM &nbsp;·&nbsp; TWO-FINGER PAN</div>
-    <div class="cov">
-      <h2>Barracuda — 2025 Competition Robot</h2>
-      <p>REEFSCAPE presented by HAAS &nbsp;·&nbsp; SDS MK4n Swerve &nbsp;·&nbsp; 3-Stage Elevator &nbsp;·&nbsp; Deep Cage Climber</p>
-    </div>
-  </div>
-  <div class="sg">
-    <div class="sc"><div class="sl">Drive Speed</div><div class="sv">17 <span style="font-size:15px;">FT/S</span></div><div class="su">L3+ Gearing</div></div>
-    <div class="sc"><div class="sl">Elevator Reach</div><div class="sv">93"</div><div class="su">Max Extension</div></div>
-    <div class="sc"><div class="sl">Extension Time</div><div class="sv">&lt;1<span style="font-size:15px;">s</span></div><div class="su">Full Travel</div></div>
-    <div class="sc"><div class="sl">Climber Ratio</div><div class="sv">563:1</div><div class="su">Gear Reduction</div></div>
-  </div>
-  <div class="g3">
-    <div class="card"><div class="ct">Key Technologies</div><div class="pw"><span class="pill">CTRE Phoenix Pro</span><span class="pill">Kraken x60</span><span class="pill">PhotonVision</span><span class="pill">PathPlanner</span><span class="pill">CANivore</span><span class="pill">Motion Magic</span><span class="pill">AprilTags</span><span class="pill">Orange Pi 5</span></div></div>
-    <div class="card"><div class="ct">Motors — 15 Total</div><table class="st"><tr><td>Drive</td><td>4× Kraken x60</td></tr><tr><td>Steer</td><td>4× Kraken x60</td></tr><tr><td>Elevator</td><td>2× Kraken x60</td></tr><tr><td>End Effector</td><td>1× CTRE Minion</td></tr><tr><td>Climber</td><td>1× Kraken x60</td></tr></table></div>
-    <div class="card"><div class="ct">Scoring Capability</div><table class="st"><tr><td>Coral Levels</td><td>L1 · L2 · L3 · L4</td></tr><tr><td>Algae</td><td>De-Algaeify Reef</td></tr><tr><td>Autonomous</td><td>Multi-Coral L4</td></tr><tr><td>Endgame</td><td>Deep Cage Climb</td></tr><tr><td>Ground Intake</td><td>Regional Only</td></tr></table></div>
-  </div>
-  <div class="rphoto-wrap">
-    <img class="rphoto" src="images/0.png" alt="Barracuda 2025 competition robot">
-    <div class="rphoto-ov">
-      <div class="rphoto-text">
-        <div class="rphoto-label">Barracuda — 2025 Competition Robot</div>
-        <div class="rphoto-sub">Team 1792 · Round Table Robotics · Oak Creek, WI</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- STRATEGY -->
-<div id="page-strat" class="page">
-  <div class="ptitle">Strategy &amp; Goals</div>
-  <div class="psub">REEFSCAPE 2025 · Ranking Point Analysis · MoSCoW Prioritization</div>
-  <div class="card" style="margin-bottom:14px;"><div class="ct">Ranking Point Breakdown</div>
-    <div class="rg">
-      <div class="rw"><div class="rn">3</div><div class="rd">Points for winning a match</div></div>
-      <div class="re"><div class="rn">+1</div><div class="rd">Alliance leaves auto + scores coral</div></div>
-      <div class="re"><div class="rn">+1</div><div class="rd">14+ endgame pts — barge or park</div></div>
-      <div class="re"><div class="rn">+1</div><div class="rd">5 coral on 3+ reef levels</div></div>
-      <div class="re"><div class="rn">+1</div><div class="rd">Co-op: both alliances score processor</div></div>
-    </div>
-  </div>
-  <div class="g2">
-    <div class="card"><div class="ct">Top 5 Robot Requirements</div>
-      <div class="gi"><div class="gn">1</div><div><div class="gh">Ground Coral Intake</div><div class="gp">Defense can shut down coral stations — ground intake bypasses this and lowers cycle times.</div></div></div>
-      <div class="gi"><div class="gn">2</div><div><div class="gh">Score All Reef Levels (L1–L4)</div><div class="gp">Enables the 5-coral-on-3-levels ranking point every match.</div></div></div>
-      <div class="gi"><div class="gn">3</div><div><div class="gh">De-Algaeify the Reef</div><div class="gp">Algae blocks L3 and half of L2 — essential for full coral scoring.</div></div></div>
-      <div class="gi"><div class="gn">4</div><div><div class="gh">Multi-Coral L4 Auto</div><div class="gp">31 pts standalone — places team competitively in any alliance.</div></div></div>
-      <div class="gi"><div class="gn">5</div><div><div class="gh">Fast Deep Cage Climb</div><div class="gp">12 pts + barge ranking point, more match cycles before endgame.</div></div></div>
-    </div>
-    <div class="card"><div class="ct">MoSCoW Prioritization</div>
-      <div class="mg">
-        <div class="mc mc-must"><div class="ml">Must Do</div><div class="mi">Drive effectively</div><div class="mi">Score coral L2+</div><div class="mi">Robust electrical</div><div class="mi">Obtain coral — station</div><div class="mi">Protect from cage</div></div>
-        <div class="mc mc-sho"><div class="ml">Should Do</div><div class="mi">Ground coral intake</div><div class="mi">Manipulate algae</div><div class="mi">1-button auto scoring</div><div class="mi">Defend opponents</div><div class="mi">Shallow climb</div></div>
-        <div class="mc mc-cou"><div class="ml">Could Do</div><div class="mi">Score in processor</div><div class="mi">LED signal light</div><div class="mi">Drive-to-pose teleop</div><div class="mi">Modular design</div></div>
-        <div class="mc mc-wnt"><div class="ml">Won't Do</div><div class="mi">Drive under shallow cage</div><div class="mi">Park in barge zone only</div><div class="mi">Stop cage swinging</div></div>
-      </div>
-      <img class="card-img" src="images/5.png" alt="Effort/impact MoSCoW planning matrix">
-    </div>
-  </div>
-</div>
-
-<!-- DRIVETRAIN -->
-<div id="page-drive" class="page">
-  <div class="ptitle">Drivetrain &amp; Frame</div>
-  <div class="psub">SDS MK4n Swerve · 24×24" Frame · Kraken x60 · Dual CAN Networks</div>
-  <div class="sub-hero">
-    <img class="sub-hero-img" src="images/6.png" alt="Drivetrain frame CAD render">
-    <div class="sub-hero-info">
-      <div class="sub-hero-label">Subsystem</div>
-      <div class="sub-hero-title">Drivetrain &amp; Frame</div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Top Speed</span><span class="sub-hero-stat-v">17 ft/s</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Frame Size</span><span class="sub-hero-stat-v">24×24"</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Drive Motors</span><span class="sub-hero-stat-v">4× Kraken x60</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Gearing</span><span class="sub-hero-stat-v">L3+ Config</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">CAN Networks</span><span class="sub-hero-stat-v">2 (CANivore)</span></div>
-    </div>
-  </div>
-  <div class="g2">
-    <div class="card"><div class="ct">SDS MK4n Swerve Modules</div><table class="st"><tr><td>Modules</td><td>SDS MK4n × 4</td></tr><tr><td>Drive Motor</td><td>Kraken x60</td></tr><tr><td>Gearing</td><td>L3+ Configuration</td></tr><tr><td>Top Speed</td><td>~17 ft/s</td></tr><tr><td>Corner Protection</td><td>3D Printed Carbon Fiber</td></tr></table></div>
-    <div class="card"><div class="ct">Frame Construction</div><table class="st"><tr><td>Frame Tubing</td><td>2×1×⅛" Aluminum</td></tr><tr><td>Belly Pan</td><td>1/10" MaxComposite SRPP</td></tr><tr><td>Elevator Supports</td><td>2×2×⅛" Al + ¼" Gussets</td></tr><tr><td>Climber Structure</td><td>1×1×⅛" Aluminum Tube</td></tr></table></div>
-  </div>
-  <div class="g2">
-    <div class="card"><div class="ct">Electronics</div><table class="st"><tr><td>CAN (Drivebase)</td><td>Dedicated CANivore</td></tr><tr><td>IMU</td><td>Pigeon 2 (Center Mounted)</td></tr><tr><td>Vision</td><td>2× Camera Pose Estimation</td></tr><tr><td>Computers</td><td>2× Orange Pi 5</td></tr><tr><td>Controller</td><td>RoboRIO + REV PDH</td></tr></table></div>
-    <div class="card"><div class="ct">Design Rationale</div><p class="bt" style="margin-bottom:10px;">Swerve chosen for maximum agility — allows strafing away from defense robots without turning, enabling precise reef alignment without repositioning.</p><p class="bt">Dedicated CANivore isolates high-frequency drivebase traffic from the manipulator CAN bus — solving reliability issues from 2024.</p><img class="card-img" src="images/16.png" alt="Early robot build"></div>
-  </div>
-</div>
-
-<!-- ELEVATOR -->
-<div id="page-elev" class="page">
-  <div class="ptitle">Elevator</div>
-  <div class="psub">3-Stage Cascading · 93" Max Extension · Dual Kraken x60 · Dyneema Rigging</div>
-  <div class="sub-hero">
-    <img class="sub-hero-img" src="images/7.png" alt="Elevator final CAD render">
-    <div class="sub-hero-info">
-      <div class="sub-hero-label">Subsystem</div>
-      <div class="sub-hero-title">Elevator</div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Stages</span><span class="sub-hero-stat-v">3-Stage + Carriage</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Max Reach</span><span class="sub-hero-stat-v">93"</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Full Travel</span><span class="sub-hero-stat-v">&lt;1 second</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Pivot Ratio</span><span class="sub-hero-stat-v">20.5:1</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Motors</span><span class="sub-hero-stat-v">2× Kraken x60</span></div>
-    </div>
-  </div>
-  <div class="g2" style="margin-bottom:14px;">
-    <div class="card"><div class="ct">Final Design Specs</div><table class="st"><tr><td>Drive Motors</td><td>2× Kraken x60</td></tr><tr><td>Motor Gearing</td><td>5:1 Ratio</td></tr><tr><td>Structure Tubing</td><td>2×1×⅛" Aluminum Extrusion</td></tr><tr><td>Rigging</td><td>Dyneema Rope, Cascading</td></tr><tr><td>Carriage Pivot</td><td>20.5:1 · MAXSpline Live Axle</td></tr><tr><td>Wire Management</td><td>WCP Bi-Directional E-Chain</td></tr><tr><td>LED Strip</td><td>Base Stage · Driver Feedback</td></tr><tr><td>Limit Switch</td><td>Door Alarm Sensor</td></tr></table></div>
-    <div class="card"><div class="ct">Electrical Panel</div><table class="st"><tr><td>Panel Material</td><td>ABS Plate</td></tr><tr><td>Power</td><td>REV PDH (15 Motors)</td></tr><tr><td>Computers</td><td>2× Orange Pi 5</td></tr><tr><td>Controller</td><td>RoboRIO</td></tr><tr><td>Accessories</td><td>mitoCANdria, CTRE VRM, CANdle</td></tr><tr><td>Access</td><td>Tool-Free (Rear-Mounted)</td></tr></table><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;"><img src="images/24.png" alt="Electrical panel CAD layout" style="width:100%;border-radius:5px;border:1px solid var(--g1);object-fit:contain;background:var(--wh);padding:4px;"><img src="images/23.png" alt="PDH wiring diagram" style="width:100%;border-radius:5px;border:1px solid var(--g1);object-fit:contain;background:var(--wh);padding:4px;"></div></div>
-  </div>
-  <div class="card"><div class="ct">Design Iterations</div>
-    <div class="tl"><div class="tld"></div><div class="tll">Krayola CAD — Initial Concept</div><div class="tl-row"><div class="tld2">Established cascading 3-stage with pivoting arm. Used CAD + reef model to determine 93" height. Chose WCP COTS elevator (3-stage capable) over Thrifty Bot.</div><img class="til" src="images/10.png" alt="Krayola CAD initial concept"></div></div>
-    <div class="tl"><div class="tld"></div><div class="tll">V1 — Core Structure</div><div class="tl-row"><div class="tld2">Electrical panel added for space utilization + impact protection. Cubic carriage with MAXSpline live axle. Two cameras for AprilTag + coral tracking.</div><img class="til" src="images/11.png" alt="Elevator V1 CAD"></div></div>
-    <div class="tl"><div class="tld"></div><div class="tll">V2 — Weight &amp; Reliability</div><div class="tl-row"><div class="tld2">Square weight reduction failed FEA — rejected. Algae claw removed (strategy change). 3D-printed e-chain replaced with WCP Bi-Directional chain.</div><img class="til" src="images/12.png" alt="Elevator V2 CAD"></div></div>
-    <div class="tl" style="padding-bottom:0"><div class="tld"></div><div class="tll">Final — FEA-Guided Triangular Cutouts</div><div class="tld2">Triangular cutout pattern reduced elevator by 9 lb. Belly pan → 1/10" SRPP saved 2 lb. Robot reduced from 128 lb to competition weight.</div></div>
-  </div>
-</div>
-
-<!-- END EFFECTOR -->
-<div id="page-ee" class="page">
-  <div class="ptitle">End Effector</div>
-  <div class="psub">Inspired by Team 4481 Rembrandts · Gear-Driven · Carbon Fiber · 720° Wiring ROM</div>
-  <div class="sub-hero" style="margin-bottom:14px;">
-    <img class="sub-hero-img" src="images/8.png" alt="End effector final CAD render">
-    <div class="sub-hero-info">
-      <div class="sub-hero-label">Subsystem</div>
-      <div class="sub-hero-title">End Effector</div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Structure</span><span class="sub-hero-stat-v">CF Tube 2⅛×1"</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Drive</span><span class="sub-hero-stat-v">100% Gear-Driven</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Motor</span><span class="sub-hero-stat-v">CTRE Minion 1:1</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Wiring ROM</span><span class="sub-hero-stat-v">720° Rotation</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Sensor</span><span class="sub-hero-stat-v">ToF CAN</span></div>
-    </div>
-  </div>
-  <div class="g2" style="margin-bottom:14px;">
-    <div class="card"><div class="ct">Final Design Specs</div><table class="st"><tr><td>Structure</td><td>2⅛×1×1/16" Carbon Fiber Tube</td></tr><tr><td>Plates</td><td>1/10" MaxComposite SRPP</td></tr><tr><td>Drive Type</td><td>100% Gear-Driven</td></tr><tr><td>Wheel Motor</td><td>CTRE Minion, 1:1</td></tr><tr><td>Gearing</td><td>3D-Printed, Chamfered Edges</td></tr><tr><td>Pivot Shaft</td><td>MAXSpline (Live Axle)</td></tr><tr><td>Wire Routing</td><td>Through MAXSpline Shaft</td></tr><tr><td>Wiring ROM</td><td>720° Rotation</td></tr><tr><td>Sensor</td><td>ToF (CAN) — Coral Detect</td></tr><tr><td>Wheel Axles</td><td>All Live Axles</td></tr></table></div>
-    <div class="card"><div class="ct">Design Rationale</div><p class="bt" style="margin-bottom:10px;">Carbon fiber chosen because the end effector travels to 93" — every gram saved at height reduces tipping risk and enables lower gear ratios for faster movement.</p><p class="bt" style="margin-bottom:10px;">Gear-driven design eliminates belt tension and chain skip — zero adjustments needed mid-competition.</p><p class="bt">MAXSpline shaft routes all wiring internally — eliminates wire twist over 720° of rotation.</p></div>
-  </div>
-  <div class="card"><div class="ct">Iteration History</div>
-    <div class="tl"><div class="tld x"></div><div class="tll">V1 — "Trident" (Rejected)</div><div class="tl-row"><div class="tld2">Angled front plate for ground pickup. No compliance made ground pickup nearly impossible. Narrow acquisition zone made alignment very difficult.</div><img class="til" src="images/13.png" alt="End effector V1 Trident CAD"></div></div>
-    <div class="tl"><div class="tld"></div><div class="tll">V2 — 4481-Style Inside Gripper</div><div class="tl-row"><div class="tld2">Inspired by Team 4481 Rembrandts (OpenAlliance). 3D-printed polycarbonate gearset. Spring-loaded algae claw added. MAXComposite SRPP plates on 2.125×1 CF tube.</div><img class="til" src="images/14.png" alt="End effector V2 carbon fiber piece"></div></div>
-    <div class="tl" style="padding-bottom:0"><div class="tld"></div><div class="tll">V3 — Final (Refined 4481 Style)</div><div class="tl-row"><div class="tld2">Algae claw removed (unnecessary weight, strategy revised). Chamfered gear edges reduce edge loading. Final configuration throughout competition season.</div><img class="til" src="images/15.png" alt="End effector V3 final gears"></div></div>
-  </div>
-</div>
-
-<!-- CLIMBER -->
-<div id="page-climb" class="page">
-  <div class="ptitle">Climber</div>
-  <div class="psub">Inspired by Team 2630 Thunderbolts · Deep Cage · 563:1 Total Reduction · ⅜" Steel Teeth</div>
-  <div class="sub-hero">
-    <img class="sub-hero-img" src="images/9.png" alt="Climber final CAD render">
-    <div class="sub-hero-info">
-      <div class="sub-hero-label">Subsystem</div>
-      <div class="sub-hero-title">Climber</div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Gear Reduction</span><span class="sub-hero-stat-v">563:1</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Motor</span><span class="sub-hero-stat-v">Kraken x60</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Grip Mechanism</span><span class="sub-hero-stat-v">2× ⅜" Steel Teeth</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Climb Points</span><span class="sub-hero-stat-v">12 + Barge RP</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Planetary Ratio</span><span class="sub-hero-stat-v">400:1</span></div>
-    </div>
-  </div>
-  <div class="g2" style="margin-bottom:14px;">
-    <div class="card"><div class="ct">Final Design Specs</div><table class="st"><tr><td>Motor</td><td>Kraken x60</td></tr><tr><td>Planetary Ratio</td><td>400:1</td></tr><tr><td>Additional Reduction</td><td>1.7:1</td></tr><tr><td>Total Reduction</td><td>563:1</td></tr><tr><td>Grip Mechanism</td><td>2× ⅜" Steel Teeth</td></tr><tr><td>Superstructure</td><td>¼" Aluminum Brackets</td></tr><tr><td>Top Structure</td><td>Lightened 1/16" Aluminum Tube</td></tr><tr><td>Position Sensor</td><td>Encoder on 2nd Hex Shaft</td></tr><tr><td>Worlds Addition</td><td>Asymmetric Funnel (Al + PC)</td></tr></table></div>
-    <div class="card"><div class="ct">Worlds Upgrade — Alignment Funnel</div><p class="bt" style="margin-bottom:12px;">For championships, a funnel was added to reduce cage alignment time. One hard side (aluminum) and one soft side (polycarbonate) pushes the anchor away from the end effector during approach.</p><p class="bt">Asymmetric compliance guides the cage pipe into the grip teeth even with imprecise approach angles — reducing driver workload in the final 30 seconds.</p></div>
-  </div>
-  <div class="card"><div class="ct">Iteration History</div>
-    <div class="tl"><div class="tld x"></div><div class="tll">V1 — Rusthounds RI3D Design (Rejected)</div><div class="tl-row"><div class="tld2">Two MAXSpline pipe design, spring hook, servo release, dyneema winch. Too many moving parts, servo damage, limited clearance with elevator, difficult cage alignment.</div><img class="til" src="images/20.png" alt="Climber V1 Rusthounds CAD"></div></div>
-    <div class="tl"><div class="tld x"></div><div class="tll">V2 — Everybot Door-Hinge Design (Rejected)</div><div class="tl-row"><div class="tld2">Door hinge rotation point, 4-plate polycarbonate one-way gate, ratchet wrench winch. Rejected — packaging conflicts, insufficient frame space.</div><img class="til" src="images/21.png" alt="Climber V2 Everybot CAD"></div></div>
-    <div class="tl" style="padding-bottom:0"><div class="tld"></div><div class="tll">V3 — Team 2630 Two-Finger Design (Final)</div><div class="tl-row"><div class="tld2">Two fingers engage single cage pipe. ⅛" aluminum superstructure twisted under load — FEA confirmed ¼" needed. Forks iterated to ⅜" steel with geometry matched to cage curvature.</div><img class="til" src="images/22.png" alt="Climber V3 steel teeth iterations"></div></div>
-  </div>
-</div>
-
-<!-- PROGRAMMING -->
-<div id="page-prog" class="page">
-  <div class="ptitle">Programming</div>
-  <div class="psub">Command-Based Java · CTRE Phoenix Pro · PhotonVision · PathPlanner · AdvantageScope</div>
-  <div class="g2" style="margin-bottom:14px;">
-    <div class="card"><div class="ct">Core Software Stack</div>
-      <div class="pw" style="margin-bottom:14px;"><span class="pill">Command-Based Java</span><span class="pill">CTRE Phoenix Pro</span><span class="pill">PhotonVision</span><span class="pill">PathPlanner</span><span class="pill">AdvantageScope</span><span class="pill">Motion Magic</span><span class="pill">Fused Encoders</span><span class="pill">CANivore</span><span class="pill">GitHub</span><span class="pill">WPILib</span></div>
-      <div class="sdiv"></div>
-      <table class="st"><tr><td>Language</td><td>Java (Command-Based)</td></tr><tr><td>Motor Framework</td><td>CTRE Phoenix Pro (Licensed)</td></tr><tr><td>Vision</td><td>PhotonVision + AprilTags</td></tr><tr><td>Autonomous</td><td>PathPlanner</td></tr><tr><td>Logging</td><td>AdvantageScope (Team 6328)</td></tr><tr><td>Version Control</td><td>GitHub + Issues/Milestones</td></tr></table>
-    </div>
-    <div class="card"><div class="ct">Key Improvements — 2025 vs 2024</div>
-      <div class="tl"><div class="tld"></div><div class="tll">CAN Bus Isolation</div><div class="tld2">CANivore separates drivebase CAN from manipulators. Fixed high utilization + reliability issues from 2024.</div></div>
-      <div class="tl"><div class="tld"></div><div class="tll">Motion Magic</div><div class="tld2">CTRE proprietary profiles replace hand-tuned PID. Smoother mechanism control, dramatically faster tuning.</div></div>
-      <div class="tl"><div class="tld"></div><div class="tll">Fused Encoder Class</div><div class="tld2">Fuses absolute encoder + motor position. Mechanisms work even if absolute encoder fails mid-match.</div></div>
-      <div class="tl" style="padding-bottom:0"><div class="tld"></div><div class="tll">Global Pose Estimation</div><div class="tld2">PhotonVision AprilTags enables pose estimation in teleop (auto-heading) and autonomous (quicker, more consistent).</div></div>
-    </div>
-  </div>
-  <div class="g2">
-    <div class="card"><div class="ct">Autonomous System</div><p class="bt" style="margin-bottom:10px;">PathPlanner generates trajectories. Sensor fusion (beam breaks + ToF) confirms game piece state at each step — robot waits for confirmed intake before proceeding.</p><p class="bt" style="margin-bottom:10px;">Drive-to-pose in development for teleop — driver presses one button to auto-navigate to reef or human player station, reducing cycle time.</p><img class="card-img" src="images/26.png" alt="PathPlanner autonomous path"></div>
-    <div class="card"><div class="ct">Team Structure &amp; Process</div><p class="bt" style="margin-bottom:10px;">Subteam tripled in size in 2025. Co-leaders implemented structured pre-season teaching: motor programming, command-base Java, and "Spinny Carter" ParadeBot as learning platform.</p><p class="bt" style="margin-bottom:10px;">PDSA method: weekly goal checklist → implement → observe → act. Community support via Chief Delphi, Reddit, and FRC Discord.</p><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px;"><img src="images/25.png" alt="Students programming" style="width:100%;border-radius:5px;border:1px solid var(--g1);object-fit:cover;aspect-ratio:4/3;"><img src="images/27.png" alt="CTRE Phoenix Pro lesson" style="width:100%;border-radius:5px;border:1px solid var(--g1);object-fit:cover;aspect-ratio:4/3;"><img src="images/29.png" alt="Driver controls presentation" style="width:100%;border-radius:5px;border:1px solid var(--g1);object-fit:cover;aspect-ratio:4/3;"></div></div>
-  </div>
-</div>
-
-<!-- IMPACT -->
-<div id="page-impact" class="page">
-  <div class="ptitle">Impact &amp; Community</div>
-  <div class="psub">"Gearing Up for Tomorrow!" · Oak Creek High School · Since 2016</div>
-  <div class="g2" style="margin-bottom:14px;">
-    <div class="card"><div class="ct">Team at a Glance</div>
-      <div class="ir"><div class="in">46</div><div class="id">Active team members across operations and technical subteams. Varsity sport in Oak Creek School District.</div></div>
-      <div class="sdiv"></div>
-      <div class="ir"><div class="in">8</div><div class="id">Subteams, each with upperclassman captain and underclassman apprentice for leadership continuity.</div></div>
-      <div class="sdiv"></div>
-      <div class="ir"><div class="in">20+</div><div class="id">Community events in the past year — grocery stores, assemblies, farmer's markets, Advocacy Day, Pack Expo.</div></div>
-    </div>
-    <div class="card"><div class="ct">FIRST Ecosystem Footprint</div><table class="st"><tr><td>FLL Regionals Hosted</td><td>7 Events</td></tr><tr><td>FLL Explore Expositions</td><td>6 Events</td></tr><tr><td>FLL Teams Mentored (3 Yrs)</td><td>46 Teams</td></tr><tr><td>FLL Explorer Program</td><td>Founded 2019</td></tr><tr><td>WI Largest FLL Event</td><td>2 Years Running</td></tr><tr><td>First Live-Streamed WI Sectional</td><td>2025</td></tr><tr><td>Pengweenies</td><td>Qualified NJ Invitational</td></tr></table></div>
-  </div>
-  <div class="g3">
-    <div class="card"><div class="ct">GEM Initiative</div><p class="bt" style="margin-bottom:8px;">Gender Equality in Manufacturing — founded by 2 RTR students. Mechanical engineering lessons for middle schoolers via local Recreation Dept. WoW (Women of the Week) social media series.</p><div class="tag">WoW Series</div><div class="tag">Video Lessons</div><div class="tag">Women Engineers</div></div>
-    <div class="card"><div class="ct">STEAM Fair &amp; Relief</div><table class="st"><tr><td>STEAM Fair Participants</td><td>36 Over 2 Years</td></tr><tr><td>Hurricane Relief Items</td><td>1,250 Collected</td></tr><tr><td>NC Relief Shipment</td><td>Semi-Truck Filled</td></tr><tr><td>STEAM Clinic Students</td><td>200+ Per Year</td></tr><tr><td>WASB Booth</td><td>3 Years Running</td></tr></table></div>
-    <div class="card"><div class="ct">Alumni &amp; Sponsors</div><p class="bt" style="margin-bottom:8px;">Alumni intern &amp; work at:</p><div class="tag">GE</div><div class="tag">Tesla</div><div class="tag">Disney Imagineering</div><div class="tag">Rockwell</div><div class="tag">Komatsu</div><div class="tag">Regal Rexnord</div><div class="tag">Yaskawa</div><div class="tag">Zebra</div><div class="tag">Polaris</div></div>
-  </div>
-  <div class="card"><div class="ct">Working Together FLL Coach Conference</div>
-    <div class="g2i" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-      <p class="bt">RTR created this full-day conference for FLL coaches — offered at no charge, including lunch donated by the mayor of Oak Creek. Covers robot game, Innovation Project, judging, and Core Values. All sessions videotaped and shared online. 2025 plan: expand to a 2-day event.</p>
-      <table class="st"><tr><td>First Year Attendance</td><td>47 Coaches Statewide</td></tr><tr><td>2025 Plan</td><td>2-Day Expanded Event</td></tr><tr><td>Cost to Attend</td><td>Free</td></tr><tr><td>Lunch Sponsor</td><td>Mayor of Oak Creek</td></tr></table>
-    </div>
-    <img class="card-img" src="images/28.png" alt="Team meeting presentation">
-  </div>
-</div>
-
-</div><!-- /main -->
 </div><!-- /body -->
 </div><!-- /app -->
 
