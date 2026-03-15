@@ -101,6 +101,9 @@ html,body{width:100%;height:100%;font-family:var(--fb);font-weight:700;backgroun
 .cov h2{font-family:var(--fh);font-size:21px;font-weight:700;color:var(--wh);text-transform:uppercase;letter-spacing:1.5px;}
 .cov p{font-family:var(--fb);font-size:12px;font-weight:700;color:var(--bb);margin-top:2px;text-transform:uppercase;letter-spacing:0.5px;}
 .chint{position:absolute;top:13px;right:14px;font-family:var(--fh);font-size:10px;font-weight:500;color:rgba(255,255,255,0.22);pointer-events:none;text-transform:uppercase;letter-spacing:1px;}
+.chome{position:absolute;left:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:5px;color:rgba(255,255,255,0.45);font-size:15px;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;padding:0;}
+.chome:nth-of-type(1){top:10px;}.chome:nth-of-type(2){top:44px;}
+.chome:hover{background:rgba(255,255,255,0.14);color:var(--wh);border-color:rgba(255,255,255,0.3);}
 
 /* ── TIMELINE ── */
 .tl{position:relative;padding-left:24px;padding-bottom:14px;}

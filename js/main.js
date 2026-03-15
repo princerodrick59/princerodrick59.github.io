@@ -6,22 +6,23 @@
   if(id==='home') setTimeout(initR,50);
 }
 let ren=null,scene,cam,rg,car,ee;
-let drag=false,pm={x:0,y:0};
+let rotating=false,panning=false,pm={x:0,y:0},autoSpin=true;
+let target=new THREE.Vector3(0,0.5,0);
+const FLOOR_Y=-0.42;
 function initR(){
   const wrap=document.getElementById('cwrap'),cv=document.getElementById('rwc');
   if(ren){ren.setSize(wrap.clientWidth,wrap.clientHeight);return;}
   const W=wrap.clientWidth,H=wrap.clientHeight;
   ren=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
-  ren.setPixelRatio(Math.min(devicePixelRatio,2));ren.setSize(W,H);ren.shadowMap.enabled=true;
-  ren.toneMapping=THREE.ACESFilmicToneMapping;ren.toneMappingExposure=1.2;
+  ren.setPixelRatio(Math.min(devicePixelRatio,2));ren.setSize(W,H);
+  ren.toneMapping=THREE.ACESFilmicToneMapping;ren.toneMappingExposure=1.0;
   scene=new THREE.Scene();
   cam=new THREE.PerspectiveCamera(45,W/H,0.1,100);
-  cam.position.set(0,1.2,4.5);cam.lookAt(0,0.3,0);
-  scene.add(new THREE.AmbientLight(0xffffff,0.35));
-  const kl=new THREE.DirectionalLight(0xffffff,1.0);kl.position.set(3,5,3);kl.castShadow=true;scene.add(kl);
-  const fl2=new THREE.DirectionalLight(0x0039a2,0.5);fl2.position.set(3,2,2);scene.add(fl2);
-  const fl=new THREE.DirectionalLight(0x0039a2,0.5);fl.position.set(-3,2,-2);scene.add(fl);
-  const rl=new THREE.DirectionalLight(0x89cff0,0.35);rl.position.set(0,-2,-4);scene.add(rl);
+  cam.position.set(0,1.2,4.5);cam.lookAt(target);
+  scene.add(new THREE.AmbientLight(0xffffff,0.8));
+  const kl=new THREE.DirectionalLight(0xffffff,1.5);kl.position.set(3,6,5);scene.add(kl);
+  const fl=new THREE.DirectionalLight(0xffffff,0.8);fl.position.set(-4,3,-2);scene.add(fl);
+  const rl=new THREE.DirectionalLight(0xffffff,0.5);rl.position.set(0,2,-5);scene.add(rl);
   const al=m=>new THREE.MeshStandardMaterial(m);
   const AM=al({color:0xb0b8c8,metalness:0.8,roughness:0.3});
   const DM=al({color:0x1a1a1a,metalness:0.5,roughness:0.6});
@@ -67,13 +68,6 @@ function initR(){
   const rm=new THREE.LineBasicMaterial({color:0xdddddd});
   rg.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-0.08,0.05,0.05),new THREE.Vector3(-0.08,2.6,0.05)]),rm));
   rg.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0.20,0.05,0.05),new THREE.Vector3(0.20,2.6,0.05)]),rm));
-  const gnd=new THREE.Mesh(new THREE.PlaneGeometry(4,4),new THREE.MeshStandardMaterial({color:0x1a1a1a,transparent:true,opacity:0.2,roughness:1}));
-  gnd.rotation.x=-Math.PI/2;gnd.position.y=-0.42;gnd.receiveShadow=true;scene.add(gnd);
-  const gm=new THREE.LineBasicMaterial({color:0x0039a2,transparent:true,opacity:0.2});
-  for(let i=-4;i<=4;i++){
-    const l1=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-2,0,i*0.5),new THREE.Vector3(2,0,i*0.5)]),gm);l1.position.y=-0.41;scene.add(l1);
-    const l2=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(i*0.5,0,-2),new THREE.Vector3(i*0.5,0,2)]),gm);l2.position.y=-0.41;scene.add(l2);
-  }
   rg.position.y=-0.2;
   // Load real robot model
   console.log('GLTFLoader defined:',typeof THREE.GLTFLoader);
@@ -94,23 +88,44 @@ function initR(){
       rg.scale.setScalar(s);
       rg.updateMatrixWorld(true);
       box.setFromObject(rg);
-      rg.position.sub(box.getCenter(new THREE.Vector3()));
-      rg.position.y-=0.2;
-      rg.traverse(o=>{if(o.isMesh){console.log('mesh:',o.name,'material:',o.material.type);o.castShadow=true;o.receiveShadow=true;}});
+      const center=box.getCenter(new THREE.Vector3());
+      rg.position.x-=center.x;
+      rg.position.z-=center.z;
+      rg.position.y=FLOOR_Y-box.min.y;
+      rg.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;if(o.material){o.material.metalness=Math.min(o.material.metalness,0.4);o.material.roughness=Math.max(o.material.roughness,0.4);}}})
       scene.add(rg);
       car=null;ee=null;
       console.log('GLB added to scene. Camera pos:',cam.position.x,cam.position.y,cam.position.z);
     },undefined,function(err){console.error('GLB load error:',err);});
   }
-  cv.addEventListener('mousedown',e=>{drag=true;pm={x:e.clientX,y:e.clientY};});
-  window.addEventListener('mouseup',()=>{drag=false;});
-  window.addEventListener('mousemove',e=>{if(!drag)return;rg.rotation.y+=(e.clientX-pm.x)*0.008;rg.rotation.x+=(e.clientY-pm.y)*0.004;rg.rotation.x=Math.max(-0.6,Math.min(0.6,rg.rotation.x));pm={x:e.clientX,y:e.clientY};});
-  cv.addEventListener('wheel',e=>{cam.position.z=Math.max(2.5,Math.min(7,cam.position.z+e.deltaY*0.008));});
-  let lt=null;
-  cv.addEventListener('touchstart',e=>{lt=e.touches[0];});
-  cv.addEventListener('touchmove',e=>{if(!lt)return;rg.rotation.y+=(e.touches[0].clientX-lt.clientX)*0.008;lt=e.touches[0];e.preventDefault();},{passive:false});
+  cv.addEventListener('pointerdown',e=>{
+    if(e.button===2){rotating=true;pm={x:e.clientX,y:e.clientY};cv.setPointerCapture(e.pointerId);}
+    else if(e.button===1){panning=true;pm={x:e.clientX,y:e.clientY};cv.setPointerCapture(e.pointerId);e.preventDefault();}
+  });
+  cv.addEventListener('pointerup',()=>{rotating=false;panning=false;});
+  cv.addEventListener('pointermove',e=>{
+    const dx=e.clientX-pm.x,dy=e.clientY-pm.y;
+    if(rotating){rg.rotation.y+=dx*0.008;rg.rotation.x+=dy*0.004;rg.rotation.x=Math.max(-0.6,Math.min(0.6,rg.rotation.x));}
+    if(panning){const s=0.003*cam.position.z;cam.position.x-=dx*s;cam.position.y+=dy*s;target.x-=dx*s;target.y+=dy*s;cam.lookAt(target);}
+    if(rotating||panning)pm={x:e.clientX,y:e.clientY};
+  });
+  cv.addEventListener('contextmenu',e=>e.preventDefault());
+  cv.addEventListener('wheel',e=>{cam.position.z=Math.max(1.5,Math.min(10,cam.position.z+e.deltaY*0.008));e.preventDefault();},{passive:false});
   let t=0;
-  (function anim(){requestAnimationFrame(anim);t+=0.008;if(!drag)rg.rotation.y+=0.003;if(car)car.position.y=1.9+Math.sin(t*0.5)*0.05;if(ee)ee.position.y=1.9+Math.sin(t*0.5)*0.05;ren.render(scene,cam);})();
+  (function anim(){requestAnimationFrame(anim);t+=0.008;if(!rotating&&autoSpin)rg.rotation.y+=0.003;if(car)car.position.y=1.9+Math.sin(t*0.5)*0.05;if(ee)ee.position.y=1.9+Math.sin(t*0.5)*0.05;ren.render(scene,cam);})();
+}
+function toggleSpin(){
+  autoSpin=!autoSpin;
+  const btn=document.getElementById('spinbtn');
+  btn.textContent=autoSpin?'⏸':'▶';
+  btn.title=autoSpin?'Pause spin':'Resume spin';
+  btn.style.color=autoSpin?'':'rgba(255,255,255,0.7)';
+}
+function resetView(){
+  cam.position.set(0,1.2,4.5);
+  target.set(0,0.5,0);
+  cam.lookAt(target);
+  rg.rotation.set(0,0,0);
 }
 window.addEventListener('load',initR);
 window.addEventListener('resize',()=>{if(!ren)return;const w=document.getElementById('cwrap');cam.aspect=w.clientWidth/w.clientHeight;cam.updateProjectionMatrix();ren.setSize(w.clientWidth,w.clientHeight);});
