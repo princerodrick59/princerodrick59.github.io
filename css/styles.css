@@ -14,15 +14,16 @@ html,body{width:100%;height:100%;font-family:var(--fb);font-weight:700;backgroun
   display:flex;align-items:center;justify-content:space-between;
   padding:0 24px;border-bottom:3px solid var(--ra);flex-shrink:0;
 }
-.logo-wrap{display:flex;align-items:center;gap:14px;}
-.logo-wrap img{width:48px;height:48px;border-radius:6px;object-fit:contain;background:rgba(255,255,255,0.08);padding:2px;}
+.logo-wrap{display:flex;align-items:center;gap:14px;flex-shrink:0;}
+.logo-wrap img{width:48px;height:48px;border-radius:6px;object-fit:contain;background:rgba(255,255,255,0.08);padding:2px;flex-shrink:0;}
 .team-id .num{font-family:var(--fh);font-size:34px;font-weight:700;color:var(--wh);line-height:1;letter-spacing:-1px;}
-.team-id .num em{color:var(--bb);font-style:normal;}
+.team-id .num em{color:var(--fh);font-style:normal;}
 .team-id .name{font-family:var(--fh);font-size:11px;font-weight:500;color:rgba(255,255,255,0.65);letter-spacing:3px;text-transform:uppercase;margin-top:1px;}
-.hdr-center{text-align:center;}
-.hdr-center .robo{font-family:var(--fh);font-size:20px;font-weight:700;color:var(--wh);letter-spacing:4px;text-transform:uppercase;}
-.hdr-center .school{font-family:var(--fh);font-size:11px;font-weight:400;color:var(--bb);letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
-.hdr-badge{background:var(--eb);border:1px solid var(--ra);border-radius:5px;padding:6px 16px;font-family:var(--fh);font-size:13px;font-weight:600;color:var(--bb);letter-spacing:2px;text-transform:uppercase;}
+.hdr-center{text-align:center;flex:1;min-width:0;overflow:hidden;padding:0 12px;}
+.hdr-center .robo{font-family:var(--fh);font-size:20px;font-weight:700;color:var(--wh);letter-spacing:4px;text-transform:uppercase;white-space:nowrap;}
+.hdr-center .school{font-family:var(--fh);font-size:11px;font-weight:400;color:var(--bb);letter-spacing:2px;text-transform:uppercase;margin-top:2px;white-space:nowrap;}
+.hdr-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.hdr-badge{background:var(--eb);border:1px solid var(--ra);border-radius:5px;padding:6px 16px;font-family:var(--fh);font-size:13px;font-weight:600;color:var(--bb);letter-spacing:2px;text-transform:uppercase;white-space:nowrap;}
 .vdiv{width:1px;height:32px;background:rgba(255,255,255,0.15);margin:0 10px;}
 
 /* ── BODY ── */
@@ -158,6 +159,55 @@ html,body{width:100%;height:100%;font-family:var(--fb);font-weight:700;backgroun
 /* ── BODY TEXT ── */
 .bt{font-family:var(--fb);font-size:13px;font-weight:700;color:var(--cg);line-height:1.6;}
 
+/* ── IMAGE GALLERY ── */
+.ig{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-top:2px;}
+.ig img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:6px;border:1px solid var(--g1);background:var(--g1);transition:opacity 0.15s;cursor:pointer;display:block;}
+.ig img:hover{opacity:0.82;}
+
+/* ── ROBOT PHOTO BANNER (home) ── */
+.rphoto-wrap{position:relative;border-radius:8px;overflow:hidden;margin-top:14px;border:1px solid rgba(0,57,162,0.4);}
+.rphoto-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--pb);z-index:1;}
+.rphoto{width:100%;height:210px;object-fit:contain;background:#111;display:block;}
+.rphoto-ov{position:absolute;bottom:0;left:0;right:0;padding:14px 18px;background:linear-gradient(to top,rgba(0,0,0,0.88) 0%,rgba(0,0,0,0.45) 60%,transparent 100%);display:flex;align-items:flex-end;gap:14px;}
+.rphoto-text{display:flex;flex-direction:column;gap:2px;}
+.rphoto-label{font-family:var(--fh);font-size:15px;font-weight:700;color:var(--wh);letter-spacing:2px;text-transform:uppercase;}
+.rphoto-sub{font-family:var(--fh);font-size:10px;font-weight:500;color:var(--bb);letter-spacing:2px;text-transform:uppercase;}
+
+/* ── SUBSYSTEM SHOWCASE ── */
+.sub-hero{display:flex;border-radius:8px;overflow:hidden;background:var(--eb);border:1px solid rgba(0,57,162,0.5);margin-bottom:18px;position:relative;}
+.sub-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--pb);z-index:1;}
+.sub-hero-img{flex:0 0 52%;width:52%;object-fit:contain;background:#111;padding:14px;border-right:1px solid rgba(255,255,255,0.07);}
+.sub-hero-info{flex:1;padding:18px 20px;display:flex;flex-direction:column;gap:0;}
+.sub-hero-label{font-family:var(--fh);font-size:9px;font-weight:600;color:var(--bb);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:4px;}
+.sub-hero-title{font-family:var(--fh);font-size:15px;font-weight:700;color:var(--wh);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.sub-hero-stat{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.sub-hero-stat:last-child{border-bottom:none;}
+.sub-hero-stat-k{font-family:var(--fh);font-size:9px;font-weight:600;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:1px;}
+.sub-hero-stat-v{font-family:var(--fh);font-size:13px;font-weight:700;color:var(--wh);}
+
+/* ── TIMELINE INLINE IMAGE ── */
+.tl-row{display:flex;gap:12px;align-items:flex-start;}
+.tl-row>.tld2{flex:1;min-width:0;}
+.til{width:130px;flex-shrink:0;aspect-ratio:4/3;object-fit:contain;border-radius:5px;border:1px solid var(--g1);background:var(--wh);padding:4px;}
+
+/* ── CARD INLINE IMAGE ── */
+.card-img{width:100%;border-radius:5px;border:1px solid var(--g1);margin-top:12px;display:block;object-fit:contain;max-height:200px;background:var(--wh);padding:4px;}
+
+@media(max-width:600px){
+  .til{width:88px;}
+  .sub-hero{flex-direction:column;}
+  .sub-hero-img{width:100%;height:150px;border-right:none;border-bottom:1px solid rgba(255,255,255,0.07);}
+  .rphoto{height:160px;}
+}
+
+/* ── LIGHTBOX ── */
+#lbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out;}
+#lbox.open{display:flex;}
+#lbox-img{max-width:92vw;max-height:90vh;object-fit:contain;border-radius:6px;box-shadow:0 8px 60px rgba(0,0,0,0.7);}
+#lbox-close{position:absolute;top:14px;right:18px;color:rgba(255,255,255,0.55);font-size:30px;cursor:pointer;line-height:1;font-family:sans-serif;transition:color 0.15s;}
+#lbox-close:hover{color:var(--wh);}
+.til,.sub-hero-img,.card-img,.rphoto{cursor:zoom-in;}
+
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
@@ -165,7 +215,7 @@ html,body{width:100%;height:100%;font-family:var(--fb);font-weight:700;backgroun
 
 /* ── RESPONSIVE ── */
 
-/* Tablet (≤960px) */
+/* Large tablet (≤960px): narrow sidebar, collapse wider grids */
 @media(max-width:960px){
   #sb{width:190px;}
   #main{padding:18px 20px;}
@@ -175,16 +225,27 @@ html,body{width:100%;height:100%;font-family:var(--fb);font-weight:700;backgroun
   .rg{grid-template-columns:repeat(3,1fr);}
 }
 
-/* Mobile (≤640px) — sidebar becomes bottom tab bar */
-@media(max-width:640px){
-  /* Header: strip to essentials */
-  #hdr{height:54px;padding:0 12px;}
-  .logo-wrap img{width:36px;height:36px;}
-  .team-id .num{font-size:24px;}
-  .team-id .name{display:none;}
-  .hdr-center,.vdiv,.hdr-badge{display:none;}
+/* Medium tablet (≤768px): hide header badge, shrink sidebar */
+@media(max-width:768px){
+  #hdr{padding:0 16px;}
+  .hdr-right{display:none;}
+  .hdr-center .school{display:none;}
+  #sb{width:170px;}
+  #main{padding:14px 16px;}
+  .sg{grid-template-columns:repeat(2,1fr);}
+}
 
-  /* Flip layout: main on top, sidebar tab bar on bottom */
+/* Small tablet / large phone (≤600px): hide header center, sidebar to bottom tabs */
+@media(max-width:600px){
+  /* Header */
+  #hdr{height:52px;padding:0 12px;}
+  .logo-wrap{gap:10px;}
+  .logo-wrap img{width:36px;height:36px;}
+  .team-id .num{font-size:26px;}
+  .team-id .name{display:none;}
+  .hdr-center{display:none;}
+
+  /* Flip body: main on top, sidebar tab bar pinned to bottom */
   #body{flex-direction:column-reverse;}
 
   /* Sidebar → horizontal scrolling tab bar */
@@ -198,45 +259,46 @@ html,body{width:100%;height:100%;font-family:var(--fb);font-weight:700;backgroun
   .ns,.sb-foot{display:none;}
   .nb{
     flex-direction:column;gap:3px;
-    padding:8px 12px;min-height:54px;
+    padding:8px 14px;min-height:56px;
     white-space:nowrap;width:auto;flex-shrink:0;
     border-left:none;border-bottom:3px solid transparent;
     font-size:10px;letter-spacing:0.5px;
   }
-  .nb.active{border-left-color:transparent;border-bottom-color:var(--bb);}
-  .ni{width:auto;font-size:18px;opacity:0.8;}
+  .nb.active{background:rgba(0,57,162,0.35);border-left-color:transparent;border-bottom-color:var(--bb);}
+  .ni{width:auto;font-size:16px;opacity:0.8;}
 
-  /* Main content */
-  #main{padding:12px 12px;}
+  /* Main */
+  #main{padding:12px;}
 
   /* Canvas */
-  #cwrap{height:220px;}
-  .chome{width:38px;height:38px;font-size:15px;}
-  .chome:nth-of-type(1){top:6px;}.chome:nth-of-type(2){top:50px;}.chome:nth-of-type(3){top:94px;}
+  #cwrap{height:230px;}
+  .chome{width:40px;height:40px;font-size:16px;}
+  .chome:nth-of-type(1){top:6px;}.chome:nth-of-type(2){top:52px;}.chome:nth-of-type(3){top:98px;}
   .chint{font-size:8px;letter-spacing:0.5px;}
-  .cov h2{font-size:15px;}
+  .cov{padding:12px 14px;}
+  .cov h2{font-size:15px;letter-spacing:1px;}
   .cov p{font-size:10px;}
 
-  /* Page headings */
+  /* Page titles */
   .ptitle{font-size:20px;}
-  .psub{font-size:11px;margin-bottom:14px;}
+  .psub{font-size:10px;margin-bottom:12px;}
 
-  /* All grids → 1 or 2 col */
+  /* Grids */
   .sg{grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px;}
   .g2,.g3{grid-template-columns:1fr;gap:10px;}
-  .rg{grid-template-columns:1fr 1fr;}
-  .mg{grid-template-columns:1fr;}
+  .rg{grid-template-columns:1fr 1fr;gap:8px;}
+  .mg{grid-template-columns:1fr 1fr;}
   .g2i{grid-template-columns:1fr!important;}
 
   /* Cards */
-  .card{padding:14px 14px;}
-
-  /* Impact numbers */
-  .in{font-size:30px;min-width:56px;}
+  .card{padding:14px;}
 
   /* Stat values */
   .sv{font-size:22px;}
 
-  /* Scrollbar hidden on mobile (finger scroll) */
+  /* Impact numbers */
+  .in{font-size:30px;min-width:52px;}
+
+  /* Scrollbar hidden on touch */
   ::-webkit-scrollbar{width:0;}
 }
