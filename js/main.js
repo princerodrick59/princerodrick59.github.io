@@ -79,7 +79,11 @@ function initR(){
   console.log('GLTFLoader defined:',typeof THREE.GLTFLoader);
   if(typeof THREE.GLTFLoader!=='undefined'){
     console.log('Starting GLB load...');
-    new THREE.GLTFLoader().load('models/robot.glb',function(gltf){
+    const dracoLoader=new THREE.DRACOLoader();
+    dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/draco/');
+    const gltfLoader=new THREE.GLTFLoader();
+    gltfLoader.setDRACOLoader(dracoLoader);
+    gltfLoader.load('models/robot.glb',function(gltf){
       console.log('GLB loaded OK, scene children:',gltf.scene.children.length);
       scene.remove(rg);
       rg=gltf.scene;
