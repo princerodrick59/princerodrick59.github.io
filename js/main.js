@@ -13,12 +13,13 @@ function initR(){
   const W=wrap.clientWidth,H=wrap.clientHeight;
   ren=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
   ren.setPixelRatio(Math.min(devicePixelRatio,2));ren.setSize(W,H);ren.shadowMap.enabled=true;
+  ren.toneMapping=THREE.ACESFilmicToneMapping;ren.toneMappingExposure=1.2;
   scene=new THREE.Scene();
   cam=new THREE.PerspectiveCamera(45,W/H,0.1,100);
   cam.position.set(0,1.2,4.5);cam.lookAt(0,0.3,0);
   scene.add(new THREE.AmbientLight(0xffffff,0.35));
   const kl=new THREE.DirectionalLight(0xffffff,1.0);kl.position.set(3,5,3);kl.castShadow=true;scene.add(kl);
-  scene.add(Object.assign(new THREE.DirectionalLight(0x0039a2,0.5),{position:{set:function(x,y,z){this.x=x;this.y=y;this.z=z;return this;}}}));
+  const fl2=new THREE.DirectionalLight(0x0039a2,0.5);fl2.position.set(3,2,2);scene.add(fl2);
   const fl=new THREE.DirectionalLight(0x0039a2,0.5);fl.position.set(-3,2,-2);scene.add(fl);
   const rl=new THREE.DirectionalLight(0x89cff0,0.35);rl.position.set(0,-2,-4);scene.add(rl);
   const al=m=>new THREE.MeshStandardMaterial(m);
@@ -74,22 +75,28 @@ function initR(){
     const l2=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(i*0.5,0,-2),new THREE.Vector3(i*0.5,0,2)]),gm);l2.position.y=-0.41;scene.add(l2);
   }
   rg.position.y=-0.2;
-  // Load real robot model — drop robot.glb into models/ to replace the procedural model
+  // Load real robot model
+  console.log('GLTFLoader defined:',typeof THREE.GLTFLoader);
   if(typeof THREE.GLTFLoader!=='undefined'){
+    console.log('Starting GLB load...');
     new THREE.GLTFLoader().load('models/robot.glb',function(gltf){
+      console.log('GLB loaded OK, scene children:',gltf.scene.children.length);
       scene.remove(rg);
       rg=gltf.scene;
       const box=new THREE.Box3().setFromObject(rg);
       const size=box.getSize(new THREE.Vector3());
+      console.log('GLB size:',size.x.toFixed(2),size.y.toFixed(2),size.z.toFixed(2));
       const s=2.5/Math.max(size.x,size.y,size.z);
       rg.scale.setScalar(s);
+      rg.updateMatrixWorld(true);
       box.setFromObject(rg);
       rg.position.sub(box.getCenter(new THREE.Vector3()));
       rg.position.y-=0.2;
-      rg.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;}});
+      rg.traverse(o=>{if(o.isMesh){console.log('mesh:',o.name,'material:',o.material.type);o.castShadow=true;o.receiveShadow=true;}});
       scene.add(rg);
       car=null;ee=null;
-    },undefined,function(){/* robot.glb not found — keep procedural model */});
+      console.log('GLB added to scene. Camera pos:',cam.position.x,cam.position.y,cam.position.z);
+    },undefined,function(err){console.error('GLB load error:',err);});
   }
   cv.addEventListener('mousedown',e=>{drag=true;pm={x:e.clientX,y:e.clientY};});
   window.addEventListener('mouseup',()=>{drag=false;});
