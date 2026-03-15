@@ -7,6 +7,7 @@
 }
 let ren=null,scene,cam,rg,car,ee;
 let rotating=false,panning=false,pm={x:0,y:0},autoSpin=true;
+let touches={};
 let target=new THREE.Vector3(0,0.5,0);
 const FLOOR_Y=-0.42;
 function initR(){
@@ -98,6 +99,7 @@ function initR(){
       console.log('GLB added to scene. Camera pos:',cam.position.x,cam.position.y,cam.position.z);
     },undefined,function(err){console.error('GLB load error:',err);});
   }
+  // Mouse controls
   cv.addEventListener('pointerdown',e=>{
     if(e.button===2){rotating=true;pm={x:e.clientX,y:e.clientY};cv.setPointerCapture(e.pointerId);}
     else if(e.button===1){panning=true;pm={x:e.clientX,y:e.clientY};cv.setPointerCapture(e.pointerId);e.preventDefault();}
@@ -105,12 +107,36 @@ function initR(){
   cv.addEventListener('pointerup',()=>{rotating=false;panning=false;});
   cv.addEventListener('pointermove',e=>{
     const dx=e.clientX-pm.x,dy=e.clientY-pm.y;
-    if(rotating){rg.rotation.y+=dx*0.008;rg.rotation.x+=dy*0.004;rg.rotation.x=Math.max(-0.6,Math.min(0.6,rg.rotation.x));}
+    if(rotating){rg.rotation.y+=dx*0.008;rg.rotation.x+=dy*0.004;}
     if(panning){const s=0.003*cam.position.z;cam.position.x-=dx*s;cam.position.y+=dy*s;target.x-=dx*s;target.y+=dy*s;cam.lookAt(target);}
     if(rotating||panning)pm={x:e.clientX,y:e.clientY};
   });
   cv.addEventListener('contextmenu',e=>e.preventDefault());
   cv.addEventListener('wheel',e=>{cam.position.z=Math.max(1.5,Math.min(10,cam.position.z+e.deltaY*0.008));e.preventDefault();},{passive:false});
+  // Touch controls
+  cv.addEventListener('touchstart',e=>{
+    e.preventDefault();
+    Array.from(e.changedTouches).forEach(t=>{touches[t.identifier]={x:t.clientX,y:t.clientY};});
+  },{passive:false});
+  cv.addEventListener('touchmove',e=>{
+    e.preventDefault();
+    const pts=Array.from(e.touches);
+    if(pts.length===1){
+      const t=pts[0],prev=touches[t.identifier];
+      if(prev){const dx=t.clientX-prev.x,dy=t.clientY-prev.y;rg.rotation.y+=dx*0.008;rg.rotation.x+=dy*0.004;}
+      touches[t.identifier]={x:t.clientX,y:t.clientY};
+    } else if(pts.length===2){
+      const a=pts[0],b=pts[1],pa=touches[a.identifier],pb=touches[b.identifier];
+      if(pa&&pb){
+        const prevDist=Math.hypot(pa.x-pb.x,pa.y-pb.y),newDist=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);
+        cam.position.z=Math.max(1.5,Math.min(10,cam.position.z-(newDist-prevDist)*0.02));
+        const pmx=(pa.x+pb.x)/2,pmy=(pa.y+pb.y)/2,nmx=(a.clientX+b.clientX)/2,nmy=(a.clientY+b.clientY)/2;
+        const s=0.003*cam.position.z;cam.position.x-=(nmx-pmx)*s;cam.position.y+=(nmy-pmy)*s;target.x-=(nmx-pmx)*s;target.y+=(nmy-pmy)*s;cam.lookAt(target);
+      }
+      touches[a.identifier]={x:a.clientX,y:a.clientY};touches[b.identifier]={x:b.clientX,y:b.clientY};
+    }
+  },{passive:false});
+  cv.addEventListener('touchend',e=>{Array.from(e.changedTouches).forEach(t=>delete touches[t.identifier]);},{passive:false});
   let t=0;
   (function anim(){requestAnimationFrame(anim);t+=0.008;if(!rotating&&autoSpin)rg.rotation.y+=0.003;if(car)car.position.y=1.9+Math.sin(t*0.5)*0.05;if(ee)ee.position.y=1.9+Math.sin(t*0.5)*0.05;ren.render(scene,cam);})();
 }
@@ -121,6 +147,14 @@ function toggleSpin(){
   btn.title=autoSpin?'Pause spin':'Resume spin';
   btn.style.color=autoSpin?'':'rgba(255,255,255,0.7)';
 }
+function toggleFullscreen(){
+  const wrap=document.getElementById('cwrap');
+  if(!document.fullscreenElement&&!document.webkitFullscreenElement){
+    (wrap.requestFullscreen||wrap.webkitRequestFullscreen).call(wrap);
+  } else {
+    (document.exitFullscreen||document.webkitExitFullscreen).call(document);
+  }
+}
 function resetView(){
   cam.position.set(0,1.2,4.5);
   target.set(0,0.5,0);
@@ -128,4 +162,7 @@ function resetView(){
   rg.rotation.set(0,0,0);
 }
 window.addEventListener('load',initR);
-window.addEventListener('resize',()=>{if(!ren)return;const w=document.getElementById('cwrap');cam.aspect=w.clientWidth/w.clientHeight;cam.updateProjectionMatrix();ren.setSize(w.clientWidth,w.clientHeight);});
+function onResize(){if(!ren)return;const w=document.getElementById('cwrap');cam.aspect=w.clientWidth/w.clientHeight;cam.updateProjectionMatrix();ren.setSize(w.clientWidth,w.clientHeight);}
+window.addEventListener('resize',onResize);
+document.addEventListener('fullscreenchange',onResize);
+document.addEventListener('webkitfullscreenchange',onResize);
