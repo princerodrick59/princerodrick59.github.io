@@ -11,6 +11,7 @@ function show(id, btn) {
     pageCache[id].classList.add('active');
     main.scrollTop = 0;
     if (id === 'home') setTimeout(initR, 50);
+    if (subViewerPages.includes(id)) setTimeout(() => initSubViewer(id), 50);
     return;
   }
 
@@ -24,6 +25,7 @@ function show(id, btn) {
       page.classList.add('active');
       main.scrollTop = 0;
       if (id === 'home') setTimeout(initR, 50);
+      if (subViewerPages.includes(id)) setTimeout(() => initSubViewer(id), 50);
     });
 }
 
@@ -183,6 +185,126 @@ function resetView(){
   cam.lookAt(target);
   rg.rotation.set(0,0,0);
 }
+// ── Generic subsystem 3D viewers ─────────────────────────────────────────────
+const subViewerPages = ['drive','shooter','turret','intake','climb'];
+const subViewerConfig = {
+  // pivot: {x,y,z} shifts the model relative to the spin point.
+  // Positive Y moves model up (spins around a lower point on the model).
+  // Negative Y moves model down (spins around a higher point on the model).
+  drive:   {wrap:'dwrap', canvas:'dwc', spinBtn:'dspinbtn', model:'assets/models/drivetrain.glb', camZ:3.2, floored:true,  pivot:{x:0, y:0,   z:0.5}},
+  shooter: {wrap:'swrap', canvas:'swc', spinBtn:'sspinbtn', model:'assets/models/shooter.glb',   camZ:3.2, floored:false, pivot:{x:0, y:0,   z:-1}},
+  turret:  {wrap:'twrap', canvas:'twc', spinBtn:'tspinbtn', model:'assets/models/turret.glb',    camZ:3.2, floored:false, pivot:{x:0, y:0,   z:0}},
+  intake:  {wrap:'inwrap',canvas:'inwc',spinBtn:'inspinbtn',model:'assets/models/intake.glb',    camZ:3.2, floored:false, pivot:{x:0.3, y:0.5,   z:0.5}},
+  climb:   {wrap:'clwrap',canvas:'clwc',spinBtn:'clspinbtn',model:'assets/models/climber.glb',   camZ:3.2, floored:false, pivot:{x:0, y:0,   z:0}},
+};
+const subViewers = {};
+
+const DRIVE_FLOOR_Y=-0.42;
+
+function initSubViewer(pageId){
+  const cfg=subViewerConfig[pageId];
+  if(!cfg)return;
+  const wrap=document.getElementById(cfg.wrap),cv=document.getElementById(cfg.canvas);
+  if(!wrap||!cv)return;
+  if(subViewers[pageId]){const v=subViewers[pageId];v.ren.setSize(wrap.clientWidth,wrap.clientHeight);return;}
+  const W=wrap.clientWidth,H=wrap.clientHeight;
+  const ren=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
+  ren.setPixelRatio(Math.min(devicePixelRatio,2));ren.setSize(W,H);
+  ren.toneMapping=THREE.ACESFilmicToneMapping;ren.toneMappingExposure=1.1;
+  const scene=new THREE.Scene();
+  const target=new THREE.Vector3(0,0,0);
+  const cam=new THREE.PerspectiveCamera(45,W/H,0.1,100);
+  cam.position.set(0,1.5,cfg.camZ);cam.lookAt(target);
+  scene.add(new THREE.AmbientLight(0xffffff,0.4));
+  const kl=new THREE.DirectionalLight(0xffffff,0.9);kl.position.set(3,6,5);scene.add(kl);
+  const fl=new THREE.DirectionalLight(0xffffff,0.45);fl.position.set(-4,3,-2);scene.add(fl);
+  const rl=new THREE.DirectionalLight(0xffffff,0.25);rl.position.set(0,2,-5);scene.add(rl);
+  let rg=new THREE.Group();scene.add(rg);
+  let rotating=false,panning=false,autoSpin=true;
+  let pm={x:0,y:0},touches={};
+  if(typeof THREE.GLTFLoader!=='undefined'){
+    const dracoLoader=new THREE.DRACOLoader();
+    dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/draco/');
+    const gltfLoader=new THREE.GLTFLoader();
+    gltfLoader.setDRACOLoader(dracoLoader);
+    gltfLoader.load(cfg.model,function(gltf){
+      scene.remove(rg);rg=gltf.scene;
+      const box=new THREE.Box3().setFromObject(rg);
+      const size=box.getSize(new THREE.Vector3());
+      const s=2.5/Math.max(size.x,size.y,size.z);
+      rg.scale.setScalar(s);rg.updateMatrixWorld(true);
+      box.setFromObject(rg);
+      const center=box.getCenter(new THREE.Vector3());
+      const pv=cfg.pivot||{x:0,y:0,z:0};
+      rg.position.x=-center.x+pv.x;
+      rg.position.z=-center.z+pv.z;
+      rg.position.y=(cfg.floored ? DRIVE_FLOOR_Y-box.min.y : -center.y)+pv.y;
+      rg.traverse(o=>{if(o.isMesh&&o.material){o.castShadow=true;o.receiveShadow=true;o.material.metalness=Math.min(o.material.metalness,0.4);o.material.roughness=Math.max(o.material.roughness,0.4);}});
+      scene.add(rg);
+    },undefined,err=>console.error(cfg.model+' error:',err));
+  }
+  cv.addEventListener('pointerdown',e=>{
+    if(e.button===2){rotating=true;pm={x:e.clientX,y:e.clientY};cv.setPointerCapture(e.pointerId);}
+    else if(e.button===1){panning=true;pm={x:e.clientX,y:e.clientY};cv.setPointerCapture(e.pointerId);e.preventDefault();}
+  });
+  cv.addEventListener('pointerup',()=>{rotating=false;panning=false;});
+  cv.addEventListener('pointermove',e=>{
+    const dx=e.clientX-pm.x,dy=e.clientY-pm.y;
+    if(rotating){rg.rotation.y+=dx*0.008;rg.rotation.x+=dy*0.004;}
+    if(panning){const s=0.003*cam.position.z;cam.position.x-=dx*s;cam.position.y+=dy*s;target.x-=dx*s;target.y+=dy*s;cam.lookAt(target);}
+    if(rotating||panning)pm={x:e.clientX,y:e.clientY};
+  });
+  cv.addEventListener('contextmenu',e=>e.preventDefault());
+  cv.addEventListener('wheel',e=>{cam.position.z=Math.max(1.5,Math.min(10,cam.position.z+e.deltaY*0.008));e.preventDefault();},{passive:false});
+  cv.addEventListener('touchstart',e=>{e.preventDefault();Array.from(e.changedTouches).forEach(t=>{touches[t.identifier]={x:t.clientX,y:t.clientY};});},{passive:false});
+  cv.addEventListener('touchmove',e=>{
+    e.preventDefault();
+    const pts=Array.from(e.touches);
+    if(pts.length===1){
+      const t=pts[0],prev=touches[t.identifier];
+      if(prev){rg.rotation.y+=(t.clientX-prev.x)*0.008;rg.rotation.x+=(t.clientY-prev.y)*0.004;}
+      touches[t.identifier]={x:t.clientX,y:t.clientY};
+    } else if(pts.length===2){
+      const a=pts[0],b=pts[1],pa=touches[a.identifier],pb=touches[b.identifier];
+      if(pa&&pb){
+        const prevDist=Math.hypot(pa.x-pb.x,pa.y-pb.y),newDist=Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);
+        cam.position.z=Math.max(1.5,Math.min(10,cam.position.z-(newDist-prevDist)*0.02));
+        const s=0.003*cam.position.z;
+        const pmx=(pa.x+pb.x)/2,pmy=(pa.y+pb.y)/2,nmx=(a.clientX+b.clientX)/2,nmy=(a.clientY+b.clientY)/2;
+        cam.position.x-=(nmx-pmx)*s;cam.position.y+=(nmy-pmy)*s;target.x-=(nmx-pmx)*s;target.y+=(nmy-pmy)*s;cam.lookAt(target);
+      }
+      touches[a.identifier]={x:a.clientX,y:a.clientY};touches[b.identifier]={x:b.clientX,y:b.clientY};
+    }
+  },{passive:false});
+  cv.addEventListener('touchend',e=>{Array.from(e.changedTouches).forEach(t=>delete touches[t.identifier]);},{passive:false});
+  (function anim(){
+    requestAnimationFrame(anim);
+    if(!rotating&&autoSpin)rg.rotation.y+=0.003;
+    ren.render(scene,cam);
+  })();
+  subViewers[pageId]={
+    ren,
+    reset(){cam.position.set(0,1.5,cfg.camZ);target.set(0,0,0);cam.lookAt(target);rg.rotation.set(0,0,0);},
+    toggleSpin(){
+      autoSpin=!autoSpin;
+      const btn=document.getElementById(cfg.spinBtn);
+      if(btn){btn.textContent=autoSpin?'⏸':'▶';btn.title=autoSpin?'Pause spin':'Resume spin';btn.style.color=autoSpin?'':'rgba(255,255,255,0.7)';}
+    },
+    toggleFullscreen(){
+      if(!document.fullscreenElement&&!document.webkitFullscreenElement)(wrap.requestFullscreen||wrap.webkitRequestFullscreen).call(wrap);
+      else(document.exitFullscreen||document.webkitExitFullscreen).call(document);
+    },
+    resize(){cam.aspect=wrap.clientWidth/wrap.clientHeight;cam.updateProjectionMatrix();ren.setSize(wrap.clientWidth,wrap.clientHeight);}
+  };
+}
+function resetSubView(id){subViewers[id]&&subViewers[id].reset();}
+function toggleSubSpin(id){subViewers[id]&&subViewers[id].toggleSpin();}
+function toggleSubFullscreen(id){subViewers[id]&&subViewers[id].toggleFullscreen();}
+window.addEventListener('resize',()=>Object.values(subViewers).forEach(v=>v.resize()));
+document.addEventListener('fullscreenchange',()=>Object.values(subViewers).forEach(v=>v.resize()));
+document.addEventListener('webkitfullscreenchange',()=>Object.values(subViewers).forEach(v=>v.resize()));
+// ─────────────────────────────────────────────────────────────────────────────
+
 window.addEventListener('load', function() {
   show('home', document.querySelector('.nb.active'));
 });

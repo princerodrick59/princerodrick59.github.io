@@ -1,25 +1,26 @@
 <div id="page-climb" class="page">
   <div class="ptitle">Climber</div>
-  <div class="psub">Inspired by Team 2630 Thunderbolts · Deep Cage · 563:1 Total Reduction · ⅜" Steel Teeth</div>
+  <div class="psub">Endgame · ATLAS 2026</div>
   <div class="sub-hero">
-    <img class="sub-hero-img" src="assets/images/9.png" alt="Climber final CAD render">
+    <div id="clwrap" class="cwrap">
+      <div class="ctop"></div>
+      <canvas id="clwc"></canvas>
+      <button class="chome" onclick="resetSubView('climb')" title="Reset view">⌂</button>
+      <button class="chome" id="clspinbtn" onclick="toggleSubSpin('climb')" title="Pause spin">⏸</button>
+      <button class="chome" onclick="toggleSubFullscreen('climb')" title="Fullscreen">⛶</button>
+      <div class="chint">DRAG TO ROTATE &nbsp;·&nbsp; PINCH TO ZOOM &nbsp;·&nbsp; TWO-FINGER PAN</div>
+    </div>
     <div class="sub-hero-info">
       <div class="sub-hero-label">Subsystem</div>
       <div class="sub-hero-title">Climber</div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Gear Reduction</span><span class="sub-hero-stat-v">563:1</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Motor</span><span class="sub-hero-stat-v">Kraken x60</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Grip Mechanism</span><span class="sub-hero-stat-v">2× ⅜" Steel Teeth</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Climb Points</span><span class="sub-hero-stat-v">12 + Barge RP</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Planetary Ratio</span><span class="sub-hero-stat-v">400:1</span></div>
+      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Type</span><span class="sub-hero-stat-v">TBD</span></div>
+      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Motor(s)</span><span class="sub-hero-stat-v">TBD</span></div>
+      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Gear Reduction</span><span class="sub-hero-stat-v">TBD</span></div>
+      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Climb Points</span><span class="sub-hero-stat-v">TBD</span></div>
     </div>
   </div>
-  <div class="g2" style="margin-bottom:14px;">
-    <div class="card"><div class="ct">Final Design Specs</div><table class="st"><tr><td>Motor</td><td>Kraken x60</td></tr><tr><td>Planetary Ratio</td><td>400:1</td></tr><tr><td>Additional Reduction</td><td>1.7:1</td></tr><tr><td>Total Reduction</td><td>563:1</td></tr><tr><td>Grip Mechanism</td><td>2× ⅜" Steel Teeth</td></tr><tr><td>Superstructure</td><td>¼" Aluminum Brackets</td></tr><tr><td>Top Structure</td><td>Lightened 1/16" Aluminum Tube</td></tr><tr><td>Position Sensor</td><td>Encoder on 2nd Hex Shaft</td></tr><tr><td>Worlds Addition</td><td>Asymmetric Funnel (Al + PC)</td></tr></table></div>
-    <div class="card"><div class="ct">Worlds Upgrade — Alignment Funnel</div><p class="bt" style="margin-bottom:12px;">For championships, a funnel was added to reduce cage alignment time. One hard side (aluminum) and one soft side (polycarbonate) pushes the anchor away from the end effector during approach.</p><p class="bt">Asymmetric compliance guides the cage pipe into the grip teeth even with imprecise approach angles — reducing driver workload in the final 30 seconds.</p></div>
-  </div>
-  <div class="card"><div class="ct">Iteration History</div>
-    <div class="tl"><div class="tld x"></div><div class="tll">V1 — Rusthounds RI3D Design (Rejected)</div><div class="tl-row"><div class="tld2">Two MAXSpline pipe design, spring hook, servo release, dyneema winch. Too many moving parts, servo damage, limited clearance with elevator, difficult cage alignment.</div><img class="til" src="assets/images/20.png" alt="Climber V1 Rusthounds CAD"></div></div>
-    <div class="tl"><div class="tld x"></div><div class="tll">V2 — Everybot Door-Hinge Design (Rejected)</div><div class="tl-row"><div class="tld2">Door hinge rotation point, 4-plate polycarbonate one-way gate, ratchet wrench winch. Rejected — packaging conflicts, insufficient frame space.</div><img class="til" src="assets/images/21.png" alt="Climber V2 Everybot CAD"></div></div>
-    <div class="tl" style="padding-bottom:0"><div class="tld"></div><div class="tll">V3 — Team 2630 Two-Finger Design (Final)</div><div class="tl-row"><div class="tld2">Two fingers engage single cage pipe. ⅛" aluminum superstructure twisted under load — FEA confirmed ¼" needed. Forks iterated to ⅜" steel with geometry matched to cage curvature.</div><img class="til" src="assets/images/22.png" alt="Climber V3 steel teeth iterations"></div></div>
+  <div class="g2">
+    <div class="card"><div class="ct">Mechanism</div><table class="st"><tr><td>Type</td><td>TBD</td></tr><tr><td>Motor</td><td>TBD</td></tr><tr><td>Gear Reduction</td><td>TBD</td></tr><tr><td>Grip Mechanism</td><td>TBD</td></tr><tr><td>Superstructure</td><td>TBD</td></tr></table></div>
+    <div class="card"><div class="ct">Design Notes</div><p class="bt">Details coming soon — climber design for ATLAS 2026 is in progress.</p></div>
   </div>
 </div>
