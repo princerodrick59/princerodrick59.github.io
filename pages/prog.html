@@ -230,7 +230,7 @@
         <div class="tl" style="padding-bottom:0">
           <div class="tld"></div>
           <div class="tll">Trust Scaling</div>
-          <div class="tld2">Measurement uncertainty scales with Distance² and decreases as more tags are simultaneously visible. Close multi-tag observations receive maximum trust; distant single-tag observations contribute minimally.</div>
+          <div class="tld2">Measurement uncertainty scales with Distance², the estimate is trusted less if we are farther away from the tag</div>
         </div>
       </div>
     </div>
@@ -270,16 +270,7 @@
       <tr><td>Vision</td><td>Per-Camera Toggles</td><td>Faulty camera isolated individually; remaining cameras continue pose estimation normally</td></tr>
       <tr><td>Drive Assist</td><td>Assist Enabled</td><td>Disables all Bump/Trench logic — full-speed driving with no zone restrictions</td></tr>
     </table>
-    <div class="sdiv"></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:14px;">
-      <div>
-        <p class="bt" style="margin-bottom:6px;font-weight:600;">Graceful Degradation</p>
-        <p class="bt" style="margin-bottom:0;">Disabling the shooter's distance-based auto-aim doesn't stop the robot from scoring — it simply reverts to a predictable fixed speed the drive team can account for manually. The robot degrades to a known state, not an unknown one.</p>
-      </div>
-      <div style="border-left:1px solid var(--g1);padding-left:24px;">
-        <p class="bt" style="margin-bottom:6px;font-weight:600;">Defense Against Bad Data</p>
-        <p class="bt" style="margin-bottom:0;">Automation is only as good as its inputs. If field lighting corrupts vision or the turret begins tracking incorrectly, drivers can isolate individual components. A single sensor failure cannot cascade into the loss of the entire robot's scoring capability.</p>
-      </div>
+
     </div>
   </div>
 </div>
