@@ -1,0 +1,26 @@
+<div id="page-elev" class="page">
+  <div class="ptitle">Elevator</div>
+  <div class="psub">3-Stage Cascading · 93" Max Extension · Dual Kraken x60 · Dyneema Rigging</div>
+  <div class="sub-hero">
+    <img class="sub-hero-img" src="assets/images/7.png" alt="Elevator final CAD render">
+    <div class="sub-hero-info">
+      <div class="sub-hero-label">Subsystem</div>
+      <div class="sub-hero-title">Elevator</div>
+      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Stages</span><span class="sub-hero-stat-v">3-Stage + Carriage</span></div>
+      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Max Reach</span><span class="sub-hero-stat-v">93"</span></div>
+      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Full Travel</span><span class="sub-hero-stat-v">&lt;1 second</span></div>
+      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Pivot Ratio</span><span class="sub-hero-stat-v">20.5:1</span></div>
+      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Motors</span><span class="sub-hero-stat-v">2× Kraken x60</span></div>
+    </div>
+  </div>
+  <div class="g2" style="margin-bottom:14px;">
+    <div class="card"><div class="ct">Final Design Specs</div><table class="st"><tr><td>Drive Motors</td><td>2× Kraken x60</td></tr><tr><td>Motor Gearing</td><td>5:1 Ratio</td></tr><tr><td>Structure Tubing</td><td>2×1×⅛" Aluminum Extrusion</td></tr><tr><td>Rigging</td><td>Dyneema Rope, Cascading</td></tr><tr><td>Carriage Pivot</td><td>20.5:1 · MAXSpline Live Axle</td></tr><tr><td>Wire Management</td><td>WCP Bi-Directional E-Chain</td></tr><tr><td>LED Strip</td><td>Base Stage · Driver Feedback</td></tr><tr><td>Limit Switch</td><td>Door Alarm Sensor</td></tr></table></div>
+    <div class="card"><div class="ct">Electrical Panel</div><table class="st"><tr><td>Panel Material</td><td>ABS Plate</td></tr><tr><td>Power</td><td>REV PDH (15 Motors)</td></tr><tr><td>Computers</td><td>2× Orange Pi 5</td></tr><tr><td>Controller</td><td>RoboRIO</td></tr><tr><td>Accessories</td><td>mitoCANdria, CTRE VRM, CANdle</td></tr><tr><td>Access</td><td>Tool-Free (Rear-Mounted)</td></tr></table><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;"><img src="assets/images/24.png" alt="Electrical panel CAD layout" style="width:100%;border-radius:5px;border:1px solid var(--g1);object-fit:contain;background:var(--wh);padding:4px;"><img src="assets/images/23.png" alt="PDH wiring diagram" style="width:100%;border-radius:5px;border:1px solid var(--g1);object-fit:contain;background:var(--wh);padding:4px;"></div></div>
+  </div>
+  <div class="card"><div class="ct">Design Iterations</div>
+    <div class="tl"><div class="tld"></div><div class="tll">Krayola CAD — Initial Concept</div><div class="tl-row"><div class="tld2">Established cascading 3-stage with pivoting arm. Used CAD + reef model to determine 93" height. Chose WCP COTS elevator (3-stage capable) over Thrifty Bot.</div><img class="til" src="assets/images/10.png" alt="Krayola CAD initial concept"></div></div>
+    <div class="tl"><div class="tld"></div><div class="tll">V1 — Core Structure</div><div class="tl-row"><div class="tld2">Electrical panel added for space utilization + impact protection. Cubic carriage with MAXSpline live axle. Two cameras for AprilTag + coral tracking.</div><img class="til" src="assets/images/11.png" alt="Elevator V1 CAD"></div></div>
+    <div class="tl"><div class="tld"></div><div class="tll">V2 — Weight &amp; Reliability</div><div class="tl-row"><div class="tld2">Square weight reduction failed FEA — rejected. Algae claw removed (strategy change). 3D-printed e-chain replaced with WCP Bi-Directional chain.</div><img class="til" src="assets/images/12.png" alt="Elevator V2 CAD"></div></div>
+    <div class="tl" style="padding-bottom:0"><div class="tld"></div><div class="tll">Final — FEA-Guided Triangular Cutouts</div><div class="tld2">Triangular cutout pattern reduced elevator by 9 lb. Belly pan → 1/10" SRPP saved 2 lb. Robot reduced from 128 lb to competition weight.</div></div>
+  </div>
+</div>
