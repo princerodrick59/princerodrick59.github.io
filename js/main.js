@@ -41,7 +41,7 @@ function initR(){
   ren.toneMapping=THREE.ACESFilmicToneMapping;ren.toneMappingExposure=1.0;
   scene=new THREE.Scene();
   cam=new THREE.PerspectiveCamera(45,W/H,0.1,100);
-  cam.position.set(0,1.2,4.5);cam.lookAt(target);
+  cam.position.set(0,1.2,2.8);cam.lookAt(target);
   scene.add(new THREE.AmbientLight(0xffffff,0.8));
   const kl=new THREE.DirectionalLight(0xffffff,1.5);kl.position.set(3,6,5);scene.add(kl);
   const fl=new THREE.DirectionalLight(0xffffff,0.8);fl.position.set(-4,3,-2);scene.add(fl);
@@ -125,7 +125,7 @@ function toggleFullscreen(){
   }
 }
 function resetView(){
-  cam.position.set(0,1.2,4.5);
+  cam.position.set(0,1.2,2.8);
   target.set(0,0.5,0);
   cam.lookAt(target);
   rg.rotation.set(0,0,0);
