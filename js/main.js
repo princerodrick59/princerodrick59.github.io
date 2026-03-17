@@ -38,19 +38,20 @@ function initR(){
   const W=wrap.clientWidth,H=wrap.clientHeight;
   ren=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
   ren.setPixelRatio(Math.min(devicePixelRatio,2));ren.setSize(W,H);
-  ren.toneMapping=THREE.ACESFilmicToneMapping;ren.toneMappingExposure=1.6;
-  ren.shadowMap.enabled=true;ren.shadowMap.type=THREE.PCFShadowMap;
+  ren.toneMapping=THREE.ACESFilmicToneMapping;ren.toneMappingExposure=1.8;
+  ren.shadowMap.enabled=true;ren.shadowMap.type=THREE.PCFSoftShadowMap;
   scene=new THREE.Scene();
   cam=new THREE.PerspectiveCamera(45,W/H,0.1,100);
   cam.position.set(0,1.2,2.8);cam.lookAt(target);
-  scene.add(new THREE.HemisphereLight(0x87ceeb,0x8b7355,0.8));
-  const kl=new THREE.DirectionalLight(0xfff5c0,2.5);kl.position.set(5,10,5);
-  kl.castShadow=true;kl.shadow.mapSize.width=1024;kl.shadow.mapSize.height=1024;
-  kl.shadow.camera.near=0.5;kl.shadow.camera.far=20;
-  kl.shadow.camera.left=-4;kl.shadow.camera.right=4;kl.shadow.camera.top=4;kl.shadow.camera.bottom=-4;
-  kl.shadow.bias=-0.001;scene.add(kl);
-  const fl=new THREE.DirectionalLight(0xfff0c0,0.4);fl.position.set(-4,2,-2);scene.add(fl);
-  const rl=new THREE.DirectionalLight(0xc8e8ff,0.3);rl.position.set(0,3,-5);scene.add(rl);
+  scene.add(new THREE.AmbientLight(0xffffff,2.0));
+  const kl=new THREE.DirectionalLight(0xffffff,2.0);kl.position.set(4,8,5);
+  kl.castShadow=true;kl.shadow.mapSize.width=2048;kl.shadow.mapSize.height=2048;
+  kl.shadow.camera.near=0.5;kl.shadow.camera.far=30;
+  kl.shadow.camera.left=-5;kl.shadow.camera.right=5;kl.shadow.camera.top=5;kl.shadow.camera.bottom=-5;
+  kl.shadow.bias=-0.001;kl.shadow.radius=12;scene.add(kl);
+  const fl=new THREE.DirectionalLight(0xffffff,1.2);fl.position.set(-4,3,-2);scene.add(fl);
+  const rl=new THREE.DirectionalLight(0xffffff,1.0);rl.position.set(0,2,-5);scene.add(rl);
+  const fr=new THREE.DirectionalLight(0xffffff,0.8);fr.position.set(4,2,2);scene.add(fr);
   rg=new THREE.Group();scene.add(rg);
   const dracoLoader=new THREE.DRACOLoader();
   dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/draco/');
@@ -68,14 +69,14 @@ function initR(){
     const center=box.getCenter(new THREE.Vector3());
     rg.position.x-=center.x;
     rg.position.z-=center.z;
-    rg.position.y=FLOOR_Y-box.min.y;
-    rg.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;if(o.material){o.material.metalness=Math.min(o.material.metalness,0.85);o.material.roughness=Math.max(o.material.roughness,0.2);}}});
+    rg.position.y=FLOOR_Y-box.min.y+0.3;
+    rg.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;if(o.material){o.material.metalness=Math.min(o.material.metalness,0.9);o.material.roughness=Math.max(o.material.roughness,0.15);if(o.material.transparent||o.material.opacity<1||o.material.transmission>0){o.material.transparent=true;o.material.opacity=0.18;o.material.depthWrite=false;o.material.roughness=0;o.material.metalness=0;}}}});
     scene.add(rg);
     car=null;ee=null;
   },undefined,function(err){console.error('GLB load error:',err);});
   // Mouse controls
   cv.addEventListener('pointerdown',e=>{
-    if(e.button===2){rotating=true;pm={x:e.clientX,y:e.clientY};cv.setPointerCapture(e.pointerId);}
+    if(e.button===0||e.button===2){rotating=true;pm={x:e.clientX,y:e.clientY};cv.setPointerCapture(e.pointerId);}
     else if(e.button===1){panning=true;pm={x:e.clientX,y:e.clientY};cv.setPointerCapture(e.pointerId);e.preventDefault();}
   });
   cv.addEventListener('pointerup',()=>{rotating=false;panning=false;});
