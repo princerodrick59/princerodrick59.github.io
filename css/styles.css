@@ -188,7 +188,7 @@ html,body{width:100%;height:100%;font-family:var(--fb);font-weight:700;backgroun
 /* ── TIMELINE INLINE IMAGE ── */
 .tl-row{display:flex;gap:12px;align-items:flex-start;}
 .tl-row>.tld2{flex:1;min-width:0;}
-.til{width:130px;flex-shrink:0;aspect-ratio:4/3;object-fit:contain;border-radius:5px;border:1px solid var(--g1);background:var(--wh);padding:4px;}
+.til{width:200px;flex-shrink:0;aspect-ratio:4/3;object-fit:contain;border-radius:5px;border:1px solid var(--g1);background:var(--wh);padding:4px;}
 
 /* ── CARD INLINE IMAGE ── */
 .card-img{width:100%;border-radius:5px;border:1px solid var(--g1);margin-top:12px;display:block;object-fit:contain;max-height:200px;background:var(--wh);padding:4px;}
