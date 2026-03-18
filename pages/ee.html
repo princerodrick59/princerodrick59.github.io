@@ -1,25 +1,89 @@
 <div id="page-ee" class="page">
-  <div class="ptitle">End Effector</div>
-  <div class="psub">Inspired by Team 4481 Rembrandts · Gear-Driven · Carbon Fiber · 720° Wiring ROM</div>
-  <div class="sub-hero" style="margin-bottom:14px;">
-    <img class="sub-hero-img" src="assets/images/8.png" alt="End effector final CAD render">
-    <div class="sub-hero-info">
-      <div class="sub-hero-label">Subsystem</div>
-      <div class="sub-hero-title">End Effector</div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Structure</span><span class="sub-hero-stat-v">CF Tube 2⅛×1"</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Drive</span><span class="sub-hero-stat-v">100% Gear-Driven</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Motor</span><span class="sub-hero-stat-v">CTRE Minion 1:1</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Wiring ROM</span><span class="sub-hero-stat-v">720° Rotation</span></div>
-      <div class="sub-hero-stat"><span class="sub-hero-stat-k">Sensor</span><span class="sub-hero-stat-v">ToF CAN</span></div>
+  <div class="ptitle">Turret &amp; Shooter</div>
+  <div class="psub">Inspired by Teams 987 &amp; 4481 · Belt-Driven Turret · 360° Range · Fixed-Angle Flywheel Shooter</div>
+
+  <!-- ── STATS ── -->
+  <div class="sg" style="margin-bottom:14px;">
+    <div class="sc"><div class="sl">Turret Range</div><div class="sv">360<span style="font-size:15px;">°</span></div><div class="su">Full Rotation</div></div>
+    <div class="sc"><div class="sl">Turret Ratio</div><div class="sv">12.5:1</div><div class="su">Kraken x44</div></div>
+    <div class="sc"><div class="sl">Flywheel</div><div class="sv">1:1</div><div class="su">Motor to Flywheel</div></div>
+    <div class="sc"><div class="sl">Exit Angle</div><div class="sv">25<span style="font-size:15px;">°</span></div><div class="su">Fixed Hood</div></div>
+  </div>
+
+  <!-- ── TURRET ── -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="ct">Turret</div>
+    <div class="g2i" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <table class="st">
+        <tr><td>Motor</td><td>Kraken x44</td></tr>
+        <tr><td>Drive Ratio</td><td>12.5:1 (Belt, No Gearbox)</td></tr>
+        <tr><td>Pulley</td><td>150-Tooth PETG 3D Printed</td></tr>
+        <tr><td>Bearing Stackup</td><td>Low-Friction, Full Constraint</td></tr>
+        <tr><td>Shooter Attachment</td><td>Brass Inserts</td></tr>
+        <tr><td>Zero Reference</td><td>Zeroing Tool (Match Consistency)</td></tr>
+        <tr><td>Wire Management</td><td>Wire Loom Floating from Hopper Support Bars</td></tr>
+      </table>
+      <div>
+        <p class="bt" style="margin-bottom:10px;">Inspired by Team 987's 2024 turret, the belt-driven design enables shooting from any field position without repositioning the robot. Spacing can be adjusted by varying belt length, allowing flexible packaging.</p>
+        <p class="bt" style="margin-bottom:10px;">No dedicated gearbox in the drive path — belts drive directly to the pulley, eliminating backlash and improving positional accuracy. A WCP Greyt Turret-inspired stacked bearing arrangement fully constrains and retains the turret across all axes.</p>
+        <p class="bt">Wire loom floats from hopper support bars to provide power across all 360° of movement.</p>
+      </div>
     </div>
   </div>
-  <div class="g2" style="margin-bottom:14px;">
-    <div class="card"><div class="ct">Final Design Specs</div><table class="st"><tr><td>Structure</td><td>2⅛×1×1/16" Carbon Fiber Tube</td></tr><tr><td>Plates</td><td>1/10" MaxComposite SRPP</td></tr><tr><td>Drive Type</td><td>100% Gear-Driven</td></tr><tr><td>Wheel Motor</td><td>CTRE Minion, 1:1</td></tr><tr><td>Gearing</td><td>3D-Printed, Chamfered Edges</td></tr><tr><td>Pivot Shaft</td><td>MAXSpline (Live Axle)</td></tr><tr><td>Wire Routing</td><td>Through MAXSpline Shaft</td></tr><tr><td>Wiring ROM</td><td>720° Rotation</td></tr><tr><td>Sensor</td><td>ToF (CAN) — Coral Detect</td></tr><tr><td>Wheel Axles</td><td>All Live Axles</td></tr></table></div>
-    <div class="card"><div class="ct">Design Rationale</div><p class="bt" style="margin-bottom:10px;">Carbon fiber chosen because the end effector travels to 93" — every gram saved at height reduces tipping risk and enables lower gear ratios for faster movement.</p><p class="bt" style="margin-bottom:10px;">Gear-driven design eliminates belt tension and chain skip — zero adjustments needed mid-competition.</p><p class="bt">MAXSpline shaft routes all wiring internally — eliminates wire twist over 720° of rotation.</p></div>
+
+  <!-- ── TURRET ITERATIONS ── -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="ct">Turret Iterations</div>
+    <div class="tl"><div class="tld x"></div><div class="tll">V1 — Gear-Driven (Team 1717 Inspired)</div><div class="tl-row"><div class="tld2">Inspired by Team 1717's 2012 robot. Large-diameter gears were more manufacturable than equivalent pulleys given our tooling. Ruled out due to packaging constraints and insufficient gear reduction in the turret drive, impacting integration and controllability.</div><img class="til" src="assets/images/30.png" alt="Turret V1 gear-driven CAD"></div></div>
+    <div class="tl" style="padding-bottom:0"><div class="tld"></div><div class="tll">V2 — Belt-Driven (Team 987 Inspired)</div><div class="tl-row"><div class="tld2">Belt spacing adjustable to fit packaging requirements. WCP Greyt Turret-inspired stacked bearing arrangement provides stability and smooth rotation. Direct belt drive eliminates gearbox backlash for more consistent and responsive turret control. Final configuration throughout the season.</div><img class="til" src="assets/images/31.png" alt="Turret V2 belt-driven final CAD"></div></div>
   </div>
-  <div class="card"><div class="ct">Iteration History</div>
-    <div class="tl"><div class="tld x"></div><div class="tll">V1 — "Trident" (Rejected)</div><div class="tl-row"><div class="tld2">Angled front plate for ground pickup. No compliance made ground pickup nearly impossible. Narrow acquisition zone made alignment very difficult.</div><img class="til" src="assets/images/13.png" alt="End effector V1 Trident CAD"></div></div>
-    <div class="tl"><div class="tld"></div><div class="tll">V2 — 4481-Style Inside Gripper</div><div class="tl-row"><div class="tld2">Inspired by Team 4481 Rembrandts (OpenAlliance). 3D-printed polycarbonate gearset. Spring-loaded algae claw added. MAXComposite SRPP plates on 2.125×1 CF tube.</div><img class="til" src="assets/images/14.png" alt="End effector V2 carbon fiber piece"></div></div>
-    <div class="tl" style="padding-bottom:0"><div class="tld"></div><div class="tll">V3 — Final (Refined 4481 Style)</div><div class="tl-row"><div class="tld2">Algae claw removed (unnecessary weight, strategy revised). Chamfered gear edges reduce edge loading. Final configuration throughout competition season.</div><img class="til" src="assets/images/15.png" alt="End effector V3 final gears"></div></div>
+
+  <!-- ── SHOOTER ── -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="ct">Shooter — Fixed Angle Flywheel</div>
+    <div class="g2i" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <table class="st">
+        <tr><td>Flywheel Ratio</td><td>1:1 (Motor Direct)</td></tr>
+        <tr><td>Flywheel Gears</td><td>Steel (MOI = 8.28)</td></tr>
+        <tr><td>Exit Angle</td><td>25° (Fixed Hood)</td></tr>
+        <tr><td>Fuel Centering</td><td>TPU Wedges</td></tr>
+        <tr><td>Shot Range</td><td>Anywhere Except Close to Hub</td></tr>
+      </table>
+      <div>
+        <p class="bt" style="margin-bottom:10px;">The shooter uses a fixed-angle hood at 25° — calculated to be optimal for shots from any distance except immediately adjacent to the hub. This eliminates the need for a variable hood mechanism, reducing complexity.</p>
+        <p class="bt" style="margin-bottom:10px;">Steel flywheel gears maintain a high Moment of Inertia (8.28) to resist speed changes as each Fuel piece is fed, ensuring consistent exit velocity shot to shot.</p>
+        <p class="bt">TPU wedges inside the shooter assist in centering each piece of Fuel before it contacts the flywheel, improving shot consistency.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ROBOT ARCHETYPE CONTEXT ── -->
+  <div class="card">
+    <div class="ct">Combined System — Shoot From Anywhere</div>
+    <p class="bt" style="margin-bottom:14px;">The turret and shooter work as a unified system allowing the robot to score while moving across the field without reorienting. Inspiration drawn heavily from Team 4481 (Rembrandts) 2026 robot <em>Era</em>, whose integration of indexing and turreted scoring informed many key design decisions.</p>
+    <div class="sdiv"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;">
+      <div class="gi" style="border-bottom:none;">
+        <div class="gn">1</div>
+        <div>
+          <div class="gh">Full 360° Coverage</div>
+          <div class="gp">Turret rotates continuously — robot never needs to face the hub to score. Driver can maintain optimal field positioning regardless of shot direction.</div>
+        </div>
+      </div>
+      <div class="gi" style="border-bottom:none;border-left:1px solid var(--g1);padding-left:16px;">
+        <div class="gn">2</div>
+        <div>
+          <div class="gh">Minimal Backlash</div>
+          <div class="gp">No dedicated gearbox in the turret drive path — direct belt actuation eliminates backlash and improves positional precision for accurate shot angle control.</div>
+        </div>
+      </div>
+      <div class="gi" style="border-bottom:none;border-left:1px solid var(--g1);padding-left:16px;">
+        <div class="gn">3</div>
+        <div>
+          <div class="gh">Consistent Exit Velocity</div>
+          <div class="gp">High-MOI steel flywheel gears resist speed drop-off as each ball feeds. TPU wedges center each piece for repeatable contact geometry and predictable shot.</div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
