@@ -24,7 +24,7 @@
   <!-- ── 2. STATE-BASED DESIGN ── -->
   <div class="card" style="margin-bottom:14px;">
     <div class="ct">State-Based Design</div>
-    <p class="bt" style="margin-bottom:14px;">Rather than WPILib's Command-Based architecture, every subsystem uses a custom state machine pattern. External inputs only set the desired state — the subsystem handles all motor logic, sequencing, and readiness checks internally.</p>
+    <p class="bt" style="margin-bottom:14px;">We moved away from the traditional WPILib Command-Based subsystem model in favor of a custom state machine pattern — but the top-level structure is still command-based. The <strong>RobotContainer</strong> acts as the manager, using a Command-Based setup to schedule tasks and bind them to controller buttons. What changed is how subsystems behave internally: external inputs only set the desired state, and each subsystem handles all motor logic, sequencing, and readiness checks on its own.</p>
     <div class="sdiv"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;margin-bottom:16px;">
       <div class="gi">
@@ -93,12 +93,13 @@
   <!-- ── 4. SHOOTER ── -->
   <div class="card" style="margin-bottom:14px;">
     <div class="ct">Shooter Subsystem</div>
-    <p class="bt" style="margin-bottom:14px;">Dual flywheels in leader-follower configuration with opposed motor alignment to spin in the same direction. Uses an <strong>InterpolatingDoubleTreeMap</strong> to map measured field distances to empirically tuned RPS values — distances in between are interpolated automatically. Two separate tables handle hub shots and neutral-zone shuttling.</p>
+    <p class="bt" style="margin-bottom:14px;">Two Kraken x60s in a leader-follower configuration drive the flywheel at 1:1, with opposed motor alignment to spin in the same direction. The second motor was added as an iteration to decrease recovery time between shots. Uses an <strong>InterpolatingDoubleTreeMap</strong> to map measured field distances to empirically tuned RPS values — distances in between are interpolated automatically. Two separate tables handle hub shots and neutral-zone shuttling.</p>
     <div class="sdiv"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
       <div>
         <p class="bt" style="margin-bottom:10px;font-weight:600;">Why Interpolation?</p>
-        <p class="bt" style="margin-bottom:0;">Fixed flywheel speeds overshoot close targets and undershoot far ones. By defining velocity values at specific measured distances — e.g. 47 RPS at 3.0m, 49 RPS at 3.5m — a shot from 3.25m automatically calculates to 48 RPS without any manual tuning in between. Air times are measured at the same known distances and stored in a parallel lookup table used by the Shot Calculator.</p>
+        <p class="bt" style="margin-bottom:10px;">Fixed flywheel speeds overshoot close targets and undershoot far ones. By defining velocity values at specific measured distances — e.g. 47 RPS at 3.0m, 49 RPS at 3.5m — a shot from 3.25m automatically calculates to 48 RPS without any manual tuning in between. Air times are measured at the same known distances and stored in a parallel lookup table used by the Shot Calculator.</p>
+        <img class="til" src="assets/images/software/interpolation graph.png" alt="Shooter interpolation distance-to-RPS graph" style="width:100%;height:auto;aspect-ratio:auto;">
       </div>
       <div style="border-left:1px solid var(--g1);padding-left:24px;">
         <p class="bt" style="margin-bottom:10px;font-weight:600;">Shooter States</p>
@@ -178,7 +179,7 @@
         <div class="tl" style="padding-bottom:0">
           <div class="tld"></div>
           <div class="tll">Step 3 — Indexer Fires</div>
-          <div class="tld2">Only when both confirmations are received does the indexer activate to feed the note into the flywheels. The gate resets immediately after the shot.</div>
+          <div class="tld2">Only when both confirmations are received does the indexer activate to feed the Fuel into the flywheels. The gate resets immediately after the shot.</div>
         </div>
       </div>
       <div style="border-left:1px solid var(--g1);padding-left:24px;">

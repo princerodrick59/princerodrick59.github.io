@@ -1,9 +1,9 @@
 <div id="page-electrical" class="page">
   <div class="ptitle">Electrical</div>
-  <div class="psub">Centralized Panel · Dual CAN Networks (CANivore) · Connection Documentation · CAN ID Labeling</div>
+  <div class="psub">Centralized Panel · CANivore (Drivebase) + RIO CAN · Connection Documentation · CAN ID Labeling</div>
 
   <div class="sg" style="margin-bottom:14px;">
-    <div class="sc"><div class="sl">CAN Networks</div><div class="sv">2</div><div class="su">CANivore Isolated</div></div>
+    <div class="sc"><div class="sl">CAN Networks</div><div class="sv">2</div><div class="su">CANivore + RIO CAN</div></div>
     <div class="sc"><div class="sl">Vision</div><div class="sv">2×</div><div class="su">Limelight 4</div></div>
     <div class="sc"><div class="sl">IMU</div><div class="sv">Pigeon</div><div class="su">Center-Mounted</div></div>
     <div class="sc"><div class="sl">Panel Access</div><div class="sv">Tool-</div><div class="su">Free Removal</div></div>
@@ -33,12 +33,34 @@
 
   <div class="card" style="margin-bottom:14px;">
     <div class="ct">Point-to-Point Power Wires</div>
-    <p class="bt" style="margin-bottom:10px;">This year we implemented direct point-to-point power wires from the motors to the PDH. Before Week Zero we had difficulties extending power wires from our swerve modules to the PDH — our initial solution was to use butt connectors. Moving to direct runs improved reliability and reduced the number of connection points that could fail under vibration.</p>
+    <p class="bt" style="margin-bottom:10px;">We transitioned to a direct, point-to-point wiring philosophy to increase reliability and current efficiency. Early in the season, we struggled with short factory leads on swerve modules — our initial fix of using butt connectors to extend the wires proved to be a point of failure, as vibrations during testing led to wire pull-outs.</p>
+    <p class="bt" style="margin-bottom:10px;">After consulting with team alumni, we moved to custom-fabricated power cables. By <strong>crimping ring terminals directly onto high-strand copper wire</strong>, we eliminated intermediate splices — resulting in a more secure mechanical connection to the PDH and a cleaner, snag-free wire run.</p>
     <table class="st">
-      <tr><td>Implementation</td><td>Direct Motor-to-PDH Power Runs</td></tr>
       <tr><td>Previous Approach</td><td>Butt Connectors for Extensions</td></tr>
-      <tr><td>Benefit</td><td>Fewer Connection Points, Improved Reliability</td></tr>
+      <tr><td>Solution</td><td>Crimped Ring Terminals on High-Strand Copper Wire</td></tr>
+      <tr><td>Benefit</td><td>No Intermediate Splices, Secure PDH Connection</td></tr>
     </table>
+  </div>
+
+  <div class="g2" style="margin-bottom:14px;">
+    <div class="card">
+      <div class="ct">Learning Pneumatics</div>
+      <p class="bt" style="margin-bottom:10px;">Since we had never worked with air-powered systems before, we had to learn quickly. We taught ourselves how to wire the control modules and plumb the tubes and valves needed to make a pneumatic climber work.</p>
+      <table class="st">
+        <tr><td>System</td><td>Single-Acting Cylinders + Double-Acting Solenoid</td></tr>
+        <tr><td>Learned</td><td>Control Module Wiring + Tube/Valve Plumbing</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div class="ct">The Engineering Pivot</div>
+      <p class="bt" style="margin-bottom:10px;">Even though our pneumatic system worked, we chose to remove it before our first competition. We realized the system was too heavy and complicated for what we actually needed on the field. By taking it off, we saved weight that we could use to make other parts of our robot stronger.</p>
+      <p class="bt">This taught us that sometimes the best engineering choice is knowing when to keep it simple.</p>
+      <table class="st">
+        <tr><td>Decision</td><td>Removed Pneumatics Before Competition</td></tr>
+        <tr><td>Reason</td><td>Too Heavy and Complex for Benefit Provided</td></tr>
+        <tr><td>Outcome</td><td>Weight Savings Applied to Other Subsystems</td></tr>
+      </table>
+    </div>
   </div>
 
   <div class="card">
