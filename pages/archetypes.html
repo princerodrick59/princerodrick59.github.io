@@ -1,0 +1,54 @@
+<div id="page-archetypes" class="page">
+  <div class="ptitle">Archetype Iterations</div>
+  <div class="psub">Three Robot Archetypes Considered · Inspired by 254, 118, and 4481 · Converged on Spindexer + Corner Turret</div>
+
+  <p class="bt" style="margin:0 0 18px 0;">Before committing to a final robot architecture, we explored three distinct design archetypes. Each iteration informed the next, ultimately converging on the spindexer-fed corner turret design used on ATLAS.</p>
+
+  <div class="card" style="margin-bottom:14px;">
+    <div class="ct">Archetype Overview</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;">
+      <div class="gi" style="border-bottom:none;">
+        <div class="gn">V1</div>
+        <div>
+          <div class="gh">Rolldexer + Centered Turret</div>
+          <div class="gp">254 2017 "Misfire" inspired. Roller floor system feeding a rear-mounted shooter with a centered turret. Insufficient hopper volume for turret integration.</div>
+        </div>
+      </div>
+      <div class="gi" style="border-bottom:none;border-left:1px solid var(--g1);padding-left:16px;">
+        <div class="gn">V2</div>
+        <div>
+          <div class="gh">Belt-Feed + Corner Shooter</div>
+          <div class="gp">118 2017 "Ruckus" inspired. Perpendicular belt transfer into a corner-mounted turret. Too complex — packaging and reliability concerns ruled it out.</div>
+        </div>
+      </div>
+      <div class="gi" style="border-bottom:none;border-left:1px solid var(--g1);padding-left:16px;">
+        <div class="gn">V3</div>
+        <div>
+          <div class="gh">Spindexer + Corner Turret</div>
+          <div class="gp">Final design. 4481 "Era" inspired. ~100 Fuel capacity hopper with spindexer serialization into a corner-mounted turreted shooter. Simple, fast, reliable.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card"><div class="ct">Iteration History</div>
+    <div class="tl"><div class="tld x"></div><div class="tll">V1 — Rolldexer with Centered Turret</div>
+      <div class="tl-row">
+        <div class="tld2">This iteration was heavily inspired by Team 254's 2017 robot, Misfire, particularly in the intake, indexing system, and expanding hopper architecture. The design utilized a roller-based floor system to translate Fuel toward the rear of the hopper and into the shooter, enabling continuous and controlled ball flow.<br><br>The primary deviation from 254's approach was the addition of a turreted shooter. However, as the design progressed, it became clear that sufficient space for an effective turret could not be achieved without significantly compromising hopper volume. Resolving these packaging constraints would have reduced ball capacity beyond our acceptable threshold.<br><br>Given these limitations, we determined that this architecture did not meet our performance requirements, and it was ultimately set aside as we returned to the drawing board.</div>
+        <img class="til" src="assets/images/archetypeiterations/v1.png" alt="V1 Rolldexer with centered turret block CAD">
+      </div>
+    </div>
+    <div class="tl"><div class="tld x"></div><div class="tll">V2 — 118 2017 Style Belt-Feed Indexer</div>
+      <div class="tl-row">
+        <div class="tld2">To address our capacity constraints, we explored architectures that would allow us to relocate the shooter to a corner of the robot, improving internal volume utilization and enabling higher Fuel storage. This investigation led us to study Team 118's 2017 robot, Ruckus, which used a belt-driven system to transfer Fuel rearward into a secondary set of perpendicular belts that fed a corner-mounted turret.<br><br>We prototyped a similar concept at the block CAD level; however, the perpendicular belt transfer introduced significant complexity in packaging, alignment, and reliability. The added mechanical overhead did not align with our "simple, fast, reliable" philosophy, and the design was ultimately deemed more complicated than the performance gains justified. As a result, we chose to move on from this approach and return to the drawing board.</div>
+        <img class="til" src="assets/images/archetypeiterations/v2.png" alt="V2 118-style belt-feed corner turret block CAD">
+      </div>
+    </div>
+    <div class="tl" style="padding-bottom:0"><div class="tld"></div><div class="tll">V3 — Spindexer into Corner Turret (Final)</div>
+      <div class="tl-row">
+        <div class="tld2">Our final design converged on a spindexer-fed system integrated with a corner-mounted turret, paired with a high-capacity hopper capable of storing approximately 100 Fuel. This architecture allows for efficient indexing, controlled feeding, and continuous scoring while maintaining a compact and organized internal layout.<br><br>This solution reflects Team 1792's core design philosophy — simple, fast, and reliable — while still meeting the high-performance demands required for effective scoring output. The spindexer enables consistent ball management and minimizes jamming risk, while the turret provides flexible targeting without requiring full robot reorientation.<br><br>For this iteration, we drew significant inspiration from Team 4481, Team Rembrandts, specifically their 2026 robot Era, whose integration of indexing and turreted scoring informed many of our design decisions.</div>
+        <img class="til" src="assets/images/archetypeiterations/v3.png" alt="V3 Spindexer into corner turret block CAD">
+      </div>
+    </div>
+  </div>
+</div>

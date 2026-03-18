@@ -1,0 +1,61 @@
+<div id="page-electrical" class="page">
+  <div class="ptitle">Electrical</div>
+  <div class="psub">Centralized Panel · Dual CAN Networks (CANivore) · Connection Documentation · CAN ID Labeling</div>
+
+  <div class="sg" style="margin-bottom:14px;">
+    <div class="sc"><div class="sl">CAN Networks</div><div class="sv">2</div><div class="su">CANivore Isolated</div></div>
+    <div class="sc"><div class="sl">Vision</div><div class="sv">2×</div><div class="su">Limelight 4</div></div>
+    <div class="sc"><div class="sl">IMU</div><div class="sv">Pigeon</div><div class="su">Center-Mounted</div></div>
+    <div class="sc"><div class="sl">Panel Access</div><div class="sv">Tool-</div><div class="su">Free Removal</div></div>
+  </div>
+
+  <div class="g2" style="margin-bottom:14px;">
+    <div class="card">
+      <div class="ct">Documentation</div>
+      <p class="bt" style="margin-bottom:10px;">This year we worked on creating image documents that help plan out where everything connects and help monitor how many components have been added. These documents also create a faster relay of information to diagnose problems during competition.</p>
+      <table class="st">
+        <tr><td>Format</td><td>Image-Based Connection Diagrams</td></tr>
+        <tr><td>Purpose</td><td>Connection Planning + Component Monitoring</td></tr>
+        <tr><td>Benefit</td><td>Faster Fault Diagnosis During Events</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div class="ct">Centralized Electrical Panel</div>
+      <p class="bt" style="margin-bottom:10px;">This year we worked closely to create a singular electrical panel that has all core electronics mounted to it. This allows us to create a robust system that has most components in proximity to each other. We also decided to mount it to the back of our elevator so that we can access it without the use of tools.</p>
+      <table class="st">
+        <tr><td>Design</td><td>Single Panel, All Core Electronics</td></tr>
+        <tr><td>Mounting</td><td>Back of Elevator Superstructure</td></tr>
+        <tr><td>Access</td><td>Tool-Free Removal</td></tr>
+        <tr><td>Benefit</td><td>Proximity of Components + Fast Pit Access</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">CAN Bus Architecture</div>
+    <p class="bt" style="margin-bottom:14px;">Last year we were able to implement a CANivore so we can have two different CAN networks. This lets us isolate our drivebase's communication from that of our manipulators — fixing the problem of high CAN bus utilization we had two years ago. Along with this, we have created a labeling system for CAN IDs across our different subsystems.</p>
+    <div class="sdiv"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div>
+        <p class="bt" style="margin-bottom:10px;font-weight:600;">Dual Network Layout</p>
+        <table class="st">
+          <tr><td>Network 1</td><td>Drivebase (CANivore) — 4× Drive Kraken x60, 4× Steer Kraken x44, Pigeon IMU</td></tr>
+          <tr><td>Network 2</td><td>Manipulators (RIO CAN) — Intake, Spindexer, Indexer, Turret, Climber</td></tr>
+        </table>
+      </div>
+      <div style="border-left:1px solid var(--g1);padding-left:24px;">
+        <p class="bt" style="margin-bottom:10px;font-weight:600;">Why Two Networks?</p>
+        <div class="tl">
+          <div class="tld"></div>
+          <div class="tll">Isolation</div>
+          <div class="tld2">Drivebase CAN traffic no longer competes with manipulator traffic. Swerve modules update faster and more reliably without high bus utilization degrading performance.</div>
+        </div>
+        <div class="tl" style="padding-bottom:0">
+          <div class="tld"></div>
+          <div class="tll">CAN ID Labeling</div>
+          <div class="tld2">A consistent CAN ID labeling system is applied to all controllers, making it easy to identify devices at a glance during pit debugging and ensuring IDs never conflict between networks.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
