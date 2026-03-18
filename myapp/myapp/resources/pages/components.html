@@ -1,0 +1,72 @@
+<div id="page-components" class="page">
+  <div class="ptitle">Standardized Custom Components</div>
+  <div class="psub">Drop-In Reusable Parts · Reduced Iteration Time · Long-Term Team Sustainability</div>
+
+  <p class="bt" style="margin:0 0 18px 0;">This season, we placed an additional emphasis on developing small, drop-in components to simplify integration and reduce iteration time during build. By standardizing interfaces and creating easily replaceable parts, we were able to make quick adjustments without requiring major redesigns of entire subsystems. Beyond immediate efficiency, this approach supports long-term sustainability for Team 1792 by building a library of reusable components that can be applied across future robots.</p>
+
+  <!-- TubeRoller System -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="ct">1792 TubeRoller System</div>
+    <p class="bt" style="margin-bottom:14px;">Goal: Create a 3D-printable roller system that can withstand the rigors of competition with either PVC or polycarbonate rollers, fully parametric so it can be used on any robot. This system has been implemented for every roller on ATLAS.</p>
+    <div class="sdiv"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:16px;">
+      <div>
+        <p class="bt" style="margin-bottom:10px;font-weight:600;">How It Works</p>
+        <div class="tl">
+          <div class="tld"></div>
+          <div class="tll">Structural Bolt — Not a Shaft</div>
+          <div class="tld2">A ¼-20 bolt acts as the structural member instead of a traditional dead axle shaft — significantly reducing weight and eliminating shaft bending risk under load. The bolt passes through the intake plate and a full-length internal spacer, which maintains proper spacing and prevents compression during tightening.</div>
+        </div>
+        <div class="tl">
+          <div class="tld"></div>
+          <div class="tll">Free-Spinning Bearings</div>
+          <div class="tld2">Bearings are supported using carefully placed spacers and washers, ensuring there is no face contact on the bearing races. This allows bearings to spin freely about the bolt with minimal friction. Central spacer and washers are steel for durability but can be 3D printed for lower-impact mechanisms.</div>
+        </div>
+        <div class="tl" style="padding-bottom:0">
+          <div class="tld"></div>
+          <div class="tll">Integrated Pulley Hub</div>
+          <div class="tld2">The TubeRoller hub integrates a printed pulley, enabling direct power transmission without additional components. Recessed nuts allow button head bolts to secure the polycarbonate tube to the end plugs, ensuring tube and roller rotate together as a single unit. The assembly can also be clamped across both plates, making the roller a structural member within the system.</div>
+        </div>
+      </div>
+      <div style="border-left:1px solid var(--g1);padding-left:24px;">
+        <p class="bt" style="margin-bottom:10px;font-weight:600;">Iteration History</p>
+        <div class="tl">
+          <div class="tld x"></div>
+          <div class="tll">V1 — ⅜-16 Bolt, Face Contact</div>
+          <div class="tl-row"><div class="tld2">Proof of concept using a ⅜-16 bolt through the end plug. Bearing races in face contact with the hub created friction. Functional but not optimized.</div><img class="til" src="assets/images/standardcomp/v1.png" alt="TubeRoller V1 cross-section"></div>
+        </div>
+        <div class="tl">
+          <div class="tld x"></div>
+          <div class="tll">V2/V3 — ¼-20 Bolt, TPU Hub</div>
+          <div class="tl-row"><div class="tld2">Switched to ¼-20 bolt. V3 introduced TPU material in the hub for better impact absorption and handling of slight misalignments. Bearing face contact still present — identified as the primary friction source for V4.</div><div style="display:flex;flex-direction:column;gap:8px;"><img class="til" src="assets/images/standardcomp/v2.png" alt="TubeRoller V2 cross-section"><img class="til" src="assets/images/standardcomp/v3.png" alt="TubeRoller V3 cross-section"></div></div>
+        </div>
+        <div class="tl" style="padding-bottom:0">
+          <div class="tld"></div>
+          <div class="tll">V4 — Final (No Face Contact + Foam Flange)</div>
+          <div class="tl-row"><div class="tld2">Carefully placed spacers and washers eliminate all bearing face contact — bearings spin freely. Foam flange add-on retains foam axially to prevent lateral shift under load. PLA flanges used for minimal-impact areas. Requires slightly longer bolt to accommodate flange components.</div><div style="display:flex;flex-direction:column;gap:8px;"><img class="til" src="assets/images/standardcomp/crosssection.png" alt="TubeRoller V4 cross-section diagram with labeled components"><img class="til" src="assets/images/standardcomp/flange.png" alt="TubeRoller V4 foam flange"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Other Components -->
+  <div class="g2">
+    <div class="card">
+      <div class="ct">1792-PIGMOUNT</div>
+      <p class="bt" style="margin-bottom:10px;">A standardized mounting solution for the Pigeon IMU. Designed as a drop-in component to ensure consistent, repeatable placement of the IMU near the robot's center — minimizing drivetrain drift and ensuring accurate positional feedback. Can be carried forward to future robots without redesign.</p>
+      <img class="til" src="assets/images/standardcomp/pigmount.png" alt="1792-PIGMOUNT">
+    </div>
+    <div class="card">
+      <div class="ct">1792-RIOMOUNT</div>
+      <p class="bt" style="margin-bottom:10px;">A standardized mounting solution for the RoboRIO. Provides a consistent, tool-accessible mounting location on the electrical panel. Standardized footprint allows the same mount to be used across robot generations, reducing electrical integration time at the start of each season.</p>
+      <img class="til" src="assets/images/standardcomp/riomount.png" alt="1792-RIOMOUNT">
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px;">
+    <div class="ct">1792-FUSEPROT — Fuse Retention System</div>
+    <div style="display:flex;gap:20px;align-items:flex-start;">
+      <p class="bt" style="margin:0;flex:1;">A standardized fuse retention system designed to prevent fuses from vibrating loose during competition. Ensures consistent electrical protection across all branches of the power distribution system. Designed as a simple, lightweight add-on to the PDP that can be reproduced and replaced rapidly in the pit.</p>
+      <img class="til" src="assets/images/standardcomp/fuseprot.png" alt="1792-FUSEPROT">
+    </div>
+  </div>
+</div>

@@ -1,0 +1,276 @@
+<div id="page-programming" class="page">
+  <div class="ptitle">Programming</div>
+  <div class="psub">Software Design · State-Based Java · CTRE Phoenix Pro · Limelight · AdvantageKit · Motion Magic</div>
+
+  <!-- ── 1. OVERVIEW ── -->
+  <div class="sg" style="margin-bottom:14px;">
+    <div class="sc"><div class="sl">Architecture</div><div class="sv" style="font-size:18px;margin-top:2px;">State</div><div class="su">Machine Design</div></div>
+    <div class="sc"><div class="sl">Shot Calculator</div><div class="sv">20</div><div class="su">Iterations / Cycle</div></div>
+    <div class="sc"><div class="sl">Vision</div><div class="sv">2×</div><div class="su">Limelight Cameras</div></div>
+    <div class="sc"><div class="sl">Drive Assist</div><div class="sv">4</div><div class="su">Zone Modes</div></div>
+  </div>
+  <div class="card" style="margin-bottom:14px;">
+    <div class="ct">Overview — Core Software Stack</div>
+    <table class="st">
+      <tr><td>Language</td><td>Java (Custom State-Based Architecture)</td></tr>
+      <tr><td>Motor Framework</td><td>CTRE Phoenix Pro (Licensed)</td></tr>
+      <tr><td>Vision</td><td>Limelight + AprilTag Field Localization</td></tr>
+      <tr><td>Logging</td><td>AdvantageKit — Full Logging</td></tr>
+      <tr><td>Motion Control</td><td>Motion Magic Trapezoidal &amp; S-Curve Profiles</td></tr>
+      <tr><td>Version Control</td><td>GitHub</td></tr>
+    </table>
+  </div>
+
+  <!-- ── 2. STATE-BASED DESIGN ── -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="ct">State-Based Design</div>
+    <p class="bt" style="margin-bottom:14px;">We moved away from the traditional WPILib Command-Based subsystem model in favor of a custom state machine pattern — but the top-level structure is still command-based. The <strong>RobotContainer</strong> acts as the manager, using a Command-Based setup to schedule tasks and bind them to controller buttons. What changed is how subsystems behave internally: external inputs only set the desired state, and each subsystem handles all motor logic, sequencing, and readiness checks on its own.</p>
+    <div class="sdiv"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;margin-bottom:16px;">
+      <div class="gi">
+        <div class="gn">1</div>
+        <div><div class="gh">Predictability</div><div class="gp">Each subsystem owns its behavior entirely. No external command can interrupt motor logic mid-cycle — unexpected movements from scheduler conflicts are eliminated.</div></div>
+      </div>
+      <div class="gi" style="border-bottom:none;border-left:1px solid var(--g1);padding-left:16px;">
+        <div class="gn">2</div>
+        <div><div class="gh">Debuggability</div><div class="gp">Current state logged to AdvantageKit every cycle. When a mechanism faults, we replay exactly which state it was in at the time — no guesswork.</div></div>
+      </div>
+      <div class="gi" style="border-bottom:none;border-left:1px solid var(--g1);padding-left:16px;">
+        <div class="gn">3</div>
+        <div><div class="gh">Scalability</div><div class="gp">Adding a new behavior is adding one enum value and defining its logic in the periodic loop. No command-group restructuring or scheduler binding needed.</div></div>
+      </div>
+    </div>
+    <div class="sdiv"></div>
+    <div class="tl">
+      <div class="tld"></div>
+      <div class="tll">State Enums</div>
+      <div class="tld2">Each subsystem defines its own enum — e.g. <code>TurretState</code>, <code>ShooterState</code>, <code>IntakeState</code>. Each value represents a complete behavioral mode with its own motor targets and sensor logic.</div>
+    </div>
+    <div class="tl">
+      <div class="tld"></div>
+      <div class="tll">Periodic Execution</div>
+      <div class="tld2">Every loop cycle the subsystem reads its current state and executes the corresponding logic directly — no scheduler, no command queuing, no external arbitration.</div>
+    </div>
+    <div class="tl" style="padding-bottom:0">
+      <div class="tld"></div>
+      <div class="tll">State Transitions</div>
+      <div class="tld2">Driver controls and automation triggers simply write a new state value. The subsystem detects the change on the next cycle and handles ramping, interlocks, and readiness checks entirely on its own.</div>
+    </div>
+  </div>
+
+  <!-- ── 3. TURRET ── -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="ct">Turret Subsystem</div>
+    <p class="bt" style="margin-bottom:14px;">Handles automatic target tracking and aiming, allowing the robot to score while moving across the field. Target selection is driven by robot position and alliance color — hub when on our side, depot or outpost (determined by Y-axis position) when across the field.</p>
+    <div class="sdiv"></div>
+    <div class="tl">
+      <div class="tld"></div>
+      <div class="tll">Automatic Target Selection</div>
+      <div class="tld2">Robot position and alliance color determine the active target each cycle. Scoring mode aims at our hub; shuttling mode picks depot or outpost based on Y-axis position on the field.</div>
+    </div>
+    <div class="tl">
+      <div class="tld"></div>
+      <div class="tll">Field-to-Robot Angle Conversion</div>
+      <div class="tld2">Field-relative angle to the target calculated via atan2, then robot heading subtracted to get turret-relative position. When the robot rotates, the turret automatically counter-rotates to stay locked on target.</div>
+    </div>
+    <div class="tl">
+      <div class="tld"></div>
+      <div class="tll">Turret Offset Compensation</div>
+      <div class="tld2">The turret pivot is offset from robot center by several inches. All angle calculations compensate for this offset to prevent systematic one-sided misses regardless of shot angle.</div>
+    </div>
+    <div class="tl">
+      <div class="tld"></div>
+      <div class="tll">Motion Magic Profiles</div>
+      <div class="tld2">Smooth trapezoidal motion profiles for all turret movements. Angles wrapped to ±180° via modulus to prevent cable wrap issues at rotation limits.</div>
+    </div>
+    <div class="tl" style="padding-bottom:0">
+      <div class="tld"></div>
+      <div class="tll">Shot Readiness Gate</div>
+      <div class="tld2">"At setpoint" detection is checked every cycle. The indexer is only permitted to fire when the turret confirms it is accurately on target — not just moving toward it.</div>
+    </div>
+  </div>
+
+  <!-- ── 4. SHOOTER ── -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="ct">Shooter Subsystem</div>
+    <p class="bt" style="margin-bottom:14px;">Two Kraken x60s in a leader-follower configuration drive the flywheel at 1:1, with opposed motor alignment to spin in the same direction. The second motor was added as an iteration to decrease recovery time between shots. Uses an <strong>InterpolatingDoubleTreeMap</strong> to map measured field distances to empirically tuned RPS values — distances in between are interpolated automatically. Two separate tables handle hub shots and neutral-zone shuttling.</p>
+    <div class="sdiv"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div>
+        <p class="bt" style="margin-bottom:10px;font-weight:600;">Why Interpolation?</p>
+        <p class="bt" style="margin-bottom:10px;">Fixed flywheel speeds overshoot close targets and undershoot far ones. By defining velocity values at specific measured distances — e.g. 47 RPS at 3.0m, 49 RPS at 3.5m — a shot from 3.25m automatically calculates to 48 RPS without any manual tuning in between. Air times are measured at the same known distances and stored in a parallel lookup table used by the Shot Calculator.</p>
+        <img class="til" src="assets/images/software/interpolation graph.png" alt="Shooter interpolation distance-to-RPS graph" style="width:100%;height:auto;aspect-ratio:auto;">
+      </div>
+      <div style="border-left:1px solid var(--g1);padding-left:24px;">
+        <p class="bt" style="margin-bottom:10px;font-weight:600;">Shooter States</p>
+        <table class="st">
+          <tr><td>STOP</td><td>Motors off — safe for disabled / end-of-match</td></tr>
+          <tr><td>IDLE</td><td>Low RPM — stays spinning to cut spin-up lag</td></tr>
+          <tr><td>BLUE_HUB</td><td>Distance lookup table — hub shot velocity</td></tr>
+          <tr><td>SHUTTLE</td><td>Distance lookup table — shuttling velocity</td></tr>
+          <tr><td>MANUAL</td><td>Fixed 50 RPS — fallback if sensor fails</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 5. SHOT CALCULATOR ── -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="ct">Shot Calculator — Targeting Core</div>
+    <p class="bt" style="margin-bottom:14px;"><em>"Where should I aim now so the projectile lands on target later?"</em> Three compounding factors cause misses when shooting while moving — the Shot Calculator compensates for all three simultaneously using iterative convergence.</p>
+    <div class="sdiv"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div>
+        <p class="bt" style="margin-bottom:10px;font-weight:600;">Three Sources of Error</p>
+        <div class="tl">
+          <div class="tld"></div>
+          <div class="tll">Robot Translation</div>
+          <div class="tld2">Movement during projectile flight shifts the effective aim point — the target drifts relative to where the robot aimed at release.</div>
+        </div>
+        <div class="tl">
+          <div class="tld"></div>
+          <div class="tll">Processing Latency (~20ms)</div>
+          <div class="tld2">Sensor-to-motor delay compensated by projecting the robot pose 20ms forward based on current velocity before any angle calculation begins.</div>
+        </div>
+        <div class="tl" style="padding-bottom:0">
+          <div class="tld"></div>
+          <div class="tll">Turret Offset Swing</div>
+          <div class="tld2">Rotational swing from the offset pivot contributes its own velocity component to the turret's field-relative motion — included in all compensation math.</div>
+        </div>
+      </div>
+      <div style="border-left:1px solid var(--g1);padding-left:24px;">
+        <p class="bt" style="margin-bottom:10px;font-weight:600;">Iterative Convergence — 20 iterations/cycle</p>
+        <div class="tl">
+          <div class="tld"></div>
+          <div class="tll">Step 1 — Latency Compensation</div>
+          <div class="tld2">Project robot pose 20ms forward from the current velocity vector to find where the robot will actually be when the motor responds.</div>
+        </div>
+        <div class="tl">
+          <div class="tld"></div>
+          <div class="tll">Step 2 — Velocity Calculation</div>
+          <div class="tld2">Compute field-relative turret velocity, combining robot translation and all rotational components from robot spin around the offset pivot.</div>
+        </div>
+        <div class="tl" style="padding-bottom:0">
+          <div class="tld"></div>
+          <div class="tll">Step 3 — Convergence Loop</div>
+          <div class="tld2">Look up air time from current distance → shift aim point opposite to turret movement during flight → recalculate distance to the new virtual target → repeat. Air time depends on distance, but distance changes when the aim point moves — the circular dependency requires iteration. Typically stable within 5–10 cycles.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 6. SHOOTING SEQUENCE ── -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="ct">Shooting Sequence &amp; Feedback</div>
+    <p class="bt" style="margin-bottom:14px;">Pulling the trigger does not fire immediately — it initiates a coordinated handshake that ensures all systems are ready before the indexer releases. This prevents premature shots from a misaligned turret or under-speed flywheels.</p>
+    <div class="sdiv"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div>
+        <div class="tl">
+          <div class="tld"></div>
+          <div class="tll">Step 1 — Trigger Held</div>
+          <div class="tld2">Driver holds right trigger. Turret transitions to active tracking mode and the shooter begins spooling toward the distance-based target velocity.</div>
+        </div>
+        <div class="tl">
+          <div class="tld"></div>
+          <div class="tll">Step 2 — Systems Confirm Ready</div>
+          <div class="tld2">Turret checks "at setpoint." Shooter checks velocity within tolerance. Both must independently report Ready before the handshake advances.</div>
+        </div>
+        <div class="tl" style="padding-bottom:0">
+          <div class="tld"></div>
+          <div class="tll">Step 3 — Indexer Fires</div>
+          <div class="tld2">Only when both confirmations are received does the indexer activate to feed the Fuel into the flywheels. The gate resets immediately after the shot.</div>
+        </div>
+      </div>
+      <div style="border-left:1px solid var(--g1);padding-left:24px;">
+        <p class="bt" style="margin-bottom:10px;font-weight:600;">LED Visual Feedback</p>
+        <div class="tl">
+          <div class="tld"></div>
+          <div class="tll"><span class="tag" style="background:rgba(0,140,0,0.12);color:#007838;border-color:rgba(0,140,0,0.3);">Green</span> Ready to Shoot</div>
+          <div class="tld2">Turret aimed + shooter at speed + trigger held. All conditions met — shot will fire.</div>
+        </div>
+        <div class="tl">
+          <div class="tld"></div>
+          <div class="tll"><span class="tag" style="background:rgba(180,0,0,0.12);color:#b00000;border-color:rgba(180,0,0,0.3);">Red</span> Shift Warning</div>
+          <div class="tld2">Less than 10 seconds left in the current period. Alerts driver of upcoming transition.</div>
+        </div>
+        <div class="tl" style="padding-bottom:0">
+          <div class="tld"></div>
+          <div class="tll"><span class="tag" style="background:rgba(0,57,162,0.1);color:var(--pb);border-color:rgba(0,57,162,0.3);">Blue</span> Default State</div>
+          <div class="tld2">Robot enabled and running normally. No active shot condition.</div>
+        </div>
+        <!-- <p class="bt" style="margin-top:12px;margin-bottom:0;font-size:11px;color:var(--g3);">All states and virtual target positions logged to AdvantageKit every cycle for post-match shot analysis and fault replay.</p> -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 7. VISION ── -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="ct">Vision System</div>
+    <p class="bt" style="margin-bottom:14px;">Two Limelight cameras provide independent AprilTag-based field localization. Rather than fusing both estimates, the system selects the <strong>best camera by distance</strong> each cycle to maximize pose stability. Four filtering layers reject bad data before any estimate reaches the pose estimator.</p>
+    <div class="sdiv"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div>
+        <div class="tl">
+          <div class="tld"></div>
+          <div class="tll">Field Boundary Filter</div>
+          <div class="tld2">Rejects any estimated pose that falls outside the known carpet boundary. Eliminates phantom detections caused by field lighting and reflections.</div>
+        </div>
+        <div class="tl" style="padding-bottom:0">
+          <div class="tld"></div>
+          <div class="tll">Z-Error Filter</div>
+          <div class="tld2">Rejects "floating" poses where the estimated robot height is inconsistent with being on the ground. Catches degenerate tag detections that produce valid-looking X/Y but wrong Z.</div>
+        </div>
+      </div>
+      <div style="border-left:1px solid var(--g1);padding-left:24px;">
+        <div class="tl">
+          <div class="tld"></div>
+          <div class="tll">Ambiguity Filter</div>
+          <div class="tld2">Rejects single-tag observations with high pose ambiguity — only confident, low-ambiguity detections are passed to the estimator.</div>
+        </div>
+        <div class="tl" style="padding-bottom:0">
+          <div class="tld"></div>
+          <div class="tll">Trust Scaling</div>
+          <div class="tld2">Measurement uncertainty scales with Distance², the estimate is trusted less if we are farther away from the tag</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 8. TELEOP ── -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="ct">Teleop Drive &amp; Zones</div>
+    <p class="bt" style="margin-bottom:14px;">Field-centric swerve drive with automatic zone-based speed assists. Assists are designed to reduce driver workload in tight areas and improve shot stability — not to fight the driver.</p>
+    <div class="sdiv"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div>
+        <p class="bt" style="margin-bottom:10px;font-weight:600;">Drive Modes</p>
+        <table class="st">
+          <tr><td>Normal</td><td>Full speed field-centric driving (default)</td></tr>
+          <tr><td>Trench Slow</td><td>All-axis speed reduction for precision navigation</td></tr>
+          <tr><td>Bump Lock</td><td>Y-axis + rotation locked to center robot on bump</td></tr>
+          <tr><td>Shooting</td><td>Reduced speed for a stable aiming platform</td></tr>
+        </table>
+      </div>
+      <div style="border-left:1px solid var(--g1);padding-left:24px;">
+        <p class="bt" style="margin-bottom:10px;font-weight:600;">Predictive Zone Detection</p>
+        <p class="bt" style="margin-bottom:0;">Hard zone boundaries feel jarring — the robot abruptly cuts speed the instant it crosses a line. Instead, the system looks <strong>0.5 seconds ahead</strong> based on current velocity. If the robot will enter a zone within that window, the speed transition begins early and ramps smoothly before the boundary is reached. Drivers feel a gradual change rather than a snap.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 9. OVERRIDES ── -->
+  <div class="card">
+    <div class="ct">Overrides &amp; Fallback Systems</div>
+    <p class="bt" style="margin-bottom:14px;">Every automation feature includes a manual override accessible via SmartDashboard (NetworkTables). Overrides require no code redeploy — they can be toggled between matches during pit stops or live mid-match if a sensor behaves erratically. Each fallback is designed to disable automation while preserving basic scoring capability.</p>
+    <div class="sdiv"></div>
+    <table class="st" style="margin-bottom:16px;">
+      <tr><td style="width:16%">System</td><td style="width:26%">Dashboard Toggle</td><td>Fallback Behavior</td></tr>
+      <tr><td>Turret</td><td>Turret Enabled</td><td>Stops active tracking, holds current position — driver compensates with chassis heading</td></tr>
+      <tr><td>Shooter</td><td>Shooter Enabled</td><td>Reverts to 50 RPS fixed speed — driver aims from a known manual field location</td></tr>
+      <tr><td>Vision</td><td>Per-Camera Toggles</td><td>Faulty camera isolated individually; remaining cameras continue pose estimation normally</td></tr>
+      <tr><td>Drive Assist</td><td>Assist Enabled</td><td>Disables all Bump/Trench logic — full-speed driving with no zone restrictions</td></tr>
+    </table>
+  </div>
+
+</div>

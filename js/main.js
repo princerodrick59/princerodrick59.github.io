@@ -42,7 +42,7 @@ function initR(){
   ren.shadowMap.enabled=true;ren.shadowMap.type=THREE.PCFSoftShadowMap;
   scene=new THREE.Scene();
   cam=new THREE.PerspectiveCamera(45,W/H,0.1,100);
-  cam.position.set(0,1.2,2.8);cam.lookAt(target);
+  cam.position.set(0,1.2,3.8);cam.lookAt(target);
   scene.add(new THREE.AmbientLight(0xffffff,2.0));
   const kl=new THREE.DirectionalLight(0xffffff,2.0);kl.position.set(4,8,5);
   kl.castShadow=true;kl.shadow.mapSize.width=2048;kl.shadow.mapSize.height=2048;
@@ -131,7 +131,7 @@ function toggleFullscreen(){
   }
 }
 function resetView(){
-  cam.position.set(0,1.2,2.8);
+  cam.position.set(0,1.2,3.8);
   target.set(0,0.5,0);
   cam.lookAt(target);
   rg.rotation.set(0,0,0);

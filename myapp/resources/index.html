@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team 1792 · Pit Display</title>
+<link rel="icon" type="image/png" href="assets/images/logo/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div id="app">
+
+<!-- HEADER -->
+<div id="hdr">
+  <div class="logo-wrap" onclick="show('home', document.querySelector('.nb')); setTimeout(resetView, 100);" style="cursor:pointer;" title="Home">
+    <img src="assets/images/logo/logo.svg" alt="RTR Logo">
+    <div class="hdr-title">
+      <div class="hdr-main">1792 ATLAS &nbsp;·&nbsp; REBUILT 2026</div>
+      <div class="hdr-sub">Round Table Robotics &nbsp;·&nbsp; Oak Creek, WI</div>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <img src="assets/images/logo/gamelogo.png" alt="REBUILT 2026" class="game-logo">
+  </div>
+</div>
+
+<div id="body">
+<!-- SIDEBAR -->
+<div id="sb">
+  <div class="ns">Overview</div>
+  <button class="nb active" onclick="show('home',this)"><span class="ni">⬡</span> Robot Overview</button>
+  <div class="ns" style="margin-top:6px;">Strategy</div>
+  <button class="nb" onclick="show('strategy',this)"><span class="ni">◎</span> Strategy &amp; Goals</button>
+  <button class="nb" onclick="show('archetypes',this)"><span class="ni">◈</span> Archetype Iterations</button>
+  <div class="ns" style="margin-top:6px;">Subsystems</div>
+  <button class="nb" onclick="show('drivetrain',this)"><span class="ni">◈</span> Drivetrain / Hopper</button>
+  <button class="nb" onclick="show('intake',this)"><span class="ni">↓</span> Intake</button>
+  <button class="nb" onclick="show('spindexer',this)"><span class="ni">↺</span> Spindexer</button>
+  <button class="nb" onclick="show('indexer',this)"><span class="ni">→</span> Indexer</button>
+  <button class="nb" onclick="show('turret',this)"><span class="ni">◎</span> Turret</button>
+  <button class="nb" onclick="show('shooter',this)"><span class="ni">◉</span> Shooter</button>
+  <button class="nb" onclick="show('climber',this)"><span class="ni">▲</span> Climber</button>
+  <div class="ns" style="margin-top:6px;">Build</div>
+  <button class="nb" onclick="show('components',this)"><span class="ni">⬡</span> Standardized Components</button>
+  <button class="nb" onclick="show('inventory',this)"><span class="ni">▦</span> Inventory</button>
+  <button class="nb" onclick="show('electrical',this)"><span class="ni">⚡</span> Electrical</button>
+  <div class="ns" style="margin-top:6px;">Software</div>
+  <button class="nb" onclick="show('programming',this)"><span class="ni">&lt;/&gt;</span> Software Design</button>
+  <button class="nb" onclick="show('prog-process',this)"><span class="ni">↻</span> Processes &amp; Iteration</button>
+  <div class="sb-foot"><div class="sb-foot-txt">Gearing Up for Tomorrow</div></div>
+</div>
+
+<!-- MAIN -->
+<div id="main"></div>
+
+</div><!-- /body -->
+</div><!-- /app -->
+
+<!-- LIGHTBOX -->
+<div id="lbox">
+  <div id="lbox-close" onclick="closeLbox()">✕</div>
+  <div id="lbox-hint">PINCH TO ZOOM &nbsp;·&nbsp; DOUBLE-TAP TO RESET &nbsp;·&nbsp; TAP OUTSIDE TO CLOSE</div>
+  <img id="lbox-img" src="" alt="">
+</div>
+
+<script src="js/neutralino.js"></script>
+<script>Neutralino.init(); Neutralino.events.on("windowClose", () => Neutralino.app.exit());</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
+<script src="js/main.js"></script>
+<script>
+// ── Lightbox ──
+let lboxScale=1,lboxTx=0,lboxTy=0;
+let lb_t1=null,lb_t2=null,lb_pinchDist=0;
+let lb_lastTap=0,lb_tapX=0,lb_tapY=0,lb_tapTime=0;
+
+function applyLboxTransform(){
+  document.getElementById('lbox-img').style.transform=
+    'translate('+lboxTx+'px,'+lboxTy+'px) scale('+lboxScale+')';
+}
+function resetLboxZoom(){lboxScale=1;lboxTx=0;lboxTy=0;applyLboxTransform();}
+function openLbox(src,alt){
+  document.getElementById('lbox-img').src=src;
+  document.getElementById('lbox-img').alt=alt||'';
+  document.getElementById('lbox').classList.add('open');
+  resetLboxZoom();
+}
+function closeLbox(){
+  document.getElementById('lbox').classList.remove('open');
+  resetLboxZoom();
+}
+
+// Desktop: close on backdrop click
+document.getElementById('lbox').addEventListener('click',function(e){
+  if(e.target===this)closeLbox();
+});
+// Desktop: scroll wheel zoom
+document.getElementById('lbox').addEventListener('wheel',function(e){
+  if(!document.getElementById('lbox').classList.contains('open'))return;
+  e.preventDefault();
+  lboxScale=Math.max(1,Math.min(6,lboxScale-e.deltaY*0.003));
+  if(lboxScale<=1){lboxTx=0;lboxTy=0;}
+  applyLboxTransform();
+},{passive:false});
+
+// Touch – all handlers on the lbox container so nothing escapes
+(function(){
+  const el=document.getElementById('lbox');
+
+  el.addEventListener('touchstart',function(e){
+    if(!el.classList.contains('open'))return;
+    e.preventDefault();
+    const ts=e.touches;
+    if(ts.length===1){
+      const now=Date.now();
+      // Double-tap
+      if(now-lb_lastTap<280){
+        lboxScale>1?resetLboxZoom():(lboxScale=2.5,applyLboxTransform());
+        lb_lastTap=0;
+      } else {
+        lb_lastTap=now;
+      }
+      lb_tapTime=now;
+      lb_tapX=ts[0].clientX;lb_tapY=ts[0].clientY;
+      lb_t1={x:ts[0].clientX,y:ts[0].clientY};
+      lb_t2=null;lb_pinchDist=0;
+    } else if(ts.length>=2){
+      lb_t1={x:ts[0].clientX,y:ts[0].clientY};
+      lb_t2={x:ts[1].clientX,y:ts[1].clientY};
+      lb_pinchDist=Math.hypot(lb_t1.x-lb_t2.x,lb_t1.y-lb_t2.y);
+    }
+  },{passive:false});
+
+  el.addEventListener('touchmove',function(e){
+    if(!el.classList.contains('open'))return;
+    e.preventDefault();
+    const ts=e.touches;
+    if(ts.length===1&&lb_t1){
+      // Pan when zoomed in
+      if(lboxScale>1){
+        lboxTx+=ts[0].clientX-lb_t1.x;
+        lboxTy+=ts[0].clientY-lb_t1.y;
+        applyLboxTransform();
+      }
+      lb_t1={x:ts[0].clientX,y:ts[0].clientY};
+    } else if(ts.length>=2&&lb_t1&&lb_t2){
+      const nd=Math.hypot(ts[0].clientX-ts[1].clientX,ts[0].clientY-ts[1].clientY);
+      // Pinch scale
+      if(lb_pinchDist>0){
+        lboxScale=Math.max(1,Math.min(6,lboxScale*(nd/lb_pinchDist)));
+      }
+      // Pan from midpoint movement
+      const omx=(lb_t1.x+lb_t2.x)/2,omy=(lb_t1.y+lb_t2.y)/2;
+      const nmx=(ts[0].clientX+ts[1].clientX)/2,nmy=(ts[0].clientY+ts[1].clientY)/2;
+      lboxTx+=nmx-omx;lboxTy+=nmy-omy;
+      if(lboxScale<=1){lboxTx=0;lboxTy=0;}
+      lb_pinchDist=nd;
+      lb_t1={x:ts[0].clientX,y:ts[0].clientY};
+      lb_t2={x:ts[1].clientX,y:ts[1].clientY};
+      applyLboxTransform();
+    }
+  },{passive:false});
+
+  el.addEventListener('touchend',function(e){
+    if(!el.classList.contains('open'))return;
+    const ts=e.touches;
+    if(ts.length===0){
+      // Short tap on backdrop → close
+      const ct=e.changedTouches[0];
+      const moved=Math.hypot(ct.clientX-lb_tapX,ct.clientY-lb_tapY);
+      const dur=Date.now()-lb_tapTime;
+      const hit=document.elementFromPoint(ct.clientX,ct.clientY);
+      if(dur<220&&moved<12&&(hit===el||hit===document.getElementById('lbox-hint'))){
+        closeLbox();
+      }
+      lb_t1=null;lb_t2=null;lb_pinchDist=0;
+    } else if(ts.length===1){
+      lb_t1={x:ts[0].clientX,y:ts[0].clientY};
+      lb_t2=null;lb_pinchDist=0;
+    }
+  },{passive:true});
+})();
+
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLbox();});
+
+// Open lightbox on any image in #main
+document.addEventListener('click',function(e){
+  const img=e.target.closest('#main img');
+  if(img)openLbox(img.src,img.alt);
+});
+</script>
+</body>

@@ -1,0 +1,107 @@
+<div id="page-prog-process" class="page">
+  <div class="ptitle">Processes &amp; Iteration</div>
+  <div class="psub">Our Improvements · BLine · Limelight Switch · PDSA Cycle · GitHub Standards</div>
+
+  <!-- ── 1. IMPROVEMENTS ── -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="ct">Our Improvements This Season</div>
+    <p class="bt" style="margin-bottom:14px;">This year we improved our use of several tools and made strategic changes to our software stack based on lessons from the previous season.</p>
+    <div class="sdiv"></div>
+    <div class="tl">
+      <div class="tld"></div>
+      <div class="tll">AdvantageScope Expansion</div>
+      <div class="tld2">We expanded our use of AdvantageScope, the logging tool developed by Team 6328 Mechanical Advantage. This included on-field replays, odometry improvements, and simulation testing — allowing us to debug issues and validate autonomous paths without requiring robot time.</div>
+    </div>
+    <div class="tl">
+      <div class="tld"></div>
+      <div class="tll">PhotonVision → Limelight 4</div>
+      <div class="tld2">After a PDSA cycle in the offseason, we switched our vision system from PhotonVision to Limelight (CTRE). Our previous season had a high rate of missed game pieces during autonomous and difficulty developing accurate paths. We use the Limelight 4 — the most recent model — for its high AprilTag performance, wide FOV, better energy usage, and more beginner-friendly documentation. We have found it significantly easier to set up and consistently accurate for global pose estimation.</div>
+    </div>
+    <div class="tl" style="padding-bottom:0">
+      <div class="tld"></div>
+      <div class="tll">PathPlanner → BLine</div>
+      <div class="tld2">We switched from PathPlanner to BLine, a newly developed path planning system created by Team 2638 Rebel Robotics ("Introducing BLine: A New Rapid Polyline Autonomous Path Planning Suite" on Chief Delphi). BLine offers more computational efficiency, lower cross-track errors at waypoints, and less complicated controller tuning. In testing, the margin of error versus PathPlanner was significantly smaller — essential for consistent autonomous performance. We iterate on our autos continuously, adjusting robot speed and timing to minimize missed Fuel and balance cycle speed with consistency.</div>
+      <img class="til" src="assets/images/software/bline.png" alt="BLine autonomous path planning" style="margin-top:10px;width:100%;height:auto;aspect-ratio:auto;">
+    </div>
+  </div>
+
+  <!-- ── 2. AUTONOMOUS ITERATION ── -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="ct">Autonomous Iteration</div>
+    <p class="bt" style="margin-bottom:14px;">Over the season we iterated on our autonomous routines to make them more efficient. This involved testing different approaches to speed, lineup, and path consistency — then making deliberate decisions based on results.</p>
+    <div class="sdiv"></div>
+    <div class="tl">
+      <div class="tld"></div>
+      <div class="tll">Speed vs. Consistency Tradeoff</div>
+      <div class="tld2">One key decision was whether to move slowly through the Neutral Zone to minimize scattered Fuel, or move swiftly to allow more cycles. We chose to prioritize the swift autonomous program to allow the chance for multiple cycles to the Neutral Zone.</div>
+    </div>
+    <div class="tl" style="padding-bottom:0">
+      <div class="tld"></div>
+      <div class="tll">Tracking Results</div>
+      <div class="tld2">All autonomous testing results are tracked on the shop whiteboard first for accessibility, then transferred into our Autonomous documentation. This keeps the whole subteam informed on what has been tried and what the data shows.</div>
+    </div>
+  </div>
+
+  <!-- ── 3. MAINTAINING STANDARDS ── -->
+  <div class="card" style="margin-bottom:14px;">
+    <div class="ct">Maintaining Standards</div>
+    <p class="bt" style="margin-bottom:14px;">We continue building on the documentation and version control improvements we made last season to keep our code organized and knowledge accessible to all team members.</p>
+    <div class="sdiv"></div>
+    <div class="tl">
+      <div class="tld"></div>
+      <div class="tll">GitHub — Multi-Account Commits + Issues</div>
+      <div class="tld2">We use a program to easily swap GitHub accounts in VS Code, ensuring commits are properly credited to the student who wrote them. We also use GitHub Issues and Milestones to track coding goals and target dates, keeping the whole subteam aligned in an open, visible format.</div>
+    </div>
+    <div class="tl" style="padding-bottom:0">
+      <div class="tld"></div>
+      <div class="tll">Documentation Suite</div>
+      <div class="tld2">Dedicated documents are maintained for: control system reference, issues and solutions encountered, autonomous paths and waypoints, robot startup procedures, nightly agenda and progress, and notes from FRC seminars. This keeps every subteam member up to date on rapid developments during the season and enables faster knowledge transfer to new students.</div>
+    </div>
+  </div>
+
+  <!-- ── 4. TEAM STRUCTURE & PROCESS ── -->
+  <div class="card">
+    <div class="ct">Team Structure &amp; Our Process</div>
+    <p class="bt" style="margin-bottom:14px;">We restructured our subteam and adjusted our teaching approach to support a continuously growing group of students, ensuring everyone has a path to meaningful contribution.</p>
+    <div class="sdiv"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div>
+        <p class="bt" style="margin-bottom:10px;font-weight:600;">Subteam Structure Changes</p>
+        <div class="tl">
+          <div class="tld"></div>
+          <div class="tll">Pre-Season Group Learning</div>
+          <div class="tld2">Before build season, we prioritized group lessons: programming a motor, introduction to command-based Java, programming the ParadeBot ("Spinny Carter"), and programming the XRP Bots (WPILib). Incoming students had more experience at the start of build season and could be more self-sustaining.</div>
+        </div>
+        <div class="tl" style="padding-bottom:0">
+          <div class="tld"></div>
+          <div class="tll">Build Season Teaching</div>
+          <div class="tld2">Code is visible to all members. Newer students take turns writing and reasoning through code directly, furthering their understanding through doing — not just watching.</div>
+        </div>
+      </div>
+      <div style="border-left:1px solid var(--g1);padding-left:24px;">
+        <p class="bt" style="margin-bottom:10px;font-weight:600;">PDSA Cycle</p>
+        <div class="tl">
+          <div class="tld"></div>
+          <div class="tll">Plan</div>
+          <div class="tld2">Brainstorm ideas and document them in a weekly-updated goal checklist.</div>
+        </div>
+        <div class="tl">
+          <div class="tld"></div>
+          <div class="tll">Do</div>
+          <div class="tld2">Implement together, following the methods above. Code is visible and collaborative.</div>
+        </div>
+        <div class="tl">
+          <div class="tld"></div>
+          <div class="tll">Study</div>
+          <div class="tld2">Observe how code performed, take notes on improvements and what did or didn't work.</div>
+        </div>
+        <div class="tl" style="padding-bottom:0">
+          <div class="tld"></div>
+          <div class="tll">Act</div>
+          <div class="tld2">Troubleshoot, fine-tune, and repeat. Results tracked on whiteboards and visible monitors in the shop before being transferred to documentation.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
