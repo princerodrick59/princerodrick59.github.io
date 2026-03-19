@@ -36,16 +36,15 @@ function initR(){
   const wrap=document.getElementById('cwrap'),cv=document.getElementById('rwc');
   if(ren){ren.setSize(wrap.clientWidth,wrap.clientHeight);return;}
   const W=wrap.clientWidth,H=wrap.clientHeight;
-  ren=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
-  ren.setPixelRatio(Math.min(devicePixelRatio,2));ren.setSize(W,H);
-  ren.toneMapping=THREE.ACESFilmicToneMapping;ren.toneMappingExposure=1.8;
-  ren.shadowMap.enabled=true;ren.shadowMap.type=THREE.PCFSoftShadowMap;
+  ren=new THREE.WebGLRenderer({canvas:cv,antialias:false,alpha:true,powerPreference:'high-performance'});
+  ren.setPixelRatio(1);ren.setSize(W,H);
+  ren.shadowMap.enabled=true;ren.shadowMap.type=THREE.BasicShadowMap;
   scene=new THREE.Scene();
   cam=new THREE.PerspectiveCamera(45,W/H,0.1,100);
   cam.position.set(0,1.2,3.8);cam.lookAt(target);
   scene.add(new THREE.AmbientLight(0xffffff,2.0));
   const kl=new THREE.DirectionalLight(0xffffff,2.0);kl.position.set(4,8,5);
-  kl.castShadow=true;kl.shadow.mapSize.width=2048;kl.shadow.mapSize.height=2048;
+  kl.castShadow=true;kl.shadow.mapSize.width=512;kl.shadow.mapSize.height=512;
   kl.shadow.camera.near=0.5;kl.shadow.camera.far=30;
   kl.shadow.camera.left=-5;kl.shadow.camera.right=5;kl.shadow.camera.top=5;kl.shadow.camera.bottom=-5;
   kl.shadow.bias=-0.001;kl.shadow.radius=12;scene.add(kl);
@@ -54,7 +53,7 @@ function initR(){
   const fr=new THREE.DirectionalLight(0xffffff,0.8);fr.position.set(4,2,2);scene.add(fr);
   rg=new THREE.Group();scene.add(rg);
   const dracoLoader=new THREE.DRACOLoader();
-  dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/draco/');
+  dracoLoader.setDecoderPath('js/draco/');
   const gltfLoader=new THREE.GLTFLoader();
   gltfLoader.setDRACOLoader(dracoLoader);
   gltfLoader.load('assets/models/robot.glb',function(gltf){
@@ -112,8 +111,8 @@ function initR(){
     }
   },{passive:false});
   cv.addEventListener('touchend',e=>{Array.from(e.changedTouches).forEach(t=>delete touches[t.identifier]);},{passive:false});
-  let t=0;
-  (function anim(){requestAnimationFrame(anim);t+=0.008;if(!rotating&&autoSpin)rg.rotation.y+=0.003;if(car)car.position.y=1.9+Math.sin(t*0.5)*0.05;if(ee)ee.position.y=1.9+Math.sin(t*0.5)*0.05;ren.render(scene,cam);})();
+  let t=0,lastFrame=0;
+  (function anim(now){requestAnimationFrame(anim);if(now-lastFrame<33)return;lastFrame=now;t+=0.008;if(!rotating&&autoSpin)rg.rotation.y+=0.003;if(car)car.position.y=1.9+Math.sin(t*0.5)*0.05;if(ee)ee.position.y=1.9+Math.sin(t*0.5)*0.05;ren.render(scene,cam);})();
 }
 function toggleSpin(){
   autoSpin=!autoSpin;
