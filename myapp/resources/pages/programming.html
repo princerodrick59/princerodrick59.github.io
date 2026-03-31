@@ -43,6 +43,11 @@
     <div class="sdiv"></div>
     <div class="tl">
       <div class="tld"></div>
+      <div class="tll">Three-Class Subsystem Structure</div>
+      <div class="tld2">Each subsystem is built from three classes: (1) a <strong>States class</strong> that defines every state the subsystem can be in as an enum, (2) a <strong>Constants class</strong> containing all numerical values used by that subsystem, and (3) a <strong>Commands class</strong> that defines the actual motor behaviors for each state using those constants. RobotContainer then ties commands to controller buttons, just like traditional Command-Based.</div>
+    </div>
+    <div class="tl">
+      <div class="tld"></div>
       <div class="tll">State Enums</div>
       <div class="tld2">Each subsystem defines its own enum — e.g. <code>TurretState</code>, <code>ShooterState</code>, <code>IntakeState</code>. Each value represents a complete behavioral mode with its own motor targets and sensor logic.</div>
     </div>
